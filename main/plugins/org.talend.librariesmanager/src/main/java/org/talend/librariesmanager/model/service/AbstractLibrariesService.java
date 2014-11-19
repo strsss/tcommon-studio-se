@@ -200,7 +200,9 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
                             File libsTargetFile = new File(path);
                             File source = new File(LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA)
                                     + File.separatorChar + name);
-                            FilesUtils.copyFile(source, libsTargetFile);
+                            if (source.exists()) {
+                                FilesUtils.copyFile(source, libsTargetFile);
+                            }
                         }
                         eclipseProject.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
                     } catch (IOException e) {

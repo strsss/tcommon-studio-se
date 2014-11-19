@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.core.ui.metadata.celleditor;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,18 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DialogCellEditor;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -221,6 +227,17 @@ public class ModuleListCellEditor extends DialogCellEditor {
             newShell.setText(Messages.getString("ModuleListCellEditor.title")); //$NON-NLS-1$
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.jface.dialogs.Dialog#create()
+         */
+        @Override
+        public void create() {
+            super.create();
+            checkField(true); // init
+        }
+
         @Override
         protected Control createDialogArea(Composite parent) {
             Composite composite = (Composite) super.createDialogArea(parent);
@@ -267,7 +284,7 @@ public class ModuleListCellEditor extends DialogCellEditor {
                     Messages.getString("ModuleListCellEditor.selectLabel"), FilesUtils.getAcceptJARFilesSuffix()); //$NON-NLS-1$
 
             addListeners();
-            checkField(true); // init
+            // checkField(true); // init
             jarsViewer.getList().setSelection(new String[] { selecteModule });
             return composite;
         }
@@ -289,6 +306,28 @@ public class ModuleListCellEditor extends DialogCellEditor {
                 }
 
             });
+            jarsViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+                @Override
+                public void selectionChanged(SelectionChangedEvent event) {
+                    if (jarsViewer.getList().getSelection().length <= 0) {
+                        getOKButton().setEnabled(false);
+                    } else {
+                        getOKButton().setEnabled(true);
+                    }
+                }
+            });
+            selectField.addModifyListener(new ModifyListener() {
+
+                @Override
+                public void modifyText(ModifyEvent e) {
+                    if (selectField.getText().trim().length()<=0) {
+                        getOKButton().setEnabled(false);
+                    } else {
+                        getOKButton().setEnabled(true);
+                    }
+                }
+            });
         }
 
         private void checkField(boolean inner) {
@@ -299,6 +338,21 @@ public class ModuleListCellEditor extends DialogCellEditor {
             selectField.getTextControl().getParent().setVisible(!inner);
             ((GridData) selectField.getTextControl().getParent().getLayoutData()).exclude = inner;
             jarsViewer.getList().getParent().layout();
+            boolean canFinish = true;
+            if (innerBtn.getSelection()) {
+                if (jarsViewer.getList().getSelection().length <= 0) {
+                    canFinish = false;
+                }
+
+            } else {
+                String fileName = selectField.getText().trim();
+                if (fileName.length() <= 0) {
+                    canFinish = false;
+                }
+            }
+            if (getOKButton() != null) {
+                getOKButton().setEnabled(canFinish);
+            }
         }
 
         public String getSelecteModule() {
@@ -318,6 +372,12 @@ public class ModuleListCellEditor extends DialogCellEditor {
                 }
             } else {
                 IPath path = Path.fromOSString(selectField.getText());
+                File source = path.toFile();
+                if (!source.exists()) {
+                    MessageDialog.openWarning(getParentShell(), "File Not Found", path
+                            + " is not Found,Please make sure the file is exist!");
+                    return;
+                }
                 String lastSegment = path.lastSegment();
                 try {
                     if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
