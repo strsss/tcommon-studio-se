@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.context.JobContextManager;
@@ -27,6 +29,7 @@ import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.ui.context.ContextManagerHelper;
+import org.talend.core.ui.i18n.Messages;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
@@ -194,11 +197,19 @@ public class ContextBuiltinToRepositoryCommand extends Command {
             if (defaultContextParamType.getName().equals(existParam.getName())) {
                 // existed.then create the relation and remove from job context parameters and update from the emf new
                 // one
-                new AddContextGroupRelationCommand(contextManager, existParam, contextItem).execute();
 
-                new ContextRemoveParameterCommand(contextManager, defaultContextParamType.getName(), existParam.getSource())
-                        .execute();
-                helper.addContextParameterType(defaultContextParamType);
+                boolean isContinue = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
+                        Messages.getString("ContextTreeTable.AddToRepository_label"), //$NON-NLS-1$
+                        Messages.getString("ContextBuiltinToRepositoryCommand.addRelation")); //$NON-NLS-1$
+
+                if (isContinue) {
+
+                    new AddContextGroupRelationCommand(contextManager, existParam, contextItem).execute();
+
+                    new ContextRemoveParameterCommand(contextManager, defaultContextParamType.getName(), existParam.getSource())
+                            .execute();
+                    helper.addContextParameterType(defaultContextParamType);
+                }
             }
         }
     }
