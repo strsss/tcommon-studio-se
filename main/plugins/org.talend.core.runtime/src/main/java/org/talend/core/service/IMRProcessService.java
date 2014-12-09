@@ -46,4 +46,6 @@ public interface IMRProcessService extends IService {
     public void generateMRInfosParameter(IProcess2 process);
 
     public boolean isProgressBarNeeded(IProcess2 process);
+
+    public void setMRData(IProcess2 process);
 }
