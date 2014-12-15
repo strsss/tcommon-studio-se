@@ -5358,7 +5358,7 @@ public class DatabaseForm extends AbstractForm {
             String defaultPort = HadoopDefaultConfsManager.getInstance().getDefaultConfValue(
                     (String[]) ArrayUtils.add(ArrayUtils.add(versionPrefix, EHadoopCategory.HBASE.getName()),
                             EHadoopProperties.PORT.getName()));
-            if (defaultPort != null) {
+            if (defaultPort != null && !isContextMode()) {
                 getConnection().setPort(defaultPort);
                 portText.setText(defaultPort);
             }
