@@ -47,6 +47,8 @@ public class ContextOrderProperties extends Properties {
 
     private final static String REPOSITORY_COMMENT = Messages.getString("ContextOrderProperty.RepositoryComment"); //$NON-NLS-1$
 
+    private final static String DEFAULT_PROPERTY_ENCODING = "8859_1";
+
     /**
      * Version ID
      */
@@ -175,11 +177,10 @@ public class ContextOrderProperties extends Properties {
 
     @Override
     public void store(OutputStream out, String comments) throws IOException {
-        String defaultEncoding = System.getProperty(Messages.getString("ContextOrderProperty.contextEncoding")); //$NON-NLS-1$
-        orderStore(new BufferedWriter(new OutputStreamWriter(out, defaultEncoding)), comments);
+        orderStore(new BufferedWriter(new OutputStreamWriter(out, DEFAULT_PROPERTY_ENCODING)), comments, true);
     }
 
-    public void orderStore(Writer writer, String comments) throws IOException {
+    public void orderStore(Writer writer, String comments, boolean escUnicode) throws IOException {
         BufferedWriter bufferedWriter = (writer instanceof BufferedWriter) ? (BufferedWriter) writer : new BufferedWriter(writer);
         if (comments != null) {
             writeComments(bufferedWriter, comments);
@@ -193,8 +194,8 @@ public class ContextOrderProperties extends Properties {
                 String key = iterator.next();
                 String value = this.getProperty(key);
                 String comment = this.commentMap.get(key);
-                key = saveConvert(key, true, false);
-                value = saveConvert(value, false, false);
+                key = saveConvert(key, true, escUnicode);
+                value = saveConvert(value, false, escUnicode);
                 if (comment != null && !comment.equals("")) {
                     bufferedWriter.newLine();
                     writeComments(bufferedWriter, comment);
