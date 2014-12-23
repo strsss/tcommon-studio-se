@@ -176,6 +176,8 @@ public enum ECoreImage implements IImage {
     EXCHNAGEIMAGEMISSING("/icons/component_missing.gif"), //$NON-NLS-1$
     STATUS_OK("/icons/ok.png"), //$NON-NLS-1$
     MRGREEBAR("/icons1/mrGreeBar.gif"), //$NON-NLS-1$
+    MRMAP("/icons1/map.gif"), //$NON-NLS-1$
+    MRREDUCE("/icons1/reduce.gif"), //$NON-NLS-1$
     MRREDBAR("/icons1/mrRedBar.gif"), //$NON-NLS-1$
     MRGRAYBAR("/icons1/mrGrayBar.gif"), //$NON-NLS-1$
 
