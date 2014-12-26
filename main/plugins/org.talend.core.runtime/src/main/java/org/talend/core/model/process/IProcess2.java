@@ -15,6 +15,7 @@ package org.talend.core.model.process;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.ui.IEditorPart;
 import org.talend.commons.exception.PersistenceException;
@@ -94,9 +95,7 @@ public interface IProcess2 extends IRepositoryObject, IProcess {
 
     public IUpdateManager getUpdateManager();
 
-    public byte[] getScreenshot();
-
-    public void setScreenshot(byte[] image);
+    public Map<String, byte[]> getScreenshots();
 
     public void dispose();
 
@@ -122,6 +121,8 @@ public interface IProcess2 extends IRepositoryObject, IProcess {
     public IContext getLastRunContext();
 
     public void setLastRunContext(IContext context);
+
+    public Map<Object, Object> getAdditionalProperties();
 
     boolean isSubjobEnabled();
 
