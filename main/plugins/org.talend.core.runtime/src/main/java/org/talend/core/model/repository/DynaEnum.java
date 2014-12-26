@@ -133,7 +133,7 @@ public class DynaEnum<E extends DynaEnum<E>> {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends DynaEnum<T>> T valueOf(Class<T> enumType, String name) {
+    public static <T extends DynaEnum<T>> T valueOfEnum(Class<T> enumType, String name) {
         // changed by hqzhang for TDI-20504. we use the upper case string to find type, but type definition for MDM item
         // is not in upper case, have to change them in code.
         T t = (T) elements.get(enumType).get(name.toUpperCase());

@@ -86,11 +86,6 @@ public class Application implements IApplication {
 
         try {
             Shell shell = new Shell(display, SWT.ON_TOP);
-            // To show that the studio does not fully support java 8 yet
-            if (checkUnSupportJavaVersion(shell)) {
-                shell.dispose();
-                return EXIT_OK;
-            }
             Object instanceLocationCheck = acquireWorkspaceLock(shell);
             if (instanceLocationCheck != null) {// no workspace selected so return.
                 shell.dispose();
