@@ -11,9 +11,15 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
- org.talend.model;visibility:=reexport
+ org.talend.model;visibility:=reexport,
+ org.talend.cwm.mip;visibility:=reexport
+Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: testcontainer,
- testcontainer.impl,
- testcontainer.util
+Export-Package: org.talend.testcontainer.core,
+ org.talend.testcontainer.core.testConProperties,
+ org.talend.testcontainer.core.testConProperties.impl,
+ org.talend.testcontainer.core.testConProperties.util,
+ org.talend.testcontainer.core.testcontainer,
+ org.talend.testcontainer.core.testcontainer.impl,
+ org.talend.testcontainer.core.testcontainer.util
 Bundle-ActivationPolicy: lazy

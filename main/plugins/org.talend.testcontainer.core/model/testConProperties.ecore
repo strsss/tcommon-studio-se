@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="testConProperties" nsURI="http://www.talend.com/testConProperties.ecore"
+    nsPrefix="testConProperties">
+  <eClassifiers xsi:type="ecore:EClass" name="TestContainerItem" eSuperTypes="../../org.talend.model/model/properties.ecore#//Item">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="testContainerProcess" eType="ecore:EClass testcontainer.ecore#//TestContainer"/>
+  </eClassifiers>
+</ecore:EPackage>
