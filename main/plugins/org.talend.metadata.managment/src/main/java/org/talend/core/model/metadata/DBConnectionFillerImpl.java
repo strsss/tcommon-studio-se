@@ -627,7 +627,6 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl {
             List<String> filterList = new ArrayList<String>();
             filterList.addAll(postFillCatalog(metaConnection, catalogList, filterList,
                     TalendCWMService.getReadableName(dbConn, catalogName), dbConn));
-            List<Catalog> newCatalogList = new ArrayList<Catalog>();
             for (Catalog catalog : catalogList) {
                 List<Schema> schemaList = new ArrayList<Schema>();
                 try {
@@ -638,10 +637,9 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl {
                 } catch (Throwable e) {
                     log.info(e);
                 }
-                newCatalogList.add(catalog);
-                // ConnectionHelper.addCatalog(catalog, dbConn);
+                ConnectionHelper.addCatalog(catalog, dbConn);
             }
-            ConnectionHelper.addCatalogs(newCatalogList, dbConn);
+            replaceTablesForDbConn(dbConn, catalogList, filterList);
         }
         return catalogList;
     }
@@ -1823,5 +1821,83 @@ public class DBConnectionFillerImpl extends MetadataFillerImpl {
 
     public static void setDriver(Driver d) {
         driver = d;
+    }
+
+    private void replaceTablesForDbConn(Connection dbConn, List<Catalog> catalogList, List<String> schemaFilterList) {
+        Set<MetadataTable> tableSet = ConnectionHelper.getTables(dbConn);
+        // replaceCatalogs is use for record tables when click finish, then set to current connection.
+        List<Catalog> replaceCatalogs = new ArrayList<Catalog>();
+        List<String> catalogName = new ArrayList<String>();
+        for (MetadataTable table : tableSet) {
+            EObject eContainer = table.eContainer();
+            if (eContainer != null) {
+                if (eContainer instanceof Catalog) {
+                    Catalog c = (Catalog) eContainer;
+                    String name = c.getName();
+                    if (!catalogName.contains(name)) {
+                        replaceCatalogs.add(c);
+                        catalogName.add(name);
+                    }
+                } else if (eContainer instanceof Schema) {
+                    EObject parent = eContainer.eContainer();
+                    if (parent != null && parent instanceof Catalog) {
+                        Catalog c = (Catalog) parent;
+                        String name = c.getName();
+                        if (!catalogName.contains(name)) {
+                            List<Schema> filterSchemas = new ArrayList<Schema>();
+                            List<String> schemaName = new ArrayList<String>();
+                            List<Schema> schemas = CatalogHelper.getSchemas(c);
+                            for (Schema schema : schemas) {
+                                if (schemaFilterList != null) {
+                                    if (schemaFilterList.contains(schema.getName())) {
+                                        filterSchemas.add(schema);
+                                        schemaName.add(schema.getName());
+                                    } else if (schema.getOwnedElement() != null && !schema.getOwnedElement().isEmpty()) {
+                                        filterSchemas.add(schema);
+                                        schemaName.add(schema.getName());
+                                    }
+                                }
+                            }
+                            // get schema in current connection
+                            for (Catalog catalog : catalogList) {
+                                if (catalog.getName().equals(name)) {
+                                    boolean added = false;
+                                    for (Schema schema : CatalogHelper.getSchemas(catalog)) {
+                                        if (!schemaName.contains(schema.getName())) {
+                                            filterSchemas.add(schema);
+                                            added = true;
+                                        }
+                                    }
+                                    if (added) {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            c.getOwnedElement().clear();
+                            CatalogHelper.addSchemas(filterSchemas, c);
+                            replaceCatalogs.add(c);
+                            catalogName.add(name);
+                        }
+                    }
+                }
+            }
+        }
+        if (this.isLinked() && !catalogList.isEmpty()) {
+            ConnectionHelper.addCatalogs(catalogList, dbConn);
+        }
+        // if have same schema in current connection,need to fill tables.
+        for (Catalog catalog : replaceCatalogs) {
+            List<Catalog> list = new ArrayList<Catalog>();
+            String name = catalog.getName();
+            Catalog c = (Catalog) ConnectionHelper.getPackage(name, dbConn, Catalog.class);
+            if (c != null) {
+                list.add(c);
+                ConnectionHelper.removeCatalogs(list, dbConn);
+                ConnectionHelper.addCatalog(catalog, dbConn);
+            } else {
+                ConnectionHelper.addCatalog(catalog, dbConn);
+            }
+        }
     }
 }
