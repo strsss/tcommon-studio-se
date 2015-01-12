@@ -130,7 +130,12 @@ Export-Package: javax.ws.rs,
  org.apache.cxf.ws.addressing.wsdl,
  org.apache.cxf.wsdl,
  org.apache.cxf.wsdl.http,
- org.apache.cxf.wsdl11
+ org.apache.cxf.wsdl11,
+ org.codehaus.stax2,
+ org.codehaus.stax2.evt,
+ org.codehaus.stax2.io,
+ org.codehaus.stax2.ri,
+ org.codehaus.stax2.validation
 Require-Bundle: javax.wsdl;bundle-version="1.6.2",
  org.apache.log4j
 Eclipse-BundleShape: dir

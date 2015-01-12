@@ -10,14 +10,22 @@ Bundle-ClassPath: .,
  lib/json-lib-2.4-jdk15.jar,
  lib/jackson-core-2.2.2.jar,
  lib/jackson-databind-2.2.2.jar,
- lib/jackson-annotations-2.1.2.jar
+ lib/jackson-annotations-2.1.2.jar,
+ lib/jackson-dataformat-xml-2.2.2-modified.jar,
+ lib/jackson-datatype-json-org-2.2.2.jar,
+ lib/jackson-datatype-jsr353-2.2.2.jar
 Export-Package: com.fasterxml.jackson.annotation,
  com.fasterxml.jackson.core,
+ com.fasterxml.jackson.core.base,
+ com.fasterxml.jackson.core.json,
  com.fasterxml.jackson.databind,
  com.fasterxml.jackson.databind.cfg,
  com.fasterxml.jackson.databind.introspect,
+ com.fasterxml.jackson.databind.module,
  com.fasterxml.jackson.databind.type,
  com.fasterxml.jackson.databind.util,
+ com.fasterxml.jackson.dataformat.xml,
+ com.fasterxml.jackson.dataformat.xml.ser,
  net.sf.json,
  net.sf.json.filters,
  net.sf.json.groovy,
@@ -36,6 +44,7 @@ Export-Package: com.fasterxml.jackson.annotation,
 Require-Bundle: org.apache.commons.lang,
  org.apache.commons.logging,
  org.apache.commons.collections,
- org.apache.commons.beanutils
+ org.apache.commons.beanutils,
+ org.talend.libraries.apache.cxf
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: dir
