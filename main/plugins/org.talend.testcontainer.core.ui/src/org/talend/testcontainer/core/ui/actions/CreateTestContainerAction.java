@@ -533,6 +533,7 @@ public class CreateTestContainerAction extends CustomExternalActions {
         final WizardDialog dlg = new WizardDialog(getWorkbenchPart().getSite().getShell(), processWizard);
         if (dlg.open() == Window.OK) {
             //
+            final List<INode> testNodes = new ArrayList<INode>(getAllTestNodes());
             final ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
             try {
                 dialog.run(true, false, new IRunnableWithProgress() {
@@ -555,7 +556,7 @@ public class CreateTestContainerAction extends CustomExternalActions {
                                         try {
                                             String originalId = CreateTestContainerAction.this.workProcess.getProperty().getId();
                                             final TestContainerEditorInput fileEditorInput = new TestContainerEditorInput(
-                                                    processWizard.getProcessItem(), false, originalId, null);
+                                                    processWizard.getProcessItem(), false, originalId, testNodes);
 
                                             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                                                     .getActivePage();
@@ -600,6 +601,21 @@ public class CreateTestContainerAction extends CustomExternalActions {
             }
 
         }
+    }
+
+    private List<INode> getAllTestNodes() {
+        List<INode> list = new ArrayList<INode>();
+        for (NodePart np : singleNodeParts) {
+            if (!list.contains(np.getModel())) {
+                list.add((Node) np.getModel());
+            }
+        }
+        for (NodePart np : subjobNodeParts) {
+            if (!list.contains(np.getModel())) {
+                list.add((Node) np.getModel());
+            }
+        }
+        return list;
     }
 
     @Override

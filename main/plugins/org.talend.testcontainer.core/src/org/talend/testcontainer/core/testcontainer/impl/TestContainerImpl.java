@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.talend.designer.core.model.utils.emf.talendfile.impl.ProcessTypeImpl;
 
+import org.talend.testcontainer.core.testcontainer.OriginalNode;
 import org.talend.testcontainer.core.testcontainer.TestContainer;
 import org.talend.testcontainer.core.testcontainer.TestContainerNode;
 import org.talend.testcontainer.core.testcontainer.TestcontainerPackage;
@@ -28,6 +29,7 @@ import org.talend.testcontainer.core.testcontainer.TestcontainerPackage;
  * The following features are implemented:
  * <ul>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.TestContainerImpl#getTestContainerNodes <em>Test Container Nodes</em>}</li>
+ *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.TestContainerImpl#getOriginalNodes <em>Original Nodes</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,6 +45,16 @@ public class TestContainerImpl extends ProcessTypeImpl implements TestContainer 
      * @ordered
      */
     protected EList<TestContainerNode> testContainerNodes;
+
+    /**
+     * The cached value of the '{@link #getOriginalNodes() <em>Original Nodes</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getOriginalNodes()
+     * @generated
+     * @ordered
+     */
+    protected EList<OriginalNode> originalNodes;
 
     /**
      * <!-- begin-user-doc -->
@@ -80,11 +92,25 @@ public class TestContainerImpl extends ProcessTypeImpl implements TestContainer 
      * <!-- end-user-doc -->
      * @generated
      */
+    public EList<OriginalNode> getOriginalNodes() {
+        if (originalNodes == null) {
+            originalNodes = new EObjectContainmentEList<OriginalNode>(OriginalNode.class, this, TestcontainerPackage.TEST_CONTAINER__ORIGINAL_NODES);
+        }
+        return originalNodes;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TestcontainerPackage.TEST_CONTAINER__TEST_CONTAINER_NODES:
                 return ((InternalEList<?>)getTestContainerNodes()).basicRemove(otherEnd, msgs);
+            case TestcontainerPackage.TEST_CONTAINER__ORIGINAL_NODES:
+                return ((InternalEList<?>)getOriginalNodes()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -99,6 +125,8 @@ public class TestContainerImpl extends ProcessTypeImpl implements TestContainer 
         switch (featureID) {
             case TestcontainerPackage.TEST_CONTAINER__TEST_CONTAINER_NODES:
                 return getTestContainerNodes();
+            case TestcontainerPackage.TEST_CONTAINER__ORIGINAL_NODES:
+                return getOriginalNodes();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -116,6 +144,10 @@ public class TestContainerImpl extends ProcessTypeImpl implements TestContainer 
                 getTestContainerNodes().clear();
                 getTestContainerNodes().addAll((Collection<? extends TestContainerNode>)newValue);
                 return;
+            case TestcontainerPackage.TEST_CONTAINER__ORIGINAL_NODES:
+                getOriginalNodes().clear();
+                getOriginalNodes().addAll((Collection<? extends OriginalNode>)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -131,6 +163,9 @@ public class TestContainerImpl extends ProcessTypeImpl implements TestContainer 
             case TestcontainerPackage.TEST_CONTAINER__TEST_CONTAINER_NODES:
                 getTestContainerNodes().clear();
                 return;
+            case TestcontainerPackage.TEST_CONTAINER__ORIGINAL_NODES:
+                getOriginalNodes().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -145,6 +180,8 @@ public class TestContainerImpl extends ProcessTypeImpl implements TestContainer 
         switch (featureID) {
             case TestcontainerPackage.TEST_CONTAINER__TEST_CONTAINER_NODES:
                 return testContainerNodes != null && !testContainerNodes.isEmpty();
+            case TestcontainerPackage.TEST_CONTAINER__ORIGINAL_NODES:
+                return originalNodes != null && !originalNodes.isEmpty();
         }
         return super.eIsSet(featureID);
     }

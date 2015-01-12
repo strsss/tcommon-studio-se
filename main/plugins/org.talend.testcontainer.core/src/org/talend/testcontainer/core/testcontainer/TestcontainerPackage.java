@@ -257,13 +257,22 @@ public interface TestcontainerPackage extends EPackage {
     int TEST_CONTAINER__TEST_CONTAINER_NODES = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Original Nodes</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEST_CONTAINER__ORIGINAL_NODES = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Test Container</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int TEST_CONTAINER_FEATURE_COUNT = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 1;
+    int TEST_CONTAINER_FEATURE_COUNT = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '{@link org.talend.testcontainer.core.testcontainer.impl.TestContainerNodeImpl <em>Test Container Node</em>}' class.
@@ -439,6 +448,62 @@ public interface TestcontainerPackage extends EPackage {
 
 
     /**
+     * The meta object id for the '{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl <em>Original Node</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl
+     * @see org.talend.testcontainer.core.testcontainer.impl.TestcontainerPackageImpl#getOriginalNode()
+     * @generated
+     */
+    int ORIGINAL_NODE = 2;
+
+    /**
+     * The feature id for the '<em><b>Original Job ID</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ORIGINAL_NODE__ORIGINAL_JOB_ID = 0;
+
+    /**
+     * The feature id for the '<em><b>Unique Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ORIGINAL_NODE__UNIQUE_NAME = 1;
+
+    /**
+     * The feature id for the '<em><b>Pos X</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ORIGINAL_NODE__POS_X = 2;
+
+    /**
+     * The feature id for the '<em><b>Pos Y</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ORIGINAL_NODE__POS_Y = 3;
+
+    /**
+     * The number of structural features of the '<em>Original Node</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ORIGINAL_NODE_FEATURE_COUNT = 4;
+
+
+    /**
      * Returns the meta object for class '{@link org.talend.testcontainer.core.testcontainer.TestContainer <em>Test Container</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -458,6 +523,17 @@ public interface TestcontainerPackage extends EPackage {
      * @generated
      */
     EReference getTestContainer_TestContainerNodes();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link org.talend.testcontainer.core.testcontainer.TestContainer#getOriginalNodes <em>Original Nodes</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Original Nodes</em>'.
+     * @see org.talend.testcontainer.core.testcontainer.TestContainer#getOriginalNodes()
+     * @see #getTestContainer()
+     * @generated
+     */
+    EReference getTestContainer_OriginalNodes();
 
     /**
      * Returns the meta object for class '{@link org.talend.testcontainer.core.testcontainer.TestContainerNode <em>Test Container Node</em>}'.
@@ -490,6 +566,60 @@ public interface TestcontainerPackage extends EPackage {
      * @generated
      */
     EAttribute getTestContainerNode_Input();
+
+    /**
+     * Returns the meta object for class '{@link org.talend.testcontainer.core.testcontainer.OriginalNode <em>Original Node</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Original Node</em>'.
+     * @see org.talend.testcontainer.core.testcontainer.OriginalNode
+     * @generated
+     */
+    EClass getOriginalNode();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getOriginalJobID <em>Original Job ID</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Original Job ID</em>'.
+     * @see org.talend.testcontainer.core.testcontainer.OriginalNode#getOriginalJobID()
+     * @see #getOriginalNode()
+     * @generated
+     */
+    EAttribute getOriginalNode_OriginalJobID();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getUniqueName <em>Unique Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Unique Name</em>'.
+     * @see org.talend.testcontainer.core.testcontainer.OriginalNode#getUniqueName()
+     * @see #getOriginalNode()
+     * @generated
+     */
+    EAttribute getOriginalNode_UniqueName();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getPosX <em>Pos X</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Pos X</em>'.
+     * @see org.talend.testcontainer.core.testcontainer.OriginalNode#getPosX()
+     * @see #getOriginalNode()
+     * @generated
+     */
+    EAttribute getOriginalNode_PosX();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getPosY <em>Pos Y</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Pos Y</em>'.
+     * @see org.talend.testcontainer.core.testcontainer.OriginalNode#getPosY()
+     * @see #getOriginalNode()
+     * @generated
+     */
+    EAttribute getOriginalNode_PosY();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -532,6 +662,14 @@ public interface TestcontainerPackage extends EPackage {
         EReference TEST_CONTAINER__TEST_CONTAINER_NODES = eINSTANCE.getTestContainer_TestContainerNodes();
 
         /**
+         * The meta object literal for the '<em><b>Original Nodes</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference TEST_CONTAINER__ORIGINAL_NODES = eINSTANCE.getTestContainer_OriginalNodes();
+
+        /**
          * The meta object literal for the '{@link org.talend.testcontainer.core.testcontainer.impl.TestContainerNodeImpl <em>Test Container Node</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -556,6 +694,48 @@ public interface TestcontainerPackage extends EPackage {
          * @generated
          */
         EAttribute TEST_CONTAINER_NODE__INPUT = eINSTANCE.getTestContainerNode_Input();
+
+        /**
+         * The meta object literal for the '{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl <em>Original Node</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl
+         * @see org.talend.testcontainer.core.testcontainer.impl.TestcontainerPackageImpl#getOriginalNode()
+         * @generated
+         */
+        EClass ORIGINAL_NODE = eINSTANCE.getOriginalNode();
+
+        /**
+         * The meta object literal for the '<em><b>Original Job ID</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ORIGINAL_NODE__ORIGINAL_JOB_ID = eINSTANCE.getOriginalNode_OriginalJobID();
+
+        /**
+         * The meta object literal for the '<em><b>Unique Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ORIGINAL_NODE__UNIQUE_NAME = eINSTANCE.getOriginalNode_UniqueName();
+
+        /**
+         * The meta object literal for the '<em><b>Pos X</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ORIGINAL_NODE__POS_X = eINSTANCE.getOriginalNode_PosX();
+
+        /**
+         * The meta object literal for the '<em><b>Pos Y</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ORIGINAL_NODE__POS_Y = eINSTANCE.getOriginalNode_PosY();
 
     }
 

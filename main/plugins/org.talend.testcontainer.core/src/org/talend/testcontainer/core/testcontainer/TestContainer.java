@@ -15,6 +15,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.TestContainer#getTestContainerNodes <em>Test Container Nodes</em>}</li>
+ *   <li>{@link org.talend.testcontainer.core.testcontainer.TestContainer#getOriginalNodes <em>Original Nodes</em>}</li>
  * </ul>
  * </p>
  *
@@ -38,5 +39,21 @@ public interface TestContainer extends ProcessType {
      * @generated
      */
     EList<TestContainerNode> getTestContainerNodes();
+
+    /**
+     * Returns the value of the '<em><b>Original Nodes</b></em>' containment reference list.
+     * The list contents are of type {@link org.talend.testcontainer.core.testcontainer.OriginalNode}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Original Nodes</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Original Nodes</em>' containment reference list.
+     * @see org.talend.testcontainer.core.testcontainer.TestcontainerPackage#getTestContainer_OriginalNodes()
+     * @model containment="true"
+     * @generated
+     */
+    EList<OriginalNode> getOriginalNodes();
 
 } // TestContainer

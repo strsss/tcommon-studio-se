@@ -7,7 +7,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
+import org.talend.testcontainer.core.testcontainer.OriginalNode;
 import org.talend.testcontainer.core.testcontainer.TestContainer;
 import org.talend.testcontainer.core.testcontainer.TestContainerNode;
 import org.talend.testcontainer.core.testcontainer.TestcontainerFactory;
@@ -33,6 +35,13 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
      * @generated
      */
     private EClass testContainerNodeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass originalNodeEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -82,6 +91,7 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
 
         // Initialize simple dependencies
         TalendFilePackage.eINSTANCE.eClass();
+        XMLTypePackage.eINSTANCE.eClass();
 
         // Create package meta-data objects
         theTestcontainerPackage.createPackageContents();
@@ -121,6 +131,15 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
      * <!-- end-user-doc -->
      * @generated
      */
+    public EReference getTestContainer_OriginalNodes() {
+        return (EReference)testContainerEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getTestContainerNode() {
         return testContainerNodeEClass;
     }
@@ -141,6 +160,51 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
      */
     public EAttribute getTestContainerNode_Input() {
         return (EAttribute)testContainerNodeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getOriginalNode() {
+        return originalNodeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOriginalNode_OriginalJobID() {
+        return (EAttribute)originalNodeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOriginalNode_UniqueName() {
+        return (EAttribute)originalNodeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOriginalNode_PosX() {
+        return (EAttribute)originalNodeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getOriginalNode_PosY() {
+        return (EAttribute)originalNodeEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -173,10 +237,17 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
         // Create classes and their features
         testContainerEClass = createEClass(TEST_CONTAINER);
         createEReference(testContainerEClass, TEST_CONTAINER__TEST_CONTAINER_NODES);
+        createEReference(testContainerEClass, TEST_CONTAINER__ORIGINAL_NODES);
 
         testContainerNodeEClass = createEClass(TEST_CONTAINER_NODE);
         createEAttribute(testContainerNodeEClass, TEST_CONTAINER_NODE__DESCRIPTION);
         createEAttribute(testContainerNodeEClass, TEST_CONTAINER_NODE__INPUT);
+
+        originalNodeEClass = createEClass(ORIGINAL_NODE);
+        createEAttribute(originalNodeEClass, ORIGINAL_NODE__ORIGINAL_JOB_ID);
+        createEAttribute(originalNodeEClass, ORIGINAL_NODE__UNIQUE_NAME);
+        createEAttribute(originalNodeEClass, ORIGINAL_NODE__POS_X);
+        createEAttribute(originalNodeEClass, ORIGINAL_NODE__POS_Y);
     }
 
     /**
@@ -204,6 +275,11 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
 
         // Obtain other dependent packages
         TalendFilePackage theTalendFilePackage = (TalendFilePackage)EPackage.Registry.INSTANCE.getEPackage(TalendFilePackage.eNS_URI);
+        XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
+
+        // Create type parameters
+
+        // Set bounds for type parameters
 
         // Add supertypes to classes
         testContainerEClass.getESuperTypes().add(theTalendFilePackage.getProcessType());
@@ -212,10 +288,17 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
         // Initialize classes and features; add operations and parameters
         initEClass(testContainerEClass, TestContainer.class, "TestContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getTestContainer_TestContainerNodes(), this.getTestContainerNode(), null, "testContainerNodes", null, 0, -1, TestContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getTestContainer_OriginalNodes(), this.getOriginalNode(), null, "OriginalNodes", null, 0, -1, TestContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(testContainerNodeEClass, TestContainerNode.class, "TestContainerNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getTestContainerNode_Description(), ecorePackage.getEString(), "description", null, 0, 1, TestContainerNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getTestContainerNode_Input(), ecorePackage.getEBoolean(), "input", null, 0, 1, TestContainerNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(originalNodeEClass, OriginalNode.class, "OriginalNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getOriginalNode_OriginalJobID(), ecorePackage.getEString(), "originalJobID", null, 0, 1, OriginalNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getOriginalNode_UniqueName(), ecorePackage.getEString(), "uniqueName", null, 0, 1, OriginalNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getOriginalNode_PosX(), theXMLTypePackage.getInt(), "posX", null, 0, 1, OriginalNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getOriginalNode_PosY(), theXMLTypePackage.getInt(), "posY", null, 0, 1, OriginalNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         createResource(eNS_URI);

@@ -79,6 +79,10 @@ public class TestcontainerAdapterFactory extends AdapterFactoryImpl {
                 return createTestContainerNodeAdapter();
             }
             @Override
+            public Adapter caseOriginalNode(OriginalNode object) {
+                return createOriginalNodeAdapter();
+            }
+            @Override
             public Adapter caseProcessType(ProcessType object) {
                 return createProcessTypeAdapter();
             }
@@ -131,6 +135,20 @@ public class TestcontainerAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTestContainerNodeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.testcontainer.core.testcontainer.OriginalNode <em>Original Node</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.testcontainer.core.testcontainer.OriginalNode
+     * @generated
+     */
+    public Adapter createOriginalNodeAdapter() {
         return null;
     }
 

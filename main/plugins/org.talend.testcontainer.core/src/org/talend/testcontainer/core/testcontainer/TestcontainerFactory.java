@@ -40,6 +40,15 @@ public interface TestcontainerFactory extends EFactory {
     TestContainerNode createTestContainerNode();
 
     /**
+     * Returns a new object of class '<em>Original Node</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Original Node</em>'.
+     * @generated
+     */
+    OriginalNode createOriginalNode();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

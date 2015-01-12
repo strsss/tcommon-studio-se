@@ -58,6 +58,7 @@ public class TestcontainerFactoryImpl extends EFactoryImpl implements Testcontai
         switch (eClass.getClassifierID()) {
             case TestcontainerPackage.TEST_CONTAINER: return createTestContainer();
             case TestcontainerPackage.TEST_CONTAINER_NODE: return createTestContainerNode();
+            case TestcontainerPackage.ORIGINAL_NODE: return createOriginalNode();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -81,6 +82,16 @@ public class TestcontainerFactoryImpl extends EFactoryImpl implements Testcontai
     public TestContainerNode createTestContainerNode() {
         TestContainerNodeImpl testContainerNode = new TestContainerNodeImpl();
         return testContainerNode;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public OriginalNode createOriginalNode() {
+        OriginalNodeImpl originalNode = new OriginalNodeImpl();
+        return originalNode;
     }
 
     /**

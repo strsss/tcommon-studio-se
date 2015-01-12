@@ -25,8 +25,8 @@ public class JobTestContainerProcess extends AbstractTestContainer {
      * 
      * @param property
      */
-    public JobTestContainerProcess(Property property, String originalJobID) {
-        super(property, originalJobID);
+    public JobTestContainerProcess(Property property) {
+        super(property);
         // TODO Auto-generated constructor stub
     }
 }
