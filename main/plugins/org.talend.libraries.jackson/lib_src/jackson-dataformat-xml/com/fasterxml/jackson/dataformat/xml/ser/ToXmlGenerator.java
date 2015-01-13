@@ -284,6 +284,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                 } else {
                     _xmlWriter.writeStartElement(wrapperName.getNamespaceURI(), wrapperName.getLocalPart());
                 }
+                writeAttributes();
             } catch (XMLStreamException e) {
                 StaxUtil.throwXmlAsIOException(e);
             }
@@ -398,13 +399,7 @@ public final class ToXmlGenerator extends GeneratorBase {
         _elementNameStack.addLast(_nextName);
         try {
             _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
-            if (_nextAttributes != null) {
-                Set<Entry<String, String>> attributes = _nextAttributes.entrySet();
-                for (Entry<String, String> attribute : attributes) {
-                    _xmlWriter.writeAttribute(attribute.getKey(), attribute.getValue());
-                }
-                _nextAttributes = null;
-            }
+            writeAttributes();
         } catch (XMLStreamException e) {
             StaxUtil.throwXmlAsIOException(e);
         }
@@ -454,6 +449,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                 _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), text);
             } else {
                 _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                writeAttributes();
                 _xmlWriter.writeCharacters(text);
                 _xmlWriter.writeEndElement();
             }
@@ -479,6 +475,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                         offset, len);
             } else {
                 _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                writeAttributes();
                 _xmlWriter.writeCharacters(text, offset, len);
                 _xmlWriter.writeEndElement();
             }
@@ -583,6 +580,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                             offset, len);
                 } else {
                     _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                    writeAttributes();
                     _xmlWriter.writeBinary(data, offset, len);
                     _xmlWriter.writeEndElement();
                 }
@@ -626,6 +624,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                     _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), value);
                 } else {
                     _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                    writeAttributes();
                     _xmlWriter.writeBoolean(value);
                     _xmlWriter.writeEndElement();
                 }
@@ -678,6 +677,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                     _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), i);
                 } else {
                     _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                    writeAttributes();
                     _xmlWriter.writeInt(i);
                     _xmlWriter.writeEndElement();
                 }
@@ -703,6 +703,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                     _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), l);
                 } else {
                     _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                    writeAttributes();
                     _xmlWriter.writeLong(l);
                     _xmlWriter.writeEndElement();
                 }
@@ -728,6 +729,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                     _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), d);
                 } else {
                     _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                    writeAttributes();
                     _xmlWriter.writeDouble(d);
                     _xmlWriter.writeEndElement();
                 }
@@ -753,6 +755,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                     _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), f);
                 } else {
                     _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                    writeAttributes();
                     _xmlWriter.writeFloat(f);
                     _xmlWriter.writeEndElement();
                 }
@@ -782,6 +785,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                     _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), dec);
                 } else {
                     _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                    writeAttributes();
                     _xmlWriter.writeDecimal(dec);
                     _xmlWriter.writeEndElement();
                 }
@@ -811,6 +815,7 @@ public final class ToXmlGenerator extends GeneratorBase {
                     _xmlPrettyPrinter.writeLeafElement(_xmlWriter, _nextName.getNamespaceURI(), _nextName.getLocalPart(), value);
                 } else {
                     _xmlWriter.writeStartElement(_nextName.getNamespaceURI(), _nextName.getLocalPart());
+                    writeAttributes();
                     _xmlWriter.writeInteger(value);
                     _xmlWriter.writeEndElement();
                 }
@@ -943,5 +948,15 @@ public final class ToXmlGenerator extends GeneratorBase {
                 + ") does not implement Stax2 API natively and is missing method '" + missingMethod
                 + "': this breaks functionality such as indentation that relies on it. "
                 + "You need to upgrade to using compliant Stax implementation like Woodstox or Aalto");
+    }
+
+    public void writeAttributes() throws XMLStreamException {
+        if (_nextAttributes != null) {
+            Set<Entry<String, String>> attributes = _nextAttributes.entrySet();
+            for (Entry<String, String> attribute : attributes) {
+                _xmlWriter.writeAttribute(attribute.getKey(), attribute.getValue());
+            }
+            _nextAttributes = null;
+        }
     }
 }
