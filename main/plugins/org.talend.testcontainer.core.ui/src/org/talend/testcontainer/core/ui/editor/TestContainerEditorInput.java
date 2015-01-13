@@ -63,8 +63,7 @@ public class TestContainerEditorInput extends JobEditorInput {
     public TestContainerEditorInput(TestContainerItem processItem, boolean load, String originalJobID, List<INode> testNodes,
             Boolean lastVersion, Boolean readonly) throws PersistenceException {
         super(processItem, load, lastVersion, readonly);
-        this.originalJobID = originalJobID;
-        this.testNodes = testNodes;
+        init(originalJobID, testNodes);
     }
 
     // public TestContainerEditorInput(TestContainerItem processItem, boolean load, Boolean lastVersion, Boolean
@@ -79,6 +78,13 @@ public class TestContainerEditorInput extends JobEditorInput {
         //
     }
 
+    private void init(String originalJobID, List<INode> testNodes) {
+        this.originalJobID = originalJobID;
+        this.testNodes = testNodes;
+        getLoadedProcess().setOriginalJobID(this.originalJobID);
+        getLoadedProcess().setTestNodes(this.testNodes);
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -87,8 +93,7 @@ public class TestContainerEditorInput extends JobEditorInput {
      */
     @Override
     public boolean saveProcess(final IProgressMonitor monitor, IPath path, boolean avoidSaveRelations) {
-        getLoadedProcess().setOriginalJobID(this.originalJobID);
-        getLoadedProcess().setTestNodes(this.testNodes);
+
         try {
             if (monitor != null) {
                 monitor.beginTask("save process", 100); //$NON-NLS-1$

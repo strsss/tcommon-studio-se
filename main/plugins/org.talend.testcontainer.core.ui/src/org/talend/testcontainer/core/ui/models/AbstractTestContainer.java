@@ -47,6 +47,7 @@ import org.talend.testcontainer.core.testcontainer.OriginalNode;
 import org.talend.testcontainer.core.testcontainer.TestContainer;
 import org.talend.testcontainer.core.testcontainer.TestContainerNode;
 import org.talend.testcontainer.core.testcontainer.TestcontainerFactory;
+import org.talend.testcontainer.core.ui.model.JunitContainer;
 
 /**
  * created by Talend on Jan 7, 2015 Detailled comment
@@ -54,11 +55,13 @@ import org.talend.testcontainer.core.testcontainer.TestcontainerFactory;
  */
 public class AbstractTestContainer extends Process {
 
-    private ImageDescriptor image;
+    protected ImageDescriptor image;
 
-    private String id, originalJobID, version;
+    protected String id, originalJobID, version;
 
-    private List<INode> testNodes;
+    protected List<INode> testNodes;
+
+    protected JunitContainer junitContainer = null;
 
     /**
      * Getter for image.
@@ -149,6 +152,23 @@ public class AbstractTestContainer extends Process {
     @Override
     public void loadXmlFile(boolean loadScreenshots) {
         super.loadXmlFile(loadScreenshots);
+        loadJunitContainer();
+    }
+
+    /**
+     * DOC nrousseau Comment method "loadSubjobs".
+     * 
+     * @param processType
+     */
+    public void loadJunitContainer() {
+        // junitContainer = new JunitContainer(this);
+        // for (INode node : this.getGraphicalNodes()) {
+        // for (INode testNode : testNodes) {
+        // if (node.getUniqueName().equals(testNode.getUniqueName())) {
+        // junitContainer.addNodeContainer(((Node) node).getNodeContainer());
+        // }
+        // }
+        // }
     }
 
     /*
@@ -459,6 +479,10 @@ public class AbstractTestContainer extends Process {
             }
         }
         return property;
+    }
+
+    public JunitContainer getJunitContainer() {
+        return this.junitContainer;
     }
 
 }

@@ -27,6 +27,16 @@ public class JobTestContainerProcess extends AbstractTestContainer {
      */
     public JobTestContainerProcess(Property property) {
         super(property);
-        // TODO Auto-generated constructor stub
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.testcontainer.core.ui.models.AbstractTestContainer#loadJunitContainer()
+     */
+    @Override
+    public void loadJunitContainer() {
+        super.loadJunitContainer();
+    }
+
 }

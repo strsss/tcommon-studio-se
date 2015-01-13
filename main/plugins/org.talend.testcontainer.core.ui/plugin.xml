@@ -26,6 +26,10 @@
            class="org.talend.testcontainer.core.ui.service.TestContainerProviderService"
            serviceId="ITestContainerProviderService">
      </Service>
+     <Service
+           class="org.talend.testcontainer.core.ui.service.TestContainerGEFService"
+           serviceId="ITestContainerGEFService">
+     </Service>  
   </extension>
   <extension
          point="org.talend.core.repository.repository_node_provider">

@@ -56,6 +56,7 @@ import org.talend.designer.core.ui.editor.subjobcontainer.SubjobContainerPart;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
+import org.talend.testcontainer.core.ui.models.AbstractTestContainer;
 import org.talend.testcontainer.core.ui.models.ETestContainerNodeType;
 import org.talend.testcontainer.core.ui.models.TestContainerInputOutputComponent;
 
@@ -169,6 +170,7 @@ public class CreateTestContainerCommand extends Command {
                 saveAndCheckJobletProcess();
                 // check problem.
                 checkWorkProcess();
+                ((AbstractTestContainer) getTestContainerProcess()).loadJunitContainer();
             }
         });
     }
@@ -201,6 +203,7 @@ public class CreateTestContainerCommand extends Command {
             cmd.execute();
         } else if (allNodeParts.size() > 0) {
             NodesPasteCommand cmd = new NodesPasteCommand(allNodeParts, getTestContainerProcess(), getCurrentPoint());
+            cmd.setJunitCreate(true);
             cmd.setSelectedSubjobs(allSubjobParts);
             // cmd.setJobletRefactor(true); // related to method "getRelatedNode()".
             cmd.execute();
