@@ -66,8 +66,23 @@ public class TestContainerGEFService implements ITestContainerGEFService {
      * @see org.talend.designer.core.ITestContainerGEFService#getJunitContainer(java.util.List)
      */
     @Override
-    public NodeContainer createJunitContainer(List<Node> nodes) {
-        return new JunitContainer(nodes);
+    public NodeContainer createJunitContainer(Node node) {
+        return new JunitContainer(node);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.designer.core.ITestContainerGEFService#setTestNodes(java.util.List, java.util.List)
+     */
+    @Override
+    public void setTestNodes(List<Node> testNodes, List<NodeContainer> nodeCons) {
+        for (NodeContainer nodeCon : nodeCons) {
+            if (nodeCon instanceof JunitContainer) {
+                ((JunitContainer) nodeCon).setTestNodes(testNodes);
+                ((JunitContainer) nodeCon).refreshJobletNodes();
+            }
+        }
+
+    }
 }
