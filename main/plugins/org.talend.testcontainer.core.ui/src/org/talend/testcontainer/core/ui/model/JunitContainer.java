@@ -6,10 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.talend.commons.ui.utils.workbench.gef.SimpleHtmlFigure;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.IElement;
@@ -103,18 +101,18 @@ public class JunitContainer extends NodeContainer {
         AbstractTestContainer testProcess = (AbstractTestContainer) this.getNode().getProcess();
 
         if (nodeContainers.size() > 0) {
-            Rectangle jobletNodeRec = this.node.getNodeContainer().getNodeContainerRectangle();
             for (NodeContainer container : nodeContainers) {
                 Rectangle curRect = container.getNodeContainerRectangle();
-                if (node.getNodeContainer() instanceof JunitContainer) {
-                    String title = (String) node.getNodeContainer().getPropertyValue(EParameterName.SUBJOB_TITLE.getName());
-                    SimpleHtmlFigure titleFigure = new SimpleHtmlFigure();
-                    titleFigure.setText("<b> " + title + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
-                    Dimension preferedSize = titleFigure.getPreferredSize();
-                    if (preferedSize.width > curRect.width) {
-                        curRect.setSize(preferedSize.width + 6, curRect.height);
-                    }
-                }
+                // if (node.getNodeContainer() instanceof JunitContainer) {
+                // String title = (String)
+                // node.getNodeContainer().getPropertyValue(EParameterName.SUBJOB_TITLE.getName());
+                // SimpleHtmlFigure titleFigure = new SimpleHtmlFigure();
+                //                    titleFigure.setText("<b> " + title + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
+                // Dimension preferedSize = titleFigure.getPreferredSize();
+                // if (preferedSize.width > curRect.width) {
+                // curRect.setSize(preferedSize.width, curRect.height);
+                // }
+                // }
                 // if (container.getNode().isDesignSubjobStartNode()) {
                 // totalRectangle = curRect.getCopy();
                 // } else {
@@ -128,7 +126,7 @@ public class JunitContainer extends NodeContainer {
             // totalRectangle.setLocation(jobletNodeRec.getLocation());
             // totalRectangle.x = totalRectangle.x - EXPEND_SIZE * 2;
             totalRectangle.y = totalRectangle.y - EXPEND_SIZE * 2;
-            totalRectangle.height = totalRectangle.height + EXPEND_SIZE * 4;
+            totalRectangle.height = totalRectangle.height + EXPEND_SIZE * 3;
 
         } else if (node != null) {
             NodeContainer container = node.getNodeContainer();

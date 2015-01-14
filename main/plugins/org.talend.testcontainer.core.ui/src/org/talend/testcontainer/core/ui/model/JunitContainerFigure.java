@@ -36,9 +36,9 @@ public class JunitContainerFigure extends Figure {
 
     private JunitContainer jobletContainer;
 
-    private RoundedRectangle outlineFigure;
+    // private RoundedRectangle outlineFigure;
 
-    private SimpleHtmlFigure titleFigure;
+    // private SimpleHtmlFigure titleFigure;
 
     private RoundedRectangle rectFig;
 
@@ -50,9 +50,13 @@ public class JunitContainerFigure extends Figure {
 
     private RGB subjobTitleColor;
 
+    private boolean isSubjobDisplay = true;
+
     private RGB red = new RGB(250, 72, 80);
 
     private RGB green = new RGB(130, 240, 100);
+
+    private int ALPHA_VALUE = 100;
 
     /**
      * DOC hwang JobletContainerFigure constructor comment.
@@ -62,11 +66,16 @@ public class JunitContainerFigure extends Figure {
     public JunitContainerFigure(final JunitContainer jobletContainer) {
         setLayoutManager(new FreeformLayout());
         this.jobletContainer = jobletContainer;
+        if (this.jobletContainer.getSubjobContainer() != null) {
+            isSubjobDisplay = this.jobletContainer.getSubjobContainer().isDisplayed();
+        }
 
-        outlineFigure = new RoundedRectangle();
-        rectFig = new RoundedRectangle();
-        titleFigure = new SimpleHtmlFigure();
-        titleFigure.setOpaque(true);
+        // outlineFigure = new RoundedRectangle();
+        rectFig = new GreenRectangle();
+        rectFig.setAlpha(ALPHA_VALUE);
+        rectFig.isOpaque();
+        // titleFigure = new SimpleHtmlFigure();
+        // titleFigure.setOpaque(false);
         errorFigure = new ImageFigure();
         errorFigure.setImage(ImageProvider.getImage(EImage.ERROR_SMALL));
         errorFigure.setVisible(false);
@@ -176,7 +185,7 @@ public class JunitContainerFigure extends Figure {
         // if (isRed && outlineFigure != null) {
         // outlineFigure.setBackgroundColor(new Color(Display.getDefault(), red));
         // } else if (outlineFigure != null) {
-        outlineFigure.setBackgroundColor(new Color(Display.getDefault(), green));
+        // outlineFigure.setBackgroundColor(new Color(Display.getDefault(), green));
         // }
 
         // if (!jobletContainer.isCollapsed()) {
@@ -191,28 +200,30 @@ public class JunitContainerFigure extends Figure {
     public void initializejobletContainer(Rectangle rectangle) {
         disposeColors();
         Point location = this.getLocation();
-        titleFigure.setText("<b> " + title + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
-        Dimension preferedSize = titleFigure.getPreferredSize();
-        preferedSize = preferedSize.getExpanded(0, 3);
+        //        titleFigure.setText("<b> " + title + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
+        // Dimension preferedSize = titleFigure.getPreferredSize();
+        // preferedSize = preferedSize.getExpanded(0, 3);
         // rectangle.width += 32;
 
-        titleFigure.setSize(preferedSize.width, preferedSize.height - 2);
-        titleFigure.setLocation(new Point((rectangle.width - preferedSize.width) / 2 + location.x, location.y));
-        titleFigure.setVisible(showTitle);
+        // titleFigure.setSize(preferedSize.width, preferedSize.height - 2);
+        // titleFigure.setLocation(new Point((rectangle.width - preferedSize.width) / 2 + location.x, location.y));
+        // titleFigure.setVisible(showTitle);
 
-        outlineFigure.setLocation(new Point(location.x, location.y));
-        outlineFigure.setVisible(showTitle);
-        outlineFigure.setForegroundColor(new Color(Display.getDefault(), new RGB(220, 120, 120)));
-        outlineFigure.setSize(rectangle.width, preferedSize.height);
+        // outlineFigure.setLocation(new Point(location.x, location.y));
+        // outlineFigure.setVisible(showTitle);
+        // outlineFigure.setForegroundColor(new Color(Display.getDefault(), new RGB(220, 120, 120)));
+        // outlineFigure.setSize(rectangle.width, preferedSize.height);
 
         // collapseFigure.setBackgroundColor(new Color(null, 50, 50, 250));
 
         rectFig.setLocation(new Point(location.x, /* preferedSize.height + */location.y));
         rectFig.setSize(new Dimension(rectangle.width, rectangle.height /*- preferedSize.height*/));
         rectFig.setBackgroundColor(new Color(Display.getDefault(), green));
-        outlineFigure.setBackgroundColor(new Color(Display.getDefault(), green));
+        // outlineFigure.setBackgroundColor(new Color(Display.getDefault(), green));
 
         rectFig.setForegroundColor(new Color(Display.getDefault(), new RGB(220, 120, 120)));
+        // rectFig.isOpaque();
+        // rectFig.setOpaque(true);
     }
 
     public void disposeColors() {
@@ -222,12 +233,12 @@ public class JunitContainerFigure extends Figure {
         if (rectFig.getBackgroundColor() != null && !rectFig.getBackgroundColor().isDisposed()) {
             rectFig.getBackgroundColor().dispose();
         }
-        if (outlineFigure.getForegroundColor() != null && !outlineFigure.getForegroundColor().isDisposed()) {
-            outlineFigure.getForegroundColor().dispose();
-        }
-        if (outlineFigure.getBackgroundColor() != null && !outlineFigure.getBackgroundColor().isDisposed()) {
-            outlineFigure.getBackgroundColor().dispose();
-        }
+        // if (outlineFigure.getForegroundColor() != null && !outlineFigure.getForegroundColor().isDisposed()) {
+        // outlineFigure.getForegroundColor().dispose();
+        // }
+        // if (outlineFigure.getBackgroundColor() != null && !outlineFigure.getBackgroundColor().isDisposed()) {
+        // outlineFigure.getBackgroundColor().dispose();
+        // }
     }
 
     /**
@@ -252,20 +263,20 @@ public class JunitContainerFigure extends Figure {
 
         title = (String) jobletContainer.getPropertyValue(EParameterName.SUBJOB_TITLE.getName());
 
-        this.getChildren().remove(outlineFigure);
+        // this.getChildren().remove(outlineFigure);
         this.getChildren().remove(rectFig);
-        outlineFigure.getChildren().clear();
+        // outlineFigure.getChildren().clear();
         rectFig.getChildren().clear();
 
-        if (showTitle) {
-            outlineFigure.add(titleFigure);
-            add(rectFig, null, 0);
-            add(outlineFigure, null, 1);
-        } else {
-            outlineFigure.add(titleFigure);
-            add(outlineFigure, null, 0);
-            add(rectFig, null, 1);
-        }
+        // if (showTitle) {
+        // outlineFigure.add(titleFigure);
+        add(rectFig, null, 0);
+        // add(outlineFigure, null, 1);
+        // } else {
+        // // outlineFigure.add(titleFigure);
+        // // add(outlineFigure, null, 0);
+        // add(rectFig, null, 1);
+        // }
     }
 
     public void updateStatus(int status) {
@@ -315,6 +326,23 @@ public class JunitContainerFigure extends Figure {
         } else {
             errorFigure.setVisible(false);
             errorFigure.setToolTip(null);
+        }
+    }
+
+    class GreenRectangle extends RoundedRectangle {
+
+        @Override
+        protected void fillShape(Graphics graphics) {
+            if (isSubjobDisplay) {
+                super.fillShape(graphics);
+            }
+        }
+
+        @Override
+        protected void outlineShape(Graphics graphics) {
+            if (isSubjobDisplay) {
+                super.outlineShape(graphics);
+            }
         }
     }
 
