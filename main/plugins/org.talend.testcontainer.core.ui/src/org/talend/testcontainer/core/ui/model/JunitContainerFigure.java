@@ -72,8 +72,8 @@ public class JunitContainerFigure extends Figure {
 
         // outlineFigure = new RoundedRectangle();
         rectFig = new GreenRectangle();
-        rectFig.setAlpha(ALPHA_VALUE);
-        rectFig.isOpaque();
+        // rectFig.setAlpha(ALPHA_VALUE);
+        // rectFig.isOpaque();
         // titleFigure = new SimpleHtmlFigure();
         // titleFigure.setOpaque(false);
         errorFigure = new ImageFigure();

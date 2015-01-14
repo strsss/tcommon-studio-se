@@ -149,8 +149,8 @@ public class TestContainerInputOutputComponent implements IComponent {
         }
         if (ETestContainerNodeType.INPUT.equals(testConType)) {
             if (mainConnector != null) {
-                mainConnector.setMaxLinkInput(0);
-                mainConnector.setMinLinkInput(0);
+                mainConnector.setMaxLinkInput(1);
+                mainConnector.setMinLinkInput(1);
                 mainConnector.setMaxLinkOutput(1);
                 mainConnector.setMinLinkOutput(1);
                 // mainConnector.setCurLinkNbOutput(nbInput++);
@@ -159,8 +159,8 @@ public class TestContainerInputOutputComponent implements IComponent {
             if (mainConnector != null) {
                 mainConnector.setMaxLinkInput(1);
                 mainConnector.setMinLinkInput(1);
-                mainConnector.setMaxLinkOutput(0);
-                mainConnector.setMinLinkOutput(0);
+                mainConnector.setMaxLinkOutput(1);
+                mainConnector.setMinLinkOutput(1);
                 // mainConnector.setCurLinkNbOutput(nbOutput++);
             }
         }
