@@ -11,13 +11,13 @@
     <genClasses ecoreClass="testcontainer.ecore#//TestContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference testcontainer.ecore#//TestContainer/testContainerNodes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference testcontainer.ecore#//TestContainer/OriginalNodes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//TestContainer/originalJobID"/>
     </genClasses>
     <genClasses ecoreClass="testcontainer.ecore#//TestContainerNode">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//TestContainerNode/description"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//TestContainerNode/input"/>
     </genClasses>
     <genClasses ecoreClass="testcontainer.ecore#//OriginalNode">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//OriginalNode/originalJobID"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//OriginalNode/uniqueName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//OriginalNode/posX"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//OriginalNode/posY"/>

@@ -51,7 +51,7 @@ public class TestContainerMultiPageEditor extends AbstractMultiPageTalendEditor 
     protected void createPages() {
         super.createPages();
         // setPartName("Joblet " + designerEditor.getProcess().getName());
-        setTitleImage(CoreImageProvider.getImage(ERepositoryObjectType.JOBLET));
+        setTitleImage(CoreImageProvider.getImage(ERepositoryObjectType.BUSINESS_PROCESS));
     }
 
     /*
@@ -74,19 +74,9 @@ public class TestContainerMultiPageEditor extends AbstractMultiPageTalendEditor 
         if (haveDirtyJoblet()) {
             return;
         }
-        // (bug 4231)
         try {
-
             TestContainerTalendEditor talendEdtor = (TestContainerTalendEditor) this.designerEditor;
-            // boolean updateAll = UpdateJobletUtils.needUpdateAllJobs(talendEdtor);
-
             super.doSave(monitor);
-
-            // UpdateJobletUtils.updateRelationship(getProcess(), talendEdtor.getOldInputMetadata(),
-            // talendEdtor.getOldOutputMetadata(), updateAll);
-
-            // talendEdtor.setOldInputMetadata(talendEdtor.getJobletNodeMetadata(ETestContainerNodeType.INPUT));
-            // talendEdtor.setOldOutputMetadata(talendEdtor.getJobletNodeMetadata(ETestContainerNodeType.OUTPUT));
         } catch (Exception e) {
             ExceptionHandler.process(e);
         } finally {
@@ -108,7 +98,7 @@ public class TestContainerMultiPageEditor extends AbstractMultiPageTalendEditor 
         String label = process2.getProperty().getDisplayName();
         String jobVersion = process2.getVersion();
 
-        setPartName("Joblet " + label + " " + jobVersion); //$NON-NLS-1$  //$NON-NLS-2$
+        setPartName("TestContainer " + label + " " + jobVersion); //$NON-NLS-1$  //$NON-NLS-2$
         ISVNProviderService service = null;
         if (PluginChecker.isSVNProviderPluginLoaded()) {
             service = (ISVNProviderService) GlobalServiceRegister.getDefault().getService(ISVNProviderService.class);
@@ -123,19 +113,19 @@ public class TestContainerMultiPageEditor extends AbstractMultiPageTalendEditor 
         if (revisionNumStr != null) {
             if (getEditorInput() instanceof TestContainerEditorInput) {
                 if (((TestContainerEditorInput) getEditorInput()).isOpenedInJob()) {
-                    setPartName("Joblet " + label + " " + jobVersion + revisionNumStr + " (Opened in a job)"); //$NON-NLS-1$
+                    setPartName("TestContainer " + label + " " + jobVersion + revisionNumStr + " (Opened in a job)"); //$NON-NLS-1$
                     return;
                 }
             }
-            setPartName("Joblet " + label + " " + jobVersion + revisionNumStr); //$NON-NLS-1$
+            setPartName("TestContainer " + label + " " + jobVersion + revisionNumStr); //$NON-NLS-1$
         } else {
             if (getEditorInput() instanceof TestContainerEditorInput) {
                 if (((TestContainerEditorInput) getEditorInput()).isOpenedInJob()) {
-                    setPartName("Joblet " + label + " " + jobVersion + " (Opened in a job)"); //$NON-NLS-1$
+                    setPartName("TestContainer " + label + " " + jobVersion + " (Opened in a job)"); //$NON-NLS-1$
                     return;
                 }
             }
-            setPartName("Joblet " + label + " " + jobVersion); //$NON-NLS-1$
+            setPartName("TestContainer " + label + " " + jobVersion); //$NON-NLS-1$
         }
 
     }

@@ -16,6 +16,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
  * <ul>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.TestContainer#getTestContainerNodes <em>Test Container Nodes</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.TestContainer#getOriginalNodes <em>Original Nodes</em>}</li>
+ *   <li>{@link org.talend.testcontainer.core.testcontainer.TestContainer#getOriginalJobID <em>Original Job ID</em>}</li>
  * </ul>
  * </p>
  *
@@ -55,5 +56,31 @@ public interface TestContainer extends ProcessType {
      * @generated
      */
     EList<OriginalNode> getOriginalNodes();
+
+    /**
+     * Returns the value of the '<em><b>Original Job ID</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Original Job ID</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Original Job ID</em>' attribute.
+     * @see #setOriginalJobID(String)
+     * @see org.talend.testcontainer.core.testcontainer.TestcontainerPackage#getTestContainer_OriginalJobID()
+     * @model
+     * @generated
+     */
+    String getOriginalJobID();
+
+    /**
+     * Sets the value of the '{@link org.talend.testcontainer.core.testcontainer.TestContainer#getOriginalJobID <em>Original Job ID</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Original Job ID</em>' attribute.
+     * @see #getOriginalJobID()
+     * @generated
+     */
+    void setOriginalJobID(String value);
 
 } // TestContainer

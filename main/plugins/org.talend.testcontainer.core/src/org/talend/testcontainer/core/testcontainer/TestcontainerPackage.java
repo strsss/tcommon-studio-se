@@ -266,13 +266,22 @@ public interface TestcontainerPackage extends EPackage {
     int TEST_CONTAINER__ORIGINAL_NODES = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Original Job ID</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TEST_CONTAINER__ORIGINAL_JOB_ID = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Test Container</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int TEST_CONTAINER_FEATURE_COUNT = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 2;
+    int TEST_CONTAINER_FEATURE_COUNT = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '{@link org.talend.testcontainer.core.testcontainer.impl.TestContainerNodeImpl <em>Test Container Node</em>}' class.
@@ -458,22 +467,13 @@ public interface TestcontainerPackage extends EPackage {
     int ORIGINAL_NODE = 2;
 
     /**
-     * The feature id for the '<em><b>Original Job ID</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ORIGINAL_NODE__ORIGINAL_JOB_ID = 0;
-
-    /**
      * The feature id for the '<em><b>Unique Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ORIGINAL_NODE__UNIQUE_NAME = 1;
+    int ORIGINAL_NODE__UNIQUE_NAME = 0;
 
     /**
      * The feature id for the '<em><b>Pos X</b></em>' attribute.
@@ -482,7 +482,7 @@ public interface TestcontainerPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ORIGINAL_NODE__POS_X = 2;
+    int ORIGINAL_NODE__POS_X = 1;
 
     /**
      * The feature id for the '<em><b>Pos Y</b></em>' attribute.
@@ -491,7 +491,7 @@ public interface TestcontainerPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ORIGINAL_NODE__POS_Y = 3;
+    int ORIGINAL_NODE__POS_Y = 2;
 
     /**
      * The number of structural features of the '<em>Original Node</em>' class.
@@ -500,7 +500,7 @@ public interface TestcontainerPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ORIGINAL_NODE_FEATURE_COUNT = 4;
+    int ORIGINAL_NODE_FEATURE_COUNT = 3;
 
 
     /**
@@ -534,6 +534,17 @@ public interface TestcontainerPackage extends EPackage {
      * @generated
      */
     EReference getTestContainer_OriginalNodes();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.testcontainer.core.testcontainer.TestContainer#getOriginalJobID <em>Original Job ID</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Original Job ID</em>'.
+     * @see org.talend.testcontainer.core.testcontainer.TestContainer#getOriginalJobID()
+     * @see #getTestContainer()
+     * @generated
+     */
+    EAttribute getTestContainer_OriginalJobID();
 
     /**
      * Returns the meta object for class '{@link org.talend.testcontainer.core.testcontainer.TestContainerNode <em>Test Container Node</em>}'.
@@ -576,17 +587,6 @@ public interface TestcontainerPackage extends EPackage {
      * @generated
      */
     EClass getOriginalNode();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getOriginalJobID <em>Original Job ID</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Original Job ID</em>'.
-     * @see org.talend.testcontainer.core.testcontainer.OriginalNode#getOriginalJobID()
-     * @see #getOriginalNode()
-     * @generated
-     */
-    EAttribute getOriginalNode_OriginalJobID();
 
     /**
      * Returns the meta object for the attribute '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getUniqueName <em>Unique Name</em>}'.
@@ -670,6 +670,14 @@ public interface TestcontainerPackage extends EPackage {
         EReference TEST_CONTAINER__ORIGINAL_NODES = eINSTANCE.getTestContainer_OriginalNodes();
 
         /**
+         * The meta object literal for the '<em><b>Original Job ID</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute TEST_CONTAINER__ORIGINAL_JOB_ID = eINSTANCE.getTestContainer_OriginalJobID();
+
+        /**
          * The meta object literal for the '{@link org.talend.testcontainer.core.testcontainer.impl.TestContainerNodeImpl <em>Test Container Node</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -704,14 +712,6 @@ public interface TestcontainerPackage extends EPackage {
          * @generated
          */
         EClass ORIGINAL_NODE = eINSTANCE.getOriginalNode();
-
-        /**
-         * The meta object literal for the '<em><b>Original Job ID</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute ORIGINAL_NODE__ORIGINAL_JOB_ID = eINSTANCE.getOriginalNode_OriginalJobID();
 
         /**
          * The meta object literal for the '<em><b>Unique Name</b></em>' attribute feature.

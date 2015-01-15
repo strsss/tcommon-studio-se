@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getOriginalJobID <em>Original Job ID</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getUniqueName <em>Unique Name</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getPosX <em>Pos X</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getPosY <em>Pos Y</em>}</li>
@@ -24,32 +23,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface OriginalNode extends EObject {
-    /**
-     * Returns the value of the '<em><b>Original Job ID</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Original Job ID</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Original Job ID</em>' attribute.
-     * @see #setOriginalJobID(String)
-     * @see org.talend.testcontainer.core.testcontainer.TestcontainerPackage#getOriginalNode_OriginalJobID()
-     * @model
-     * @generated
-     */
-    String getOriginalJobID();
-
-    /**
-     * Sets the value of the '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getOriginalJobID <em>Original Job ID</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Original Job ID</em>' attribute.
-     * @see #getOriginalJobID()
-     * @generated
-     */
-    void setOriginalJobID(String value);
-
     /**
      * Returns the value of the '<em><b>Unique Name</b></em>' attribute.
      * <!-- begin-user-doc -->

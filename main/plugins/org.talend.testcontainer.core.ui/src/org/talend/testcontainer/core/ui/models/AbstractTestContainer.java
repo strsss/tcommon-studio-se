@@ -283,9 +283,9 @@ public class AbstractTestContainer extends Process {
         }
         TestcontainerFactory testConFactory = TestcontainerFactory.eINSTANCE;
         EList oriList = ((TestContainer) processType).getOriginalNodes();
+        ((TestContainer) processType).setOriginalJobID(originalJobID);
         for (INode node : testNodes) {
             OriginalNode oriNode = testConFactory.createOriginalNode();
-            oriNode.setOriginalJobID(originalJobID);
             oriNode.setUniqueName(node.getUniqueName());
             oriNode.setPosX(node.getPosX());
             oriNode.setPosY(node.getPosY());
@@ -334,16 +334,14 @@ public class AbstractTestContainer extends Process {
         }
 
         EList<OriginalNode> oriNodes = testContainerProcess.getOriginalNodes();
-        String oriID = null;
+        String oriID = testContainerProcess.getOriginalJobID();
         ProcessType process = null;
-        if (oriNodes.size() > 0) {
-            oriID = oriNodes.get(0).getOriginalJobID();
-            IRepositoryViewObject repositoryNode = ProxyRepositoryFactory.getInstance().getLastVersion(oriID);
-            Item item = repositoryNode.getProperty().getItem();
-            if (item instanceof ProcessItem) {
-                process = ((ProcessItem) item).getProcess();
-            }
+        IRepositoryViewObject repositoryNode = ProxyRepositoryFactory.getInstance().getLastVersion(oriID);
+        Item item = repositoryNode.getProperty().getItem();
+        if (item instanceof ProcessItem) {
+            process = ((ProcessItem) item).getProcess();
         }
+
         for (OriginalNode oriNode : oriNodes) {
             String uniqueName = oriNode.getUniqueName();
             if (process != null) {

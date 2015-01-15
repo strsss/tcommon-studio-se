@@ -19,7 +19,6 @@ import org.talend.testcontainer.core.testcontainer.TestcontainerPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl#getOriginalJobID <em>Original Job ID</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl#getUniqueName <em>Unique Name</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl#getPosX <em>Pos X</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl#getPosY <em>Pos Y</em>}</li>
@@ -29,26 +28,6 @@ import org.talend.testcontainer.core.testcontainer.TestcontainerPackage;
  * @generated
  */
 public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements OriginalNode {
-    /**
-     * The default value of the '{@link #getOriginalJobID() <em>Original Job ID</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOriginalJobID()
-     * @generated
-     * @ordered
-     */
-    protected static final String ORIGINAL_JOB_ID_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getOriginalJobID() <em>Original Job ID</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOriginalJobID()
-     * @generated
-     * @ordered
-     */
-    protected String originalJobID = ORIGINAL_JOB_ID_EDEFAULT;
-
     /**
      * The default value of the '{@link #getUniqueName() <em>Unique Name</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -133,27 +112,6 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getOriginalJobID() {
-        return originalJobID;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setOriginalJobID(String newOriginalJobID) {
-        String oldOriginalJobID = originalJobID;
-        originalJobID = newOriginalJobID;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TestcontainerPackage.ORIGINAL_NODE__ORIGINAL_JOB_ID, oldOriginalJobID, originalJobID));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public String getUniqueName() {
         return uniqueName;
     }
@@ -220,8 +178,6 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case TestcontainerPackage.ORIGINAL_NODE__ORIGINAL_JOB_ID:
-                return getOriginalJobID();
             case TestcontainerPackage.ORIGINAL_NODE__UNIQUE_NAME:
                 return getUniqueName();
             case TestcontainerPackage.ORIGINAL_NODE__POS_X:
@@ -240,9 +196,6 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case TestcontainerPackage.ORIGINAL_NODE__ORIGINAL_JOB_ID:
-                setOriginalJobID((String)newValue);
-                return;
             case TestcontainerPackage.ORIGINAL_NODE__UNIQUE_NAME:
                 setUniqueName((String)newValue);
                 return;
@@ -264,9 +217,6 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case TestcontainerPackage.ORIGINAL_NODE__ORIGINAL_JOB_ID:
-                setOriginalJobID(ORIGINAL_JOB_ID_EDEFAULT);
-                return;
             case TestcontainerPackage.ORIGINAL_NODE__UNIQUE_NAME:
                 setUniqueName(UNIQUE_NAME_EDEFAULT);
                 return;
@@ -288,8 +238,6 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case TestcontainerPackage.ORIGINAL_NODE__ORIGINAL_JOB_ID:
-                return ORIGINAL_JOB_ID_EDEFAULT == null ? originalJobID != null : !ORIGINAL_JOB_ID_EDEFAULT.equals(originalJobID);
             case TestcontainerPackage.ORIGINAL_NODE__UNIQUE_NAME:
                 return UNIQUE_NAME_EDEFAULT == null ? uniqueName != null : !UNIQUE_NAME_EDEFAULT.equals(uniqueName);
             case TestcontainerPackage.ORIGINAL_NODE__POS_X:
@@ -310,9 +258,7 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (originalJobID: ");
-        result.append(originalJobID);
-        result.append(", uniqueName: ");
+        result.append(" (uniqueName: ");
         result.append(uniqueName);
         result.append(", posX: ");
         result.append(posX);
