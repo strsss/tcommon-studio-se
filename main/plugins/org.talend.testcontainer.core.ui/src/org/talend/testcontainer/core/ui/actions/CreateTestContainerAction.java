@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.testcontainer.core.ui.actions;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,11 +37,16 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.CorePlugin;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.components.IComponent;
 import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.IConnectionCategory;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.properties.Item;
+import org.talend.core.service.IMRProcessService;
+import org.talend.core.service.IStormProcessService;
+import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.editor.CustomExternalActions;
 import org.talend.core.ui.utils.PluginUtil;
 import org.talend.designer.core.model.process.AbstractProcessProvider;
@@ -527,7 +533,9 @@ public class CreateTestContainerAction extends CustomExternalActions {
     @Override
     public void run() {
         // if null, open the path dialog.
-        final Path path = new Path(this.workProcess.getId());
+        StringBuffer pathName = new StringBuffer(getFatherFolderName(workProcess));
+        pathName.append(File.separator).append(this.workProcess.getId());
+        final Path path = new Path(pathName.toString());
 
         final NewTestContainerWizard processWizard = new NewTestContainerWizard(path);
         final WizardDialog dlg = new WizardDialog(getWorkbenchPart().getSite().getShell(), processWizard);
@@ -623,4 +631,41 @@ public class CreateTestContainerAction extends CustomExternalActions {
         return 0;
     }
 
+    private String getFatherFolderName(IProcess2 process) {
+        Item item = process.getProperty().getItem();
+        if (process instanceof Process) {
+            return "process";
+        } else {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
+                IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault().getService(
+                        IJobletProviderService.class);
+                if (jobletService != null) {
+                    if (jobletService.isJobletItem(item)) {
+                        return "joblet";
+                    }
+                }
+            }
+
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IMRProcessService.class)) {
+                IMRProcessService mrService = (IMRProcessService) GlobalServiceRegister.getDefault().getService(
+                        IMRProcessService.class);
+                if (mrService != null) {
+                    if (mrService.isMapReduceItem(item)) {
+                        return "mapReduce";
+                    }
+                }
+            }
+
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(IStormProcessService.class)) {
+                IStormProcessService stormService = (IStormProcessService) GlobalServiceRegister.getDefault().getService(
+                        IStormProcessService.class);
+                if (stormService != null) {
+                    if (stormService.isStormItem(item)) {
+                        return "storm";
+                    }
+                }
+            }
+        }
+        return "process";
+    }
 }

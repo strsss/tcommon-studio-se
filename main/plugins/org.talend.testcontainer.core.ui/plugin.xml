@@ -35,7 +35,7 @@
          point="org.talend.core.repository.repository_node_provider">
       <repositoryNode
             alias="TC"
-            folder="tests/process"
+            folder="tests"
             icon="icons/talend-picto.png"
             isResouce="true"
             key="repository.testContainerProcess"

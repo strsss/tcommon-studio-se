@@ -31,6 +31,7 @@ import org.talend.core.model.process.INode;
 import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
@@ -86,6 +87,8 @@ public interface IJobletProviderService extends IService {
     public ProcessType getJobletProcess(NodeType node);
 
     public IEditorPart openJobletItem(JobletProcessItem item);
+
+    public boolean isJobletItem(Item item);
 
     public Action getMoveToJobletAction(IWorkbenchPart part, INode jobletNode, Map<INode, IConnection> nodeMap);
 
