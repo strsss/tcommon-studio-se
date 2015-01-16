@@ -60,7 +60,7 @@ public class JunitContainer extends NodeContainer {
      * 
      * @return
      */
-    public Rectangle getJobletContainerRectangle() {
+    public Rectangle getJunitContainerRectangle() {
         Rectangle totalRectangle = null;
         if (nodeContainers.size() > 0) {
             for (NodeContainer container : nodeContainers) {
@@ -72,7 +72,7 @@ public class JunitContainer extends NodeContainer {
                 }
             }
             totalRectangle.y = totalRectangle.y - EXPEND_SIZE * 2;
-            totalRectangle.height = totalRectangle.height + EXPEND_SIZE * 3;
+            totalRectangle.height = totalRectangle.height + EXPEND_SIZE * 4;
 
         } else if (node != null) {
             NodeContainer container = node.getNodeContainer();

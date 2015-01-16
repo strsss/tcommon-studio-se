@@ -26,11 +26,11 @@ public class JunitContainerPart extends NodeContainerPart {
 
     @Override
     protected IFigure createFigure() {
-        JunitContainerFigure JobletContainerFigure = new JunitContainerFigure((JunitContainer) this.getModel());
+        JunitContainerFigure figure = new JunitContainerFigure((JunitContainer) this.getModel());
         Node node = ((NodeContainer) getModel()).getNode();
-        JobletContainerFigure.updateStatus(node.getStatus());
+        figure.updateStatus(node.getStatus());
 
-        return JobletContainerFigure;
+        return figure;
     }
 
     @Override
@@ -72,29 +72,6 @@ public class JunitContainerPart extends NodeContainerPart {
         return null;
     }
 
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
-    // */
-    // @Override
-    // protected IFigure createFigure() {
-    // JobletContainerFigure JobletContainerFigure = new JobletContainerFigure((NodeContainer) this.getModel());
-    // Node node = ((NodeContainer) getModel()).getNode();
-    // if (node.isActivate()) {
-    // JobletContainerFigure.setAlpha(-1);
-    // } else {
-    // JobletContainerFigure.setAlpha(Node.ALPHA_VALUE);
-    // }
-    // IElementParameter param = node.getElementParameter(EParameterName.INFORMATION.getName());
-    // if (param != null) {
-    // boolean showInfoFlag = Boolean.TRUE.equals(param.getValue());
-    // JobletContainerFigure.updateStatus(node.getStatus(), showInfoFlag);
-    // JobletContainerFigure.setInfoHint(node.getShowHintText());
-    // }
-    // return JobletContainerFigure;
-    // }
-
     /*
      * (non-Javadoc)
      * 
@@ -111,18 +88,15 @@ public class JunitContainerPart extends NodeContainerPart {
             return;
         }
 
-        Rectangle rectangle = ((JunitContainer) this.getModel()).getJobletContainerRectangle();
+        Rectangle rectangle = ((JunitContainer) this.getModel()).getJunitContainerRectangle();
         if (rectangle == null) {
             return;
         }
-        Rectangle cleanRectangle = ((NodeContainer) this.getModel()).getNodeMarkRectangle();
         if (this.getParent() != null) {
             if (this.getParent().getModel() instanceof SubjobContainer) {
-                Rectangle subjobRec = ((SubjobContainer) this.getParent().getModel()).getSubjobContainerRectangle();
                 ((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), rectangle);
             }
         }
-
         ((JunitContainerFigure) getFigure()).initializejobletContainer(rectangle);
     }
 

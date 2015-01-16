@@ -64,7 +64,7 @@ public class JunitContainerFigure extends Figure {
         htmlStatusHint = new SimpleHtmlFigure();
         updateData();
 
-        initializejobletContainer(jobletContainer.getJobletContainerRectangle());
+        initializejobletContainer(jobletContainer.getJunitContainerRectangle());
     }
 
     /*
@@ -82,7 +82,6 @@ public class JunitContainerFigure extends Figure {
             warningFigure.setLocation(jobletContainer.getWarningLocation());
         }
         super.paint(graphics);
-        // refreshNodes();
     }
 
     boolean lastJobletRedState = false;

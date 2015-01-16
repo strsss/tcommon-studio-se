@@ -13,13 +13,17 @@
 package org.talend.testcontainer.core.ui.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.talend.core.model.process.Element;
 import org.talend.core.model.process.IProcess2;
+import org.talend.core.ui.process.IGraphicalNode;
 import org.talend.designer.core.ITestContainerGEFService;
 import org.talend.designer.core.ui.editor.nodecontainer.NodeContainer;
 import org.talend.designer.core.ui.editor.nodes.Node;
+import org.talend.designer.core.ui.editor.subjobcontainer.SubjobContainer;
 import org.talend.testcontainer.core.ui.model.JunitContainer;
 import org.talend.testcontainer.core.ui.model.JunitContainerPart;
 import org.talend.testcontainer.core.ui.models.AbstractTestContainer;
@@ -76,13 +80,49 @@ public class TestContainerGEFService implements ITestContainerGEFService {
      * @see org.talend.designer.core.ITestContainerGEFService#setTestNodes(java.util.List, java.util.List)
      */
     @Override
-    public void setTestNodes(List<Node> testNodes, List<NodeContainer> nodeCons) {
+    public void setTestNodes(Map<IGraphicalNode, IGraphicalNode> nodeMap, Map<SubjobContainer, List<Node>> subjobMap,
+            List<NodeContainer> nodeCons) {
         for (NodeContainer nodeCon : nodeCons) {
             if (nodeCon instanceof JunitContainer) {
-                ((JunitContainer) nodeCon).setTestNodes(testNodes);
+                for (IGraphicalNode copiedNode : nodeMap.keySet()) {
+                    if (nodeMap.get(copiedNode) == nodeCon.getNode()) {
+                        ((JunitContainer) nodeCon).setTestNodes(subjobMap.get(((Node) copiedNode).getNodeContainer()
+                                .getSubjobContainer()));
+                        break;
+                    }
+                }
+
                 ((JunitContainer) nodeCon).refreshJobletNodes();
             }
         }
-
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.designer.core.ITestContainerGEFService#getJunitContainerRectangle(org.talend.designer.core.ui.editor
+     * .nodecontainer.NodeContainer)
+     */
+    @Override
+    public Rectangle getJunitContainerRectangle(NodeContainer nodeContainer) {
+        if (nodeContainer instanceof JunitContainer) {
+            return ((JunitContainer) nodeContainer).getJunitContainerRectangle();
+        }
+        return nodeContainer.getNodeContainerRectangle();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.designer.core.ITestContainerGEFService#isTestContainer(org.talend.core.model.process.IProcess2)
+     */
+    @Override
+    public boolean isTestContainer(IProcess2 process) {
+        if (process instanceof AbstractTestContainer) {
+            return true;
+        }
+        return false;
+    }
+
 }
