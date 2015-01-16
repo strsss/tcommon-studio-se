@@ -27,15 +27,15 @@ import org.talend.testcontainer.core.ui.TestContainerPlugin;
  * DOC stephane class global comment. Detailled comment
  */
 public enum ETestContainerImages implements IImage {
-    JOBLET_ICON("/icons/joblet_icon.png"), //$NON-NLS-1$
-    JOBLET_ICON_NB("/icons/joblet_icon_nb.png"), //$NON-NLS-1$
-    JOBLET_WIZ("/icons/defaultWizard.png"), //$NON-NLS-1$
+    JUNIT_ICON("/icons/joblet_icon.png"), //$NON-NLS-1$
+    JUNIT_ICON_NB("/icons/joblet_icon_nb.png"), //$NON-NLS-1$
+    JUNIT_WIZ("/icons/defaultWizard.png"), //$NON-NLS-1$
 
-    JOBLET_INPUT_OUTPUT_COMPONENT("/icons/jobletInputOutput.png"), //$NON-NLS-1$
-    JOBLET_COMPONENT_32("/icons/joblet_palette.png"), //$NON-NLS-1$
-    JOBLET_COMPONENT_16("/icons/joblet_icon.png"), //$NON-NLS-1$
-    JOBLET_TRIGGER_COMPONENT("/icons/jobletInputOutput.png"), //$NON-NLS-1$
-    JOBLET_TRIGGER_COMPONENT_SMALL("/icons/joblet_icon_nb.png"), //$NON-NLS-1$
+    JUNIT_INPUT_OUTPUT_COMPONENT("/icons/jobletInputOutput.png"), //$NON-NLS-1$
+    JUNIT_COMPONENT_32("/icons/joblet_palette.png"), //$NON-NLS-1$
+    JUNIT_COMPONENT_16("/icons/joblet_icon.png"), //$NON-NLS-1$
+    JUNIT_TRIGGER_COMPONENT("/icons/jobletInputOutput.png"), //$NON-NLS-1$
+    JUNIT_TRIGGER_COMPONENT_SMALL("/icons/joblet_icon_nb.png"), //$NON-NLS-1$
     ;
 
     private String path;

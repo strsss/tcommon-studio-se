@@ -92,7 +92,7 @@ public class TestContainerGEFService implements ITestContainerGEFService {
                     }
                 }
 
-                ((JunitContainer) nodeCon).refreshJobletNodes();
+                ((JunitContainer) nodeCon).refreshJunitNodes();
             }
         }
     }

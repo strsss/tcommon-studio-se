@@ -55,27 +55,10 @@ public class TestContainerEditorInput extends JobEditorInput {
         this(processItem, load, originalJobID, testNodes, null, null);
     }
 
-    // public TestContainerEditorInput(TestContainerItem processItem, boolean load, Boolean lastVersion) throws
-    // PersistenceException {
-    // this(processItem, load, lastVersion, null);
-    // }
-
     public TestContainerEditorInput(TestContainerItem processItem, boolean load, String originalJobID, List<INode> testNodes,
             Boolean lastVersion, Boolean readonly) throws PersistenceException {
         super(processItem, load, lastVersion, readonly);
         init(originalJobID, testNodes);
-    }
-
-    // public TestContainerEditorInput(TestContainerItem processItem, boolean load, Boolean lastVersion, Boolean
-    // readonly,
-    // Boolean openedInJob) throws PersistenceException {
-    // super(processItem, load, lastVersion, readonly);
-    // this.openedInJob = openedInJob;
-    // }
-
-    @Override
-    protected void saveProcessBefore() {
-        //
     }
 
     private void init(String originalJobID, List<INode> testNodes) {
@@ -162,15 +145,14 @@ public class TestContainerEditorInput extends JobEditorInput {
         return (JobTestContainerProcess) loadedProcess;
     }
 
-    public boolean isOpenedInJob() {
-        if (openedInJob == null) {
-            return false;
-        }
-        return this.openedInJob;
-    }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.ui.editor.JobEditorInput#saveProcessBefore()
+     */
+    @Override
+    protected void saveProcessBefore() {
 
-    public void setOpenedInJob(Boolean openedInJob) {
-        this.openedInJob = openedInJob;
     }
 
 }

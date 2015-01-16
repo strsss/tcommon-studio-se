@@ -25,21 +25,14 @@ import org.eclipse.gef.commands.CompoundCommand;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.CorePlugin;
-import org.talend.core.model.components.IComponent;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataToolHelper;
-import org.talend.core.model.process.EConnectionType;
 import org.talend.core.model.process.IConnection;
-import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
-import org.talend.core.model.process.INodeConnector;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.services.IDesignerCoreUIService;
-import org.talend.designer.core.model.components.EParameterName;
-import org.talend.designer.core.model.process.AbstractProcessProvider;
 import org.talend.designer.core.ui.AbstractMultiPageTalendEditor;
-import org.talend.designer.core.ui.editor.TalendEditor;
 import org.talend.designer.core.ui.editor.cmd.ConnectionCreateCommand;
 import org.talend.designer.core.ui.editor.cmd.CreateNodeContainerCommand;
 import org.talend.designer.core.ui.editor.cmd.MultiplePasteCommand;
@@ -65,9 +58,6 @@ import org.talend.testcontainer.core.ui.models.TestContainerInputOutputComponent
  *
  */
 public class CreateTestContainerCommand extends Command {
-
-    private AbstractProcessProvider findProcessProvider = AbstractProcessProvider
-            .findProcessProviderFromPID(IComponent.JOBLET_PID);
 
     private final IProcess2 workProcess;
 
@@ -164,10 +154,10 @@ public class CreateTestContainerCommand extends Command {
             @Override
             protected void run() throws LoginException, PersistenceException {
                 // TODO Auto-generated method stub
-                // create joblet
-                createElementsForJoblet();
-                // save and check joblet process
-                saveAndCheckJobletProcess();
+                // create junit
+                createElementsForJunit();
+                // save and check junit process
+                saveAndCheckJunitProcess();
                 // check problem.
                 checkWorkProcess();
                 ((AbstractTestContainer) getTestContainerProcess()).loadJunitContainer();
@@ -177,9 +167,9 @@ public class CreateTestContainerCommand extends Command {
 
     /**
      * 
-     * cLi Comment method "createElementsForJoblet".
+     * cLi Comment method "createElementsForJunit".
      */
-    private void createElementsForJoblet() {
+    private void createElementsForJunit() {
         if (getTestContainerProcess() == null) {
             return;
         }
@@ -199,13 +189,11 @@ public class CreateTestContainerCommand extends Command {
             MultiplePasteCommand cmd = new MultiplePasteCommand(allNodeParts, noteParts, getTestContainerProcess(),
                     getCurrentPoint());
             cmd.setSelectedSubjobs(allSubjobParts);
-            // cmd.setJobletRefactor(true); // related to method "getRelatedNode()".
             cmd.execute();
         } else if (allNodeParts.size() > 0) {
             NodesPasteCommand cmd = new NodesPasteCommand(allNodeParts, getTestContainerProcess(), getCurrentPoint());
             cmd.setJunitCreate(true);
             cmd.setSelectedSubjobs(allSubjobParts);
-            // cmd.setJobletRefactor(true); // related to method "getRelatedNode()".
             cmd.execute();
         } else if (noteParts != null && noteParts.size() > 0) {
             NotesPasteCommand cmd = new NotesPasteCommand(noteParts, getTestContainerProcess(), getCurrentPoint(), false, null);
@@ -218,9 +206,9 @@ public class CreateTestContainerCommand extends Command {
 
     /**
      * 
-     * cLi Comment method "saveAndCheckJobletProcess".
+     * cLi Comment method "saveAndCheckJunitProcess".
      */
-    private void saveAndCheckJobletProcess() {
+    private void saveAndCheckJunitProcess() {
         // check
         getTestContainerProcess().checkStartNodes();
         getTestContainerProcess().checkProcess();
@@ -236,131 +224,8 @@ public class CreateTestContainerCommand extends Command {
                 designerCoreUIService.executeCommand(getTestContainerProcess(), new Command() {
                 });
             }
-            // force to use super method "doSave()". In order to, don't reload joblet, when save the joblet.
             editor.doSave(new NullProgressMonitor());
 
-        }
-    }
-
-    private void createJobletNodeConnections(final Node jobletNode, boolean input) {
-        List<NodePart> curInputOutputNodeParts = null;
-        Map<String, List<NodePart>> curInputOutputNodePartsMap = null;
-        Map<String, List<String>> curInputOutputConnectionMap = null;
-        if (input) {
-            curInputOutputNodeParts = inputNodeParts;
-            curInputOutputNodePartsMap = inputNodePartsMap;
-            curInputOutputConnectionMap = curInputConnectionMap;
-        } else {
-            curInputOutputNodeParts = outputNodeParts;
-            curInputOutputNodePartsMap = outputNodePartsMap;
-            curInputOutputConnectionMap = curOutputConnectionMap;
-        }
-        if (curInputOutputNodeParts != null && curInputOutputNodePartsMap != null && curInputOutputConnectionMap != null) {
-            for (NodePart nodePart : curInputOutputNodeParts) {
-                Node node = (Node) nodePart.getModel();
-                List<NodePart> nodeParts = curInputOutputNodePartsMap.get(node.getUniqueName());
-                if (nodeParts != null) {
-                    for (NodePart part : nodeParts) {
-                        Node sourceNode = null;
-                        Node targetNode = null;
-                        String uniqueNameKey = null;
-                        if (input) {
-                            sourceNode = (Node) part.getModel();
-                            targetNode = jobletNode;
-                            uniqueNameKey = sourceNode.getUniqueName();
-                        } else {
-                            sourceNode = jobletNode;
-                            targetNode = (Node) part.getModel();
-                            uniqueNameKey = targetNode.getUniqueName();
-                        }
-                        final List<String> paramsList = curInputOutputConnectionMap.get(uniqueNameKey);
-                        if (paramsList != null && paramsList.size() >= 3) {
-                            final String metaName = paramsList.get(0);
-                            final String connectionName = paramsList.get(1);
-                            String connectorName = paramsList.get(2);
-                            if (input) {
-                                // input is joblet.
-                                if (findProcessProvider != null && findProcessProvider.isExtensionComponent(sourceNode)) {
-                                    connectorName = metaName;
-                                }
-                            } else {
-                                connectorName = metaName;
-                            }
-
-                            // some problems for undo.
-                            Command cmd = createConnection(sourceNode, targetNode, metaName, connectionName, connectorName);
-                            if (cmd != null) {
-                                addCompoundCmd.add(cmd);
-                                // not good. maybe, need improve it latter.
-                                addCompoundCmd.add(new Command() {
-
-                                    @Override
-                                    public void execute() {
-                                        super.execute();
-                                    }
-
-                                    @Override
-                                    public void undo() {
-                                        /*
-                                         * there are some problems for connection name in multi-schema
-                                         * connections(tMap...), when undo.
-                                         */
-                                        getWorkProcess().removeUniqueConnectionName(connectionName);
-                                    }
-
-                                });
-                            }
-                            // set connections links.
-                            setJobletAttachedConnections(jobletNode, targetNode, paramsList, input);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void setJobletAttachedConnections(final Node jobletNode, Node targetNode, final List<String> paramsList, boolean input) {
-        if (paramsList.size() >= 4) {
-            final String connectionName = paramsList.get(1);
-            final String jobletMetaName = paramsList.get(3);
-            if (jobletMetaName != null) {
-                if (input) {
-                    // set attached connection for current joblet.
-                    Command setCmd = new SetJobletConnectionsCommand(jobletNode, jobletMetaName, connectionName);
-                    setCmd.execute();
-                    addCompoundCmd.add(setCmd);
-                } else {
-
-                    // if the link node is joblet, set the attached connection
-                    if (findProcessProvider != null && findProcessProvider.isExtensionComponent(targetNode)) {
-                        Command setCmd = new SetJobletConnectionsCommand(targetNode, jobletMetaName, connectionName);
-                        setCmd.execute();
-                        addCompoundCmd.add(setCmd);
-                        // the "undo" must be after undoning for addCompoundCmd.
-                        if (paramsList.size() >= 5) {
-                            final String oldConnName = paramsList.get(4);
-                            final IElementParameter param = targetNode.getElementParameter(jobletMetaName + ":" //$NON-NLS-1$
-                                    + EParameterName.CONNECTION.getName());
-                            if (param != null && oldConnName != null) {
-                                // work for undo.
-                                delCompoundCmd.add(new Command() {
-
-                                    @Override
-                                    public void execute() {
-                                        super.execute();
-                                    }
-
-                                    @Override
-                                    public void undo() {
-                                        param.setValue(oldConnName);
-                                    }
-
-                                });
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -368,7 +233,7 @@ public class CreateTestContainerCommand extends Command {
      * 
      * cLi Comment method "createInputOutputNodes".
      * 
-     * create joblet input/output node in joblet process.
+     * create junit input/output node in junit process.
      */
     private void createInputOutputNodes(boolean input) {
         List<NodePart> inputOutputNodeParts = null;
@@ -445,15 +310,7 @@ public class CreateTestContainerCommand extends Command {
                                 metaName = connMetaName;
                                 connectorName = conn.getSourceNodeConnector().getName();
                             }
-                            if (input && findProcessProvider != null && findProcessProvider.isExtensionComponent(linkNode)) {
-                                connectorName = conn.getLineStyle().getName();
-                            }
                             createConnection(sourceNode, targetNode, metaName, connectionName, connectorName);
-                            // if input node is joblet, set the connection parameter.
-                            if (input && findProcessProvider != null && findProcessProvider.isExtensionComponent(targetNode)) {
-                                Command setCmd = new SetJobletConnectionsCommand(targetNode, metaName, connectionName);
-                                setCmd.execute();
-                            }
                             // record connections in current process.
                             final String linkUiqueName = linkNode.getUniqueName();
                             List<String> connMapList = inputOutputConnectionMap.get(linkUiqueName);
@@ -472,27 +329,6 @@ public class CreateTestContainerCommand extends Command {
                             // work for setting connections link.
                             if (input) {
                                 connMapList.add(metaName);
-                            } else {
-                                // if the link node is joblet, record attached connection.
-                                if (findProcessProvider != null && findProcessProvider.isExtensionComponent(linkNode)) {
-                                    List<INodeConnector> connectors = linkNode.getConnectorsFromType(EConnectionType.FLOW_MAIN);
-                                    boolean found = false;
-                                    if (connectors != null) {
-                                        for (INodeConnector nector : connectors) {
-                                            IElementParameter param = linkNode.getElementParameter(nector.getName() + ":" //$NON-NLS-1$
-                                                    + EParameterName.CONNECTION.getName());
-                                            if (param != null && connectionName.equals(param.getValue())) {
-                                                connMapList.add(nector.getName());
-                                                connMapList.add((String) param.getValue());
-                                                found = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if (!found) {
-                                        connMapList.add(null);
-                                    }
-                                }
                             }
                         }
                     }
@@ -547,53 +383,6 @@ public class CreateTestContainerCommand extends Command {
         return null;
     }
 
-    /**
-     * 
-     * cLi Comment method "calculateJobletNodePoint".
-     * 
-     * calculate the joblet point.
-     */
-    private Point calculateJobletNodePoint() {
-        Rectangle rec = null;
-        double height = 0;
-        double width = 0;
-        int size = 0;
-        if (singleNodeParts != null) {
-            for (NodePart nodePart : singleNodeParts) {
-                Rectangle bounds = nodePart.getFigure().getBounds();
-                height += bounds.preciseHeight();
-                width += bounds.preciseWidth();
-                rec = bounds.getCopy().union(rec);
-            }
-            size += singleNodeParts.size();
-        }
-        if (size > 0) {
-            height /= size;
-            width /= size;
-        } else {
-            if (subjobParts != null) {
-                for (SubjobContainerPart subjobPart : subjobParts) {
-                    Rectangle bounds = subjobPart.getFigure().getBounds();
-                    rec = bounds.getCopy().union(rec);
-                }
-            }
-            height = width = TalendEditor.GRID_SIZE;
-        }
-        if (rec != null) {
-            double x = rec.preciseX() + rec.preciseWidth() / 2;
-            if (x - width > 0) {
-                x -= width / 2;
-            }
-            double y = rec.preciseY() + rec.preciseHeight() / 2;
-            if (y - height > 0) {
-                y -= height / 2;
-            }
-
-            return new Point(x, y);
-        }
-        return null;
-    }
-
     private void checkWorkProcess() {
         if (getWorkProcess() != null) {
             getWorkProcess().checkStartNodes();
@@ -617,37 +406,4 @@ public class CreateTestContainerCommand extends Command {
         checkWorkProcess();
     }
 
-    /**
-     * 
-     * cLi SetJobletConnectionsCommand class global comment. Detailled comment
-     */
-    class SetJobletConnectionsCommand extends Command {
-
-        private Node jobletNode;
-
-        private String metaName;
-
-        private String connName;
-
-        private IElementParameter connParam;
-
-        public SetJobletConnectionsCommand(Node jobletNode, String metaName, String connName) {
-            super();
-            this.jobletNode = jobletNode;
-            this.metaName = metaName;
-            this.connName = connName;
-            if (jobletNode != null && metaName != null) {
-                connParam = jobletNode.getElementParameter(metaName + ":" //$NON-NLS-1$
-                        + EParameterName.CONNECTION.getName());
-            }
-        }
-
-        @Override
-        public void execute() {
-            if (connParam != null && connName != null) {
-                connParam.setValue(connName);
-            }
-        }
-
-    }
 }

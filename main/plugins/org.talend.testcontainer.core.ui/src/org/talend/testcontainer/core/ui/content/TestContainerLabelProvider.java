@@ -35,7 +35,7 @@ public class TestContainerLabelProvider extends RepositoryViewLabelProvider {
     @Override
     protected IImage getIcon(ERepositoryObjectType itemType) {
         if (itemType != null && itemType.equals(TestContainerRepositoryObjectType.TEST_CONTAINER)) {
-            return ETestContainerImages.JOBLET_WIZ;
+            return ETestContainerImages.JUNIT_WIZ;
         }
         return null;
     }

@@ -19,7 +19,6 @@ import org.talend.core.model.components.IComponentsHandler;
 import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.designer.core.ui.editor.AbstractTalendEditor;
 import org.talend.designer.core.ui.editor.ProcessComponentsHandler;
-import org.talend.repository.model.RepositoryConstants;
 
 /**
  * DOC qzhang class global comment. Detailled comment
@@ -31,13 +30,13 @@ public class TestContainerTalendEditor extends AbstractTalendEditor {
     private List<IMetadataTable> oldOutputMetadata;
 
     /**
-     * DOC qzhang JobletTalendEditor constructor comment.
+     * DOC qzhang TestContainerTalendEditor constructor comment.
      */
     public TestContainerTalendEditor() {
     }
 
     /**
-     * DOC qzhang JobletTalendEditor constructor comment.
+     * DOC qzhang TestContainerTalendEditor constructor comment.
      * 
      * @param readOnly
      */
@@ -48,40 +47,12 @@ public class TestContainerTalendEditor extends AbstractTalendEditor {
     /*
      * (non-Javadoc)
      * 
-     * @see org.talend.designer.core.ui.editor.AbstractTalendEditor#getOutlinePicturePath()
-     */
-    @Override
-    protected String getOutlinePicturePath() {
-        return RepositoryConstants.IMG_DIRECTORY_OF_JOBLET_OUTLINE;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see org.talend.designer.core.ui.editor.AbstractTalendEditor#setInput(org.eclipse.ui.IEditorInput)
      */
     @Override
     protected void setInput(IEditorInput input) {
         super.setInput(input);
-        // oldInputMetadata = getJobletNodeMetadata(ETestContainerNodeType.INPUT);
-        // oldOutputMetadata = getJobletNodeMetadata(ETestContainerNodeType.OUTPUT);
     }
-
-    // /**
-    // * DOC qzhang Comment method "getInputJobletNode".
-    // */
-    // public List<IMetadataTable> getJobletNodeMetadata(ETestContainerNodeType nodeType) {
-    // List<IMetadataTable> list = new ArrayList<IMetadataTable>();
-    // List<? extends INode> graphicalNodes = this.getProcess().getGraphicalNodes();
-    // for (INode node : graphicalNodes) {
-    // if ((node.getComponent() instanceof JobletInputOutputComponent)
-    // && ((JobletInputOutputComponent) node.getComponent()).getJobletNodeType().equals(nodeType)) {
-    // IMetadataTable clone = node.getMetadataList().get(0).clone();
-    // list.add(clone);
-    // }
-    // }
-    // return list;
-    // }
 
     /**
      * Getter for oldInputMetadata.
@@ -117,12 +88,6 @@ public class TestContainerTalendEditor extends AbstractTalendEditor {
      */
     public void setOldOutputMetadata(List<IMetadataTable> oldOutputMetadata) {
         this.oldOutputMetadata = oldOutputMetadata;
-    }
-
-    @Override
-    public void doSaveAs() {
-        // SaveAsJobletAction saveAsAction = new SaveAsJobletAction(this);
-        // saveAsAction.run();
     }
 
     /*

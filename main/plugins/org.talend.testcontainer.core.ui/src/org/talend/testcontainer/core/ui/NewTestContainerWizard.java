@@ -24,7 +24,6 @@ import org.talend.commons.utils.VersionUtils;
 import org.talend.core.CorePlugin;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
-import org.talend.core.model.properties.ByteArray;
 import org.talend.core.model.properties.PropertiesFactory;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.routines.RoutinesUtil;
@@ -71,15 +70,12 @@ public class NewTestContainerWizard extends Wizard {
         this.property.setStatusCode(""); //$NON-NLS-1$
 
         processItem = TestConPropertiesFactory.eINSTANCE.createTestContainerItem();
-        ByteArray ba = PropertiesFactory.eINSTANCE.createByteArray();
-        // processItem.setIcon(ba);
-        // processItem.getIcon().setInnerContent(ImageUtils.saveImageToData(RepositoryLabelProvider.getDefaultJobletImage()));
 
         processItem.setProperty(property);
 
         repositoryFactory = CorePlugin.getDefault().getRepositoryService().getProxyRepositoryFactory();
 
-        setDefaultPageImageDescriptor(ImageProvider.getImageDesc(ETestContainerImages.JOBLET_WIZ));
+        setDefaultPageImageDescriptor(ImageProvider.getImageDesc(ETestContainerImages.JUNIT_WIZ));
 
     }
 
@@ -92,7 +88,7 @@ public class NewTestContainerWizard extends Wizard {
     public boolean performFinish() {
         IRepositoryService service = CorePlugin.getDefault().getRepositoryService();
         IProxyRepositoryFactory factory = service.getProxyRepositoryFactory();
-        factory.executeRepositoryWorkUnit(new RepositoryWorkUnit("create joblet") {
+        factory.executeRepositoryWorkUnit(new RepositoryWorkUnit("create TestContainer") {
 
             @Override
             protected void run() throws LoginException, PersistenceException {

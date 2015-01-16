@@ -54,7 +54,6 @@ public class TestContainerProcessPropertyTester extends AbstractNodeTester {
 
     public boolean isProcessTopNode(RepositoryNode repositoryNode) {
         return isTypeTopNode(repositoryNode, ERepositoryObjectType.PROCESS);
-        // !(repositoryNode instanceof StandardProcessNode) &&
     }
 
 }

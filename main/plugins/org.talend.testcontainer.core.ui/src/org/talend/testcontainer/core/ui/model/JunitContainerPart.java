@@ -97,7 +97,7 @@ public class JunitContainerPart extends NodeContainerPart {
                 ((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), rectangle);
             }
         }
-        ((JunitContainerFigure) getFigure()).initializejobletContainer(rectangle);
+        ((JunitContainerFigure) getFigure()).initializejunitContainer(rectangle);
     }
 
     @Override

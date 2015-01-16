@@ -29,7 +29,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.metadata.managment.ui.i18n.Messages;
 import org.talend.metadata.managment.ui.wizard.PropertiesWizardPage;
 import org.talend.repository.model.RepositoryConstants;
-import org.talend.testcontainer.core.testConProperties.TestContainerItem;
+import org.talend.testcontainer.core.ui.util.TestContainerRepositoryObjectType;
 
 /**
  * created by Talend on Jan 6, 2015 Detailled comment
@@ -50,35 +50,6 @@ public class NewTestContainerPage extends PropertiesWizardPage {
         super("WizardPage", property, destinationPath); //$NON-NLS-1$
     }
 
-    /**
-     * DOC qzhang NewJobjetWizardPage constructor comment.
-     * 
-     * @param pageName
-     * @param property
-     * @param destinationPath
-     * @param readOnly
-     * @param editPath
-     */
-    public NewTestContainerPage(String pageName, Property property, IPath destinationPath, boolean readOnly, boolean editPath) {
-        super(pageName, property, destinationPath, readOnly, editPath);
-    }
-
-    public NewTestContainerPage(String pageName, Property property, IPath destinationPath, boolean readOnly, boolean editPath,
-            String lastVersionFound) {
-        super(pageName, property, destinationPath, readOnly, editPath, lastVersionFound);
-    }
-
-    /**
-     * DOC qzhang NewJobjetWizardPage constructor comment.
-     * 
-     * @param pageName
-     * @param property
-     * @param destinationPath
-     */
-    public NewTestContainerPage(String pageName, Property property, IPath destinationPath) {
-        super(pageName, property, destinationPath);
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -86,7 +57,7 @@ public class NewTestContainerPage extends PropertiesWizardPage {
      */
     @Override
     public ERepositoryObjectType getRepositoryObjectType() {
-        return ERepositoryObjectType.JOBLET;
+        return TestContainerRepositoryObjectType.testContainerType;
     }
 
     /**
@@ -99,7 +70,6 @@ public class NewTestContainerPage extends PropertiesWizardPage {
         container.setLayout(layout);
         container.setLayoutData(new GridData(GridData.FILL_BOTH));
         super.createControl(container);
-        // createIconPart(container);
 
         setControl(container);
         updateContent();
@@ -138,11 +108,7 @@ public class NewTestContainerPage extends PropertiesWizardPage {
             nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.KeywordsError")); //$NON-NLS-1$
         } else if (super.nameModifiedByUser) {
             if (super.retrieveNameFinished) {
-                // if (!isValid(nameText.getText())) {
-                //                    nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.ItemExistsError")); //$NON-NLS-1$
-                // } else {
                 nameStatus = createOkStatus();
-                // }
             } else {
                 nameStatus = createStatus(IStatus.ERROR, "Looking for current items name list"); //$NON-NLS-1$
             }
@@ -160,107 +126,4 @@ public class NewTestContainerPage extends PropertiesWizardPage {
         }
     }
 
-    private TestContainerItem getTestContainerItem() {
-        return (TestContainerItem) getProperty().getItem();
-    }
-
-    // private void createIconPart(Composite controlContainer) {
-    // // icon
-    // Label iconLabel = new Label(controlContainer, SWT.NONE);
-    //        iconLabel.setText(Messages.getString("NewJobjetWizardPage.icon")); //$NON-NLS-1$
-    //
-    // final Composite iconContainer = new Composite(controlContainer, SWT.NONE);
-    // iconContainer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    // GridLayout versionLayout = new GridLayout(3, false);
-    // versionLayout.marginHeight = 10;
-    // versionLayout.marginWidth = 10;
-    // versionLayout.horizontalSpacing = 10;
-    // iconContainer.setLayout(versionLayout);
-    //
-    // GridData gd = new GridData();
-    // gd.widthHint = 36;
-    // gd.heightHint = 36;
-    //
-    // // Button iconButton = new Button(iconContainer, SWT.PUSH);
-    // // iconButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-    //        //        iconButton.setText("..."); //$NON-NLS-1$ 
-    // // iconButton.setEnabled(!isReadOnly());
-    //
-    // // Button iconButtondef = new Button(iconContainer, SWT.PUSH);
-    // // iconButtondef.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-    //        //        iconButtondef.setText(Messages.getString("NewJobjetWizardPage.revert")); //$NON-NLS-1$
-    // // iconButtondef.setEnabled(!isReadOnly());
-    // // // iconButtondef.addSelectionListener(new SelectionListener() {
-    // //
-    // // @Override
-    // // public void widgetDefaultSelected(SelectionEvent e) {
-    // //
-    // // }
-    // //
-    // // @Override
-    // // public void widgetSelected(SelectionEvent e) {
-    // // Image defaultIcon = RepositoryLabelProvider.getDefaultJobletImage();
-    // // refreshIcon(defaultIcon);
-    // // }
-    // //
-    // // });
-    //
-    // // iconButton.addSelectionListener(new SelectionAdapter() {
-    // //
-    // // @Override
-    // // public void widgetSelected(SelectionEvent e) {
-    // // FileDialog fd = new FileDialog(getShell());
-    //        //                fd.setFilterExtensions(new String[] { "*.jpg", "*.png", "*.gif" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    // // String filename = fd.open();
-    // // if (filename != null) {
-    // // ImageData imageData = new ImageData(filename);
-    // // Image image = new Image(getShell().getDisplay(), imageData);
-    // // refreshIcon(image);
-    // // updatePageStatus();
-    // // }
-    // // }
-    // // });
-    //
-    // }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.repository.ui.wizards.PropertiesWizardPage#isValid(java.lang.String)
-     */
-    @Override
-    public boolean isValid(String itemName) {
-        boolean valid = super.isValid(itemName);
-        // List<IRepositoryViewObject> listExistingObjects = getListExistingObjects();
-        // if (valid) {
-        // Set<IComponent> components = ComponentsFactoryProvider.getInstance().getComponents();
-        // for (IComponent component : components) {
-        // }
-        // }
-        return valid;
-    }
-
-    // /**
-    // * DOC Administrator Comment method "refreshIcon".
-    // *
-    // * @param imageData
-    // */
-    // private void refreshIcon(Image image) {
-    // if (!ImageUtils.checkSize(image, ImageUtils.ICON_SIZE.ICON_32)) {
-    //            nameStatus = createStatus(IStatus.ERROR, Messages.getString("PropertiesWizardPage.ImageSizeError")); //$NON-NLS-1$
-    //
-    // } else {
-    // evaluateFields();
-    // // nameStatus = createOkStatus();
-    // }
-    // iconShowLabel.setImage(image);
-    // TestContainerItem item = getJobletItem();
-    // byte[] data = ImageUtils.saveImageToData(ImageDescriptor.createFromImageData(image.getImageData()));
-    // ByteArray icon = item.getIcon();
-    // if (icon == null) {
-    // icon = TestConPropertiesFactory.eINSTANCE.createByteArray();
-    // item.setIcon(icon);
-    // }
-    // icon.setInnerContent(data);
-    // }
 }

@@ -52,7 +52,7 @@ public class TestContainerInputOutputComponent implements IComponent {
 
     protected ETestContainerNodeType testConType;
 
-    public static final String FAMILY = "Joblets"; //$NON-NLS-1$
+    public static final String FAMILY = "Junit"; //$NON-NLS-1$
 
     protected ImageDescriptor icon32;
 
@@ -67,7 +67,7 @@ public class TestContainerInputOutputComponent implements IComponent {
     private String paletteType;
 
     protected TestContainerInputOutputComponent() {
-        icon32 = ETestContainerImages.getURLImageDescriptor(ETestContainerImages.JOBLET_INPUT_OUTPUT_COMPONENT);
+        icon32 = ETestContainerImages.getURLImageDescriptor(ETestContainerImages.JUNIT_INPUT_OUTPUT_COMPONENT);
         icon24 = ImageDescriptor.createFromImageData(icon32.getImageData().scaledTo(24, 24));
         icon16 = ImageDescriptor.createFromImageData(icon32.getImageData().scaledTo(16, 16));
     }

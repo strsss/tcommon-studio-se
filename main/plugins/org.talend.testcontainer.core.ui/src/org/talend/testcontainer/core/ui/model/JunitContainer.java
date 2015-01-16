@@ -29,7 +29,7 @@ public class JunitContainer extends NodeContainer {
 
     private Node node;
 
-    protected List<IElement> jobletElements = new ArrayList<IElement>();
+    protected List<IElement> junittElements = new ArrayList<IElement>();
 
     List<Node> testNodes = new ArrayList<Node>();
 
@@ -56,7 +56,7 @@ public class JunitContainer extends NodeContainer {
     }
 
     /**
-     * DOC hwang Comment method "getJobletContainerRectangle".
+     * DOC hwang Comment method "getJunitContainerRectangle".
      * 
      * @return
      */
@@ -99,38 +99,30 @@ public class JunitContainer extends NodeContainer {
         super.setPropertyValue(id, value);
     }
 
-    public void refreshJobletNodes() {
+    public void refreshJunitNodes() {
         this.nodeContainers.clear();
-        this.jobletElements.clear();
+        this.junittElements.clear();
         for (INode inode : this.testNodes) {
             if ((inode instanceof Node)) {
                 Node temNode = (Node) inode;
                 temNode.setReadOnly(true);
                 this.nodeContainers.add(temNode.getNodeContainer());
 
-                this.jobletElements.add(temNode);
-                this.jobletElements.add(temNode.getNodeLabel());
-                this.jobletElements.add(temNode.getNodeError());
-                this.jobletElements.add(temNode.getNodeProgressBar());
+                this.junittElements.add(temNode);
+                this.junittElements.add(temNode.getNodeLabel());
+                this.junittElements.add(temNode.getNodeError());
+                this.junittElements.add(temNode.getNodeProgressBar());
 
             }
         }
     }
 
-    // public void updateSubjobContainer() {
-    // fireStructureChange(UPDATE_JUNIT_CONTENT, this);
-    // }
-
-    // public void updateSubjobDisplay() {
-    // fireStructureChange(UPDATE_JUNIT_DISPLAY, this);
-    // }
-
     @Override
     public List getElements() {
-        if (this.jobletElements.size() <= 0) {
+        if (this.junittElements.size() <= 0) {
             return super.getElements();
         } else {
-            return this.jobletElements;
+            return this.junittElements;
         }
 
     }

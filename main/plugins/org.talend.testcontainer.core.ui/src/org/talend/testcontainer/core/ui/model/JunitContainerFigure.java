@@ -26,7 +26,7 @@ public class JunitContainerFigure extends Figure {
 
     private SimpleHtmlFigure htmlStatusHint;
 
-    private JunitContainer jobletContainer;
+    private JunitContainer junitContainer;
 
     private RoundedRectangle rectFig;
 
@@ -37,15 +37,15 @@ public class JunitContainerFigure extends Figure {
     private RGB green = new RGB(130, 240, 100);
 
     /**
-     * DOC hwang JobletContainerFigure constructor comment.
+     * DOC hwang JunitContainerFigure constructor comment.
      * 
      * @param model
      */
-    public JunitContainerFigure(final JunitContainer jobletContainer) {
+    public JunitContainerFigure(final JunitContainer junitContainer) {
         setLayoutManager(new FreeformLayout());
-        this.jobletContainer = jobletContainer;
-        if (this.jobletContainer.getSubjobContainer() != null) {
-            isSubjobDisplay = this.jobletContainer.getSubjobContainer().isDisplayed();
+        this.junitContainer = junitContainer;
+        if (this.junitContainer.getSubjobContainer() != null) {
+            isSubjobDisplay = this.junitContainer.getSubjobContainer().isDisplayed();
         }
 
         rectFig = new GreenRectangle();
@@ -64,7 +64,7 @@ public class JunitContainerFigure extends Figure {
         htmlStatusHint = new SimpleHtmlFigure();
         updateData();
 
-        initializejobletContainer(jobletContainer.getJunitContainerRectangle());
+        initializejunitContainer(junitContainer.getJunitContainerRectangle());
     }
 
     /*
@@ -76,21 +76,15 @@ public class JunitContainerFigure extends Figure {
     public void paint(Graphics graphics) {
         graphics.setAlpha(100);
         if (errorFigure.isVisible()) {
-            errorFigure.setLocation(jobletContainer.getErrorLocation());
+            errorFigure.setLocation(junitContainer.getErrorLocation());
         }
         if (warningFigure.isVisible()) {
-            warningFigure.setLocation(jobletContainer.getWarningLocation());
+            warningFigure.setLocation(junitContainer.getWarningLocation());
         }
         super.paint(graphics);
     }
 
-    boolean lastJobletRedState = false;
-
-    private void refreshNodes() {
-        rectFig.setBackgroundColor(new Color(Display.getDefault(), green));
-    }
-
-    public void initializejobletContainer(Rectangle rectangle) {
+    public void initializejunitContainer(Rectangle rectangle) {
         disposeColors();
         Point location = this.getLocation();
 
@@ -141,19 +135,19 @@ public class JunitContainerFigure extends Figure {
 
             List<String> problemsList;
 
-            String text = "<b>" + jobletContainer.getNode().getUniqueName() + "</b><br><br>"; //$NON-NLS-1$ //$NON-NLS-2$
+            String text = "<b>" + junitContainer.getNode().getUniqueName() + "</b><br><br>"; //$NON-NLS-1$ //$NON-NLS-2$
 
             if ((status & Process.WARNING_STATUS) != 0) {
                 text += "<i>Warnings:</i><br>"; //$NON-NLS-1$
 
-                problemsList = Problems.getStatusList(ProblemStatus.WARNING, jobletContainer.getNode());
+                problemsList = Problems.getStatusList(ProblemStatus.WARNING, junitContainer.getNode());
                 for (String str : problemsList) {
                     text += "\t- " + str + "<br>"; //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
             if ((status & Process.ERROR_STATUS) != 0) {
                 text += "<i>Errors:</i><br>"; //$NON-NLS-1$
-                problemsList = Problems.getStatusList(ProblemStatus.ERROR, jobletContainer.getNode());
+                problemsList = Problems.getStatusList(ProblemStatus.ERROR, junitContainer.getNode());
                 for (String str : problemsList) {
                     text += "\t- " + str + "<br>"; //$NON-NLS-1$ //$NON-NLS-2$
                 }

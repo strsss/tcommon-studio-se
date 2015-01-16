@@ -38,7 +38,6 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.CorePlugin;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.model.components.IComponent;
 import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.IConnectionCategory;
 import org.talend.core.model.process.INode;
@@ -49,7 +48,6 @@ import org.talend.core.service.IStormProcessService;
 import org.talend.core.ui.IJobletProviderService;
 import org.talend.core.ui.editor.CustomExternalActions;
 import org.talend.core.ui.utils.PluginUtil;
-import org.talend.designer.core.model.process.AbstractProcessProvider;
 import org.talend.designer.core.ui.editor.nodecontainer.NodeContainerPart;
 import org.talend.designer.core.ui.editor.nodes.Node;
 import org.talend.designer.core.ui.editor.nodes.NodePart;
@@ -367,21 +365,6 @@ public class CreateTestContainerAction extends CustomExternalActions {
             }
         }
 
-        // joblet
-        if (AbstractProcessProvider.isExtensionProcessForJoblet(workProcess)) {
-            // joblet input/output
-            List<NodePart> allNodeParts = new ArrayList<NodePart>();
-            if (singleNodeParts != null) {
-                allNodeParts.addAll(singleNodeParts);
-            }
-            if (subjobNodeParts != null) {
-                allNodeParts.addAll(subjobNodeParts);
-            }
-            if (!checkJobletInputOutput(allNodeParts)) {
-                return false;
-            }
-        }
-
         // check connection.
         if (!checkConnectionNodes(inputNodePartsMap, true) || !checkConnectionNodes(outputNodePartsMap, false)) {
             return false;
@@ -508,25 +491,6 @@ public class CreateTestContainerAction extends CustomExternalActions {
             }
         }
         return false;
-    }
-
-    /**
-     * 
-     * cLi Comment method "checkJobletInputOutput".
-     * 
-     * work for refactoring the element of joblet, if contain the special input/output, will return false.
-     */
-    private boolean checkJobletInputOutput(List<NodePart> allNodeParts) {
-        AbstractProcessProvider findProcessProvider = AbstractProcessProvider.findProcessProviderFromPID(IComponent.JOBLET_PID);
-        if (findProcessProvider != null && allNodeParts != null) {
-            for (NodePart nodePart : allNodeParts) {
-                Node node = (Node) nodePart.getModel();
-                if (findProcessProvider.isJobletInputOrOutputComponent(node)) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     @SuppressWarnings("restriction")

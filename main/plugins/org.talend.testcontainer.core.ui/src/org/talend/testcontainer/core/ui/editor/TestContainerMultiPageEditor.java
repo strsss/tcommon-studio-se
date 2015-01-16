@@ -71,11 +71,7 @@ public class TestContainerMultiPageEditor extends AbstractMultiPageTalendEditor 
      */
     @Override
     public void doSave(IProgressMonitor monitor) {
-        if (haveDirtyJoblet()) {
-            return;
-        }
         try {
-            TestContainerTalendEditor talendEdtor = (TestContainerTalendEditor) this.designerEditor;
             super.doSave(monitor);
         } catch (Exception e) {
             ExceptionHandler.process(e);
@@ -111,20 +107,8 @@ public class TestContainerMultiPageEditor extends AbstractMultiPageTalendEditor 
             }
         }
         if (revisionNumStr != null) {
-            if (getEditorInput() instanceof TestContainerEditorInput) {
-                if (((TestContainerEditorInput) getEditorInput()).isOpenedInJob()) {
-                    setPartName("TestContainer " + label + " " + jobVersion + revisionNumStr + " (Opened in a job)"); //$NON-NLS-1$
-                    return;
-                }
-            }
             setPartName("TestContainer " + label + " " + jobVersion + revisionNumStr); //$NON-NLS-1$
         } else {
-            if (getEditorInput() instanceof TestContainerEditorInput) {
-                if (((TestContainerEditorInput) getEditorInput()).isOpenedInJob()) {
-                    setPartName("TestContainer " + label + " " + jobVersion + " (Opened in a job)"); //$NON-NLS-1$
-                    return;
-                }
-            }
             setPartName("TestContainer " + label + " " + jobVersion); //$NON-NLS-1$
         }
 
