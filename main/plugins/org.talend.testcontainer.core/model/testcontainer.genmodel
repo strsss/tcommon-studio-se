@@ -21,6 +21,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//OriginalNode/uniqueName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//OriginalNode/posX"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//OriginalNode/posY"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute testcontainer.ecore#//OriginalNode/start"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

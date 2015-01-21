@@ -37,15 +37,14 @@ import org.eclipse.ui.PlatformUI;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.CorePlugin;
-import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.IConnectionCategory;
 import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.properties.Item;
-import org.talend.core.service.IMRProcessService;
-import org.talend.core.service.IStormProcessService;
-import org.talend.core.ui.IJobletProviderService;
+import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.ui.editor.CustomExternalActions;
 import org.talend.core.ui.utils.PluginUtil;
 import org.talend.designer.core.ui.editor.nodecontainer.NodeContainerPart;
@@ -347,7 +346,9 @@ public class CreateTestContainerAction extends CustomExternalActions {
         if (!canCal) {
             return canCal;
         }
-
+        if (!(getWorkProcess().getProperty().getItem() instanceof ProcessItem)) {
+            return false;
+        }
         if (getWorkProcess() == null || getWorkProcess().isReadOnly()) {
             return false;
         }
@@ -597,38 +598,14 @@ public class CreateTestContainerAction extends CustomExternalActions {
 
     private String getFatherFolderName(IProcess2 process) {
         Item item = process.getProperty().getItem();
-        if (process instanceof Process) {
-            return "process";
-        } else {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IJobletProviderService.class)) {
-                IJobletProviderService jobletService = (IJobletProviderService) GlobalServiceRegister.getDefault().getService(
-                        IJobletProviderService.class);
-                if (jobletService != null) {
-                    if (jobletService.isJobletItem(item)) {
-                        return "joblet";
-                    }
-                }
+        try {
+            IRepositoryViewObject viewObj = ProxyRepositoryFactory.getInstance().getLastVersion(item.getProperty().getId());
+            if (viewObj != null) {
+                return viewObj.getRepositoryObjectType().getFolder();
             }
 
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IMRProcessService.class)) {
-                IMRProcessService mrService = (IMRProcessService) GlobalServiceRegister.getDefault().getService(
-                        IMRProcessService.class);
-                if (mrService != null) {
-                    if (mrService.isMapReduceItem(item)) {
-                        return "mapReduce";
-                    }
-                }
-            }
-
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IStormProcessService.class)) {
-                IStormProcessService stormService = (IStormProcessService) GlobalServiceRegister.getDefault().getService(
-                        IStormProcessService.class);
-                if (stormService != null) {
-                    if (stormService.isStormItem(item)) {
-                        return "storm";
-                    }
-                }
-            }
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
         }
         return "process";
     }

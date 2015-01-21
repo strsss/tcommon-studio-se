@@ -12,7 +12,17 @@
            name="TestContainer Editor">
      </editor>
   </extension>
-<extension
+  
+  <extension
+         point="org.talend.core.repositoryContextualsActions">
+      <Action
+            class="org.talend.testcontainer.core.ui.actions.EditTestContainer"
+            id="org.talend.testcontainer.core.ui.actions.EditTestContainer"
+            isEditAction="true"
+            level="10"
+            name="Edit TestContainer"/>
+  </extension>        
+  <extension
         point="org.talend.core.component_custom_action">    
      <CustomAction
            class="org.talend.testcontainer.core.ui.actions.CreateTestContainerAction"
@@ -36,12 +46,11 @@
       <repositoryNode
             alias="TC"
             folder="tests"
-            icon="icons/talend-picto.png"
+            icon="icons/unknown.gif"
             isResouce="true"
-            key="repository.testContainerProcess"
-            label="%NavigatorContent.testContainerProcess"
-            ordinal="188"
-            parentNodeType="JOBS"
+            key="repository.testContainer"
+            label="TestContainer"
+            ordinal="1"
             products="DI"
             type="TEST_CONTAINER">
       </repositoryNode>
@@ -54,80 +63,12 @@
    </extension>
    <extension
          point="org.eclipse.ui.navigator.navigatorContent">
-      <navigatorContent
-            activeByDefault="true"
-            contentProvider="org.talend.testcontainer.core.ui.content.TestContainerContentProvider"
-            icon="icons/talend-picto-small.gif"
-            id="org.talend.testcontainer.core.ui.root.testContainerProcess"
-            labelProvider="org.talend.testcontainer.core.ui.contentTestContainerLabelProvider"
-            name="%NavigatorContent.testContainerProcess"
-            priority="lower">
-         <triggerPoints>
-            <and>
-               <instanceof
-                     value="org.talend.repository.model.RepositoryNode">
-               </instanceof>
-               <or>
-                  <test
-                        forcePluginActivation="true"
-                        property="org.talend.testcontainer.core.ui.tests.isTestContainerProcessNode">
-                  </test>
-                  <test
-                        forcePluginActivation="true"
-                        property="org.talend.testcontainer.core.ui.tests.isProcessTopNode">
-                  </test>
-               </or>
-            </and>
-         </triggerPoints>
-         <possibleChildren>
-            <and>
-               <instanceof
-                     value="org.talend.repository.model.RepositoryNode">
-               </instanceof>
-               <test
-                     forcePluginActivation="true"
-                     property="org.talend.testcontainer.core.ui.tests.isTestContainerProcessNode">
-               </test>
-            </and>
-         </possibleChildren>
-         <actionProvider
-               class="org.talend.designer.mapreduce.ui.viewer.action.MapReduceRepositoryActionProvider"
-               id="org.talend.designer.mapreduce.viewer.action.mapreduceProcess">
-            <enablement>
-               <and>
-                  <instanceof
-                        value="org.talend.repository.model.RepositoryNode">
-                  </instanceof>
-                  <test
-                        forcePluginActivation="true"
-                        property="org.talend.testcontainer.core.ui.tests.isTestContainerProcessNode">
-                  </test>
-                  <not>
-                     <test
-                           forcePluginActivation="true"
-                           property="org.talend.repository.node.isDeleted">
-                     </test>
-                  </not>
-               </and>
-            </enablement>
-         </actionProvider>
-      </navigatorContent>
       <commonFilter
             activeByDefault="true"
             class="org.talend.testcontainer.core.ui.content.TCStandardProcessFilter"
             id="org.talend.testcontainer.core.ui.content.TCStandardProcessFilter"
             name="TCStandardJobsFilter">
       </commonFilter>
-   </extension>
-    <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="org.talend.testcontainer.core.ui.tests.TestContainerProcessPropertyTester"
-            id="org.talend.testcontainer.core.ui.tests.TestContainerProcessPropertyTester"
-            namespace="org.talend.testcontainer.core.ui.tests"
-            properties="isTestContainerProcessNode,isProcessTopNode"
-            type="org.talend.repository.model.RepositoryNode">
-      </propertyTester>
    </extension>
    <extension
          point="org.talend.core.repository.repository_content">

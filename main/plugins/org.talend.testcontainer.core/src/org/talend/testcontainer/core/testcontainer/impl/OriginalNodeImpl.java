@@ -22,6 +22,7 @@ import org.talend.testcontainer.core.testcontainer.TestcontainerPackage;
  *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl#getUniqueName <em>Unique Name</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl#getPosX <em>Pos X</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl#getPosY <em>Pos Y</em>}</li>
+ *   <li>{@link org.talend.testcontainer.core.testcontainer.impl.OriginalNodeImpl#isStart <em>Start</em>}</li>
  * </ul>
  * </p>
  *
@@ -87,6 +88,26 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
      * @ordered
      */
     protected int posY = POS_Y_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isStart() <em>Start</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isStart()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean START_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isStart() <em>Start</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #isStart()
+     * @generated
+     * @ordered
+     */
+    protected boolean start = START_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -175,6 +196,27 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
      * <!-- end-user-doc -->
      * @generated
      */
+    public boolean isStart() {
+        return start;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setStart(boolean newStart) {
+        boolean oldStart = start;
+        start = newStart;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TestcontainerPackage.ORIGINAL_NODE__START, oldStart, start));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -184,6 +226,8 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
                 return getPosX();
             case TestcontainerPackage.ORIGINAL_NODE__POS_Y:
                 return getPosY();
+            case TestcontainerPackage.ORIGINAL_NODE__START:
+                return isStart();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -204,6 +248,9 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
                 return;
             case TestcontainerPackage.ORIGINAL_NODE__POS_Y:
                 setPosY((Integer)newValue);
+                return;
+            case TestcontainerPackage.ORIGINAL_NODE__START:
+                setStart((Boolean)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -226,6 +273,9 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
             case TestcontainerPackage.ORIGINAL_NODE__POS_Y:
                 setPosY(POS_Y_EDEFAULT);
                 return;
+            case TestcontainerPackage.ORIGINAL_NODE__START:
+                setStart(START_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -244,6 +294,8 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
                 return posX != POS_X_EDEFAULT;
             case TestcontainerPackage.ORIGINAL_NODE__POS_Y:
                 return posY != POS_Y_EDEFAULT;
+            case TestcontainerPackage.ORIGINAL_NODE__START:
+                return start != START_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -264,6 +316,8 @@ public class OriginalNodeImpl extends MinimalEObjectImpl.Container implements Or
         result.append(posX);
         result.append(", posY: ");
         result.append(posY);
+        result.append(", start: ");
+        result.append(start);
         result.append(')');
         return result.toString();
     }

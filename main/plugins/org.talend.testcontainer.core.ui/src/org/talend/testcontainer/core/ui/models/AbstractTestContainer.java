@@ -14,8 +14,10 @@ package org.talend.testcontainer.core.ui.models;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.emf.common.util.EList;
@@ -42,6 +44,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.designer.core.ui.editor.connections.Connection;
 import org.talend.designer.core.ui.editor.nodes.Node;
 import org.talend.designer.core.ui.editor.process.Process;
+import org.talend.designer.core.ui.editor.subjobcontainer.SubjobContainer;
 import org.talend.testcontainer.core.testConProperties.TestContainerItem;
 import org.talend.testcontainer.core.testcontainer.OriginalNode;
 import org.talend.testcontainer.core.testcontainer.TestContainer;
@@ -153,13 +156,56 @@ public class AbstractTestContainer extends Process {
     public void loadXmlFile(boolean loadScreenshots) {
         super.loadXmlFile(loadScreenshots);
         loadJunitContainer();
+        SetTestNodesForJunitContainer();
     }
 
     /**
-     * DOC nrousseau Comment method "loadSubjobs".
+     * DOC nrousseau Comment method "SetTestNodesForJunitContainer".
      * 
      * @param processType
      */
+    public void SetTestNodesForJunitContainer() {
+        if (testNodes == null) {
+            return;
+        }
+        Map<SubjobContainer, List<Node>> subjobMap = new HashMap<SubjobContainer, List<Node>>();
+        for (INode node : testNodes) {
+            SubjobContainer subjob = ((Node) node).getNodeContainer().getSubjobContainer();
+            if (subjob == null) {
+                continue;
+            }
+            if (!subjobMap.containsKey(subjob)) {
+                List<Node> testNodes = new ArrayList<Node>();
+                testNodes.add((Node) node);
+                subjobMap.put(subjob, testNodes);
+            } else {
+                subjobMap.get(subjob).add((Node) node);
+            }
+        }
+        for (List<Node> nodeList : subjobMap.values()) {
+            for (Node node : nodeList) {
+                if (node.isJunitStart()) {
+                    ((JunitContainer) node.getNodeContainer()).setTestNodes(nodeList);
+                    ((JunitContainer) node.getNodeContainer()).refreshJunitNodes();
+                }
+            }
+        }
+        // keep the code
+        // TestContainerGEFService gefService = new TestContainerGEFService();
+        // for (List<Node> nodeList : subjobMap.values()) {
+        // for (Node node : nodeList) {
+        // if (node.isJunitStart()) {
+        // List<Node> groupNodes = new ArrayList<Node>();
+        // groupNodes.addAll(gefService.caculateInput(node, node, nodeList));
+        // groupNodes.addAll(gefService.caculateOutput(node, nodeList));
+        // ((JunitContainer) node.getNodeContainer()).setTestNodes(groupNodes);
+        // ((JunitContainer) node.getNodeContainer()).refreshJunitNodes();
+        // }
+        // }
+        //
+        // }
+    }
+
     public void loadJunitContainer() {
         // junitContainer = new JunitContainer(this);
         // for (INode node : this.getGraphicalNodes()) {
@@ -286,6 +332,9 @@ public class AbstractTestContainer extends Process {
         ((TestContainer) processType).setOriginalJobID(originalJobID);
         for (INode node : testNodes) {
             OriginalNode oriNode = testConFactory.createOriginalNode();
+            if (((Node) node).isJunitStart()) {
+                oriNode.setStart(true);
+            }
             oriNode.setUniqueName(node.getUniqueName());
             oriNode.setPosX(node.getPosX());
             oriNode.setPosY(node.getPosY());
@@ -320,28 +369,26 @@ public class AbstractTestContainer extends Process {
         for (TestContainerNode testContainerNode : testContainerNodes) {
             listParamType = testContainerNode.getElementParameter();
             TestContainerInputOutputComponent component;
-            // if (testContainerProcess.isTrigger()) {
-            // ETestContainerNodeType nodeType = testContainerProcess.isInput() ? ETestContainerNodeType.TRIGGER_INPUT
-            // : ETestContainerNodeType.TRIGGER_OUTPUT;
-            // component = new TestContainerTriggerLinkComponent(nodeType);
-            // } else {
-
             ETestContainerNodeType nodeType = testContainerNode.isInput() ? ETestContainerNodeType.INPUT
                     : ETestContainerNodeType.OUTPUT;
             component = new TestContainerInputOutputComponent(nodeType);
-            // }
             nc = loadNode(testContainerNode, component, nodesHashtable, listParamType);
         }
 
         EList<OriginalNode> oriNodes = testContainerProcess.getOriginalNodes();
         String oriID = testContainerProcess.getOriginalJobID();
+        if (this.originalJobID == null) {
+            this.originalJobID = oriID;
+        }
         ProcessType process = null;
         IRepositoryViewObject repositoryNode = ProxyRepositoryFactory.getInstance().getLastVersion(oriID);
         Item item = repositoryNode.getProperty().getItem();
         if (item instanceof ProcessItem) {
             process = ((ProcessItem) item).getProcess();
         }
-
+        if (this.testNodes == null) {
+            testNodes = new ArrayList<INode>();
+        }
         for (OriginalNode oriNode : oriNodes) {
             String uniqueName = oriNode.getUniqueName();
             if (process != null) {
@@ -370,7 +417,10 @@ public class AbstractTestContainer extends Process {
                         getUnloadedNode().add(nType);
                         continue;
                     }
-                    nc = loadNode(nType, component, nodesHashtable, listParamType);
+
+                    nc = loadNode(nType, component, nodesHashtable, listParamType, oriNode.isStart());
+                    nc.setJunitStart(oriNode.isStart());
+                    testNodes.add(nc);
                     nc.setLocation(new Point(oriNode.getPosX(), oriNode.getPosY()));
                 }
             }

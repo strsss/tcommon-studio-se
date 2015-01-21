@@ -36,6 +36,7 @@ public enum ETestContainerImages implements IImage {
     JUNIT_COMPONENT_16("/icons/joblet_icon.png"), //$NON-NLS-1$
     JUNIT_TRIGGER_COMPONENT("/icons/jobletInputOutput.png"), //$NON-NLS-1$
     JUNIT_TRIGGER_COMPONENT_SMALL("/icons/joblet_icon_nb.png"), //$NON-NLS-1$
+    JUNIT_UNKNOWN("/icons/unknown.gif"), //$NON-NLS-1$
     ;
 
     private String path;

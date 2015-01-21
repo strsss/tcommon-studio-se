@@ -494,13 +494,22 @@ public interface TestcontainerPackage extends EPackage {
     int ORIGINAL_NODE__POS_Y = 2;
 
     /**
+     * The feature id for the '<em><b>Start</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ORIGINAL_NODE__START = 3;
+
+    /**
      * The number of structural features of the '<em>Original Node</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ORIGINAL_NODE_FEATURE_COUNT = 3;
+    int ORIGINAL_NODE_FEATURE_COUNT = 4;
 
 
     /**
@@ -622,6 +631,17 @@ public interface TestcontainerPackage extends EPackage {
     EAttribute getOriginalNode_PosY();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#isStart <em>Start</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Start</em>'.
+     * @see org.talend.testcontainer.core.testcontainer.OriginalNode#isStart()
+     * @see #getOriginalNode()
+     * @generated
+     */
+    EAttribute getOriginalNode_Start();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -736,6 +756,14 @@ public interface TestcontainerPackage extends EPackage {
          * @generated
          */
         EAttribute ORIGINAL_NODE__POS_Y = eINSTANCE.getOriginalNode_PosY();
+
+        /**
+         * The meta object literal for the '<em><b>Start</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ORIGINAL_NODE__START = eINSTANCE.getOriginalNode_Start();
 
     }
 

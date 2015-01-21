@@ -24,7 +24,9 @@ import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.AbstractRepositoryContentHandler;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.utils.XmiResourceManager;
+import org.talend.repository.model.RepositoryNode;
 import org.talend.testcontainer.core.testConProperties.TestConPropertiesFactory;
 import org.talend.testcontainer.core.testConProperties.TestConPropertiesPackage;
 import org.talend.testcontainer.core.testConProperties.TestContainerItem;
@@ -38,6 +40,19 @@ import org.talend.testcontainer.core.testConProperties.TestContainerItem;
 public class TestContainerRepositoryContentHandler extends AbstractRepositoryContentHandler {
 
     private XmiResourceManager xmiResourceManager = new XmiResourceManager();
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.core.model.repository.AbstractRepositoryContentHandler#addNode(org.talend.core.model.repository.
+     * ERepositoryObjectType, org.talend.repository.model.RepositoryNode,
+     * org.talend.core.model.repository.IRepositoryViewObject, org.talend.repository.model.RepositoryNode)
+     */
+    @Override
+    public void addNode(ERepositoryObjectType type, RepositoryNode recBinNode, IRepositoryViewObject repositoryObject,
+            RepositoryNode node) {
+        super.addNode(type, recBinNode, repositoryObject, node);
+    }
 
     /*
      * (non-Javadoc)

@@ -21,4 +21,7 @@ Require-Bundle: org.eclipse.ui,
  org.talend.repository.view
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.jdt.core
+Import-Package: org.eclipse.jdt.core,
+ org.talend.repository.localprovider.model
+Export-Package: org.talend.testcontainer.core.ui.util
+Bundle-Localization: plugin

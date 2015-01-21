@@ -212,6 +212,15 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getOriginalNode_Start() {
+        return (EAttribute)originalNodeEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public TestcontainerFactory getTestcontainerFactory() {
         return (TestcontainerFactory)getEFactoryInstance();
     }
@@ -248,6 +257,7 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
         createEAttribute(originalNodeEClass, ORIGINAL_NODE__UNIQUE_NAME);
         createEAttribute(originalNodeEClass, ORIGINAL_NODE__POS_X);
         createEAttribute(originalNodeEClass, ORIGINAL_NODE__POS_Y);
+        createEAttribute(originalNodeEClass, ORIGINAL_NODE__START);
     }
 
     /**
@@ -299,6 +309,7 @@ public class TestcontainerPackageImpl extends EPackageImpl implements Testcontai
         initEAttribute(getOriginalNode_UniqueName(), ecorePackage.getEString(), "uniqueName", null, 0, 1, OriginalNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getOriginalNode_PosX(), theXMLTypePackage.getInt(), "posX", null, 0, 1, OriginalNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getOriginalNode_PosY(), theXMLTypePackage.getInt(), "posY", null, 0, 1, OriginalNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getOriginalNode_Start(), ecorePackage.getEBoolean(), "start", null, 0, 1, OriginalNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         createResource(eNS_URI);

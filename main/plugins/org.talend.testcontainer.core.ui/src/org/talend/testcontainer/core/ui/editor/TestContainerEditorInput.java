@@ -37,8 +37,6 @@ import org.talend.testcontainer.core.ui.models.JobTestContainerProcess;
  */
 public class TestContainerEditorInput extends JobEditorInput {
 
-    private Boolean openedInJob;
-
     private String originalJobID;
 
     private List<INode> testNodes;
@@ -50,6 +48,11 @@ public class TestContainerEditorInput extends JobEditorInput {
      * @param load
      * @throws PersistenceException
      */
+
+    public TestContainerEditorInput(TestContainerItem processItem, boolean load) throws PersistenceException {
+        this(processItem, load, null, null, null, null);
+    }
+
     public TestContainerEditorInput(TestContainerItem processItem, boolean load, String originalJobID, List<INode> testNodes)
             throws PersistenceException {
         this(processItem, load, originalJobID, testNodes, null, null);
@@ -58,7 +61,9 @@ public class TestContainerEditorInput extends JobEditorInput {
     public TestContainerEditorInput(TestContainerItem processItem, boolean load, String originalJobID, List<INode> testNodes,
             Boolean lastVersion, Boolean readonly) throws PersistenceException {
         super(processItem, load, lastVersion, readonly);
-        init(originalJobID, testNodes);
+        if (!load) {
+            init(originalJobID, testNodes);
+        }
     }
 
     private void init(String originalJobID, List<INode> testNodes) {

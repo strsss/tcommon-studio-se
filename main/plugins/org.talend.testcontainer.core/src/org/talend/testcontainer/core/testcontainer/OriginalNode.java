@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getUniqueName <em>Unique Name</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getPosX <em>Pos X</em>}</li>
  *   <li>{@link org.talend.testcontainer.core.testcontainer.OriginalNode#getPosY <em>Pos Y</em>}</li>
+ *   <li>{@link org.talend.testcontainer.core.testcontainer.OriginalNode#isStart <em>Start</em>}</li>
  * </ul>
  * </p>
  *
@@ -100,5 +101,31 @@ public interface OriginalNode extends EObject {
      * @generated
      */
     void setPosY(int value);
+
+    /**
+     * Returns the value of the '<em><b>Start</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Start</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Start</em>' attribute.
+     * @see #setStart(boolean)
+     * @see org.talend.testcontainer.core.testcontainer.TestcontainerPackage#getOriginalNode_Start()
+     * @model
+     * @generated
+     */
+    boolean isStart();
+
+    /**
+     * Sets the value of the '{@link org.talend.testcontainer.core.testcontainer.OriginalNode#isStart <em>Start</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Start</em>' attribute.
+     * @see #isStart()
+     * @generated
+     */
+    void setStart(boolean value);
 
 } // OriginalNode
