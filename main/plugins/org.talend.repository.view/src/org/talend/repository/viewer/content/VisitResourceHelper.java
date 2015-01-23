@@ -143,7 +143,6 @@ public class VisitResourceHelper {
 
     private boolean isMatchedPath(IPath topLevelNodeWorkspaceRelativePath, IPath path) {
         int matchingFirstSegments = path.matchingFirstSegments(topLevelNodeWorkspaceRelativePath);
-
         if (matchingFirstSegments > 0
                 && (path.segmentCount() == matchingFirstSegments || matchingFirstSegments == topLevelNodeWorkspaceRelativePath
                         .segmentCount())) {

@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.core.ui;
 
+import org.eclipse.core.runtime.IPath;
 import org.talend.core.IService;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.repository.ERepositoryObjectType;
 
 /**
  * created by hwang on Jan 7, 2015 Detailled comment
@@ -20,4 +23,9 @@ import org.talend.core.IService;
  */
 public interface ITestContainerProviderService extends IService {
 
+    public boolean isMatchedPath(IPath topLevelNodeWorkspaceRelativePath, IPath path);
+
+    public boolean isTestContainerType(ERepositoryObjectType type);
+
+    public boolean isTestContainerItem(Item item);
 }

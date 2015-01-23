@@ -467,7 +467,7 @@ public class AbstractTestContainer extends Process {
      */
     @Override
     public boolean disableRunJobView() {
-        return true;
+        return false;
     }
 
     /*

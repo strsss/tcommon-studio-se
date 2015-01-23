@@ -94,6 +94,7 @@ import org.talend.core.repository.utils.RepositoryReferenceBeanUtils;
 import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.service.ICoreUIService;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.designer.business.diagram.custom.IDiagramModelService;
 import org.talend.designer.core.ICamelDesignerCoreService;
@@ -1295,6 +1296,27 @@ public class DeleteAction extends AContextualAction {
                             }
                         }
                     } else {
+                        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                            ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                                    .getDefault().getService(ITestContainerProviderService.class);
+                            if (testContainerService != null) {
+                                boolean success = true;
+                                for (IRepositoryNode child : currentJobNode.getChildren()) {
+                                    if (testContainerService.isTestContainerType(child.getObjectType())) {
+                                        try {
+                                            deleteElements(factory, deleteActionCache, (RepositoryNode) child, confirm);
+                                        } catch (Exception e) {
+                                            ExceptionHandler.process(e);
+                                            success = false;
+                                        }
+                                    }
+                                }
+                                if (!success) {
+                                    return false;
+                                }
+                            }
+                        }
+
                         // MOD qiongli 2011-5-10,bug 21189.should remove dependency after showing the question dialog of
                         // physical delete.
                         if (resChangeService != null && objToDelete != null && objToDelete.getProperty() != null) {
