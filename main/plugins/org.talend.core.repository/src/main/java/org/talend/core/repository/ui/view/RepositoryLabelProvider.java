@@ -29,8 +29,8 @@ import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.runtime.image.ImageUtils;
-import org.talend.commons.ui.runtime.image.OverlayImageProvider;
 import org.talend.commons.ui.runtime.image.ImageUtils.ICON_SIZE;
+import org.talend.commons.ui.runtime.image.OverlayImageProvider;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.context.Context;
@@ -52,6 +52,7 @@ import org.talend.core.repository.model.repositoryObject.MetadataTableRepository
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.ICDCProviderService;
 import org.talend.core.ui.IReferencedProjectService;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.ui.images.RepositoryImageProvider;
 import org.talend.repository.ProjectManager;
@@ -100,8 +101,18 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
             if (allowVerchange) {
                 string.append(" " + object.getVersion()); //$NON-NLS-1$
             }
+
+            boolean isJunit = false;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                        .getDefault().getService(ITestContainerProviderService.class);
+                if (testContainerService != null) {
+                    isJunit = testContainerService.isTestContainerType(object.getRepositoryObjectType());
+                }
+            }
+
             // nodes in the recycle bin
-            if (object.isDeleted()) {
+            if (object.isDeleted() && !isJunit) {
                 String oldPath = object.getPath();
                 if (oldPath != null && !"".equals(oldPath)) {
                     string.append(" (" + oldPath + ")"); //$NON-NLS-1$ //$NON-NLS-2$

@@ -60,7 +60,6 @@ import org.talend.core.repository.ui.dialog.ItemReferenceDialog;
 import org.talend.core.repository.utils.AbstractResourceChangesService;
 import org.talend.core.repository.utils.RepositoryNodeDeleteManager;
 import org.talend.core.repository.utils.TDQServiceRegister;
-import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.ICamelDesignerCoreService;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
@@ -280,17 +279,6 @@ public class EmptyRecycleBinAction extends AContextualAction {
                                         RepositoryNodeUtilities.getFolderPath(currentNode.getObject().getProperty().getItem()),
                                         true);
                             } else {
-                                if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
-                                    ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
-                                            .getDefault().getService(ITestContainerProviderService.class);
-                                    if (testContainerService != null) {
-                                        for (IRepositoryNode child : currentNode.getChildren()) {
-                                            if (testContainerService.isTestContainerType(child.getObjectType())) {
-                                                deleteElements(factory, (RepositoryNode) child);
-                                            }
-                                        }
-                                    }
-                                }
                                 // Handle nodes from extension point.
                                 for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
                                     handler.deleteNode(objToDelete);

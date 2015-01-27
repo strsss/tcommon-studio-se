@@ -57,6 +57,7 @@ import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.process.JobInfo;
 import org.talend.core.model.process.ReplaceNodesInProcessProvider;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -75,10 +76,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.ElementParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
-import org.talend.designer.runprocess.IProcessor;
-import org.talend.designer.runprocess.IRunProcessService;
-import org.talend.designer.runprocess.ItemCacheManager;
-import org.talend.designer.runprocess.ProcessorException;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 
@@ -1121,7 +1118,10 @@ public class ProcessorUtilities {
         ProcessItem pItem = null;
 
         if (process instanceof IProcess2) {
-            pItem = (ProcessItem) ((IProcess2) process).getProperty().getItem();
+            Item item = ((IProcess2) process).getProperty().getItem();
+            if (item instanceof ProcessItem) {
+                pItem = (ProcessItem) ((IProcess2) process).getProperty().getItem();
+            }
         }
         JobInfo jobInfo;
         if (pItem != null) { // ProcessItem is null for shadow process

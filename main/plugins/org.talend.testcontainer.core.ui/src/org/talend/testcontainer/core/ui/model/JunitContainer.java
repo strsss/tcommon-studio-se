@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.talend.core.model.process.IConnection;
 import org.talend.core.model.process.IElement;
-import org.talend.core.model.process.INode;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.designer.core.ui.editor.nodecontainer.NodeContainer;
 import org.talend.designer.core.ui.editor.nodes.Node;
+import org.talend.testcontainer.core.ui.models.TestContainerInputOutputComponent;
 
 public class JunitContainer extends NodeContainer {
 
@@ -102,19 +103,44 @@ public class JunitContainer extends NodeContainer {
     public void refreshJunitNodes() {
         this.nodeContainers.clear();
         this.junittElements.clear();
-        for (INode inode : this.testNodes) {
-            if ((inode instanceof Node)) {
-                Node temNode = (Node) inode;
-                temNode.setReadOnly(true);
-                this.nodeContainers.add(temNode.getNodeContainer());
+        List<Node> nodeList = new ArrayList<Node>();
+        nodeList.addAll(getInputComponentNodes(this.node));
+        nodeList.addAll(getOutputComponentNodes(this.node));
+        nodeList.addAll(testNodes);
+        for (Node temNode : nodeList) {
+            this.nodeContainers.add(temNode.getNodeContainer());
+            this.junittElements.add(temNode);
+            this.junittElements.add(temNode.getNodeLabel());
+            this.junittElements.add(temNode.getNodeError());
+            this.junittElements.add(temNode.getNodeProgressBar());
+        }
+        for (Node temNode : testNodes) {
+            temNode.setReadOnly(true);
+        }
+    }
 
-                this.junittElements.add(temNode);
-                this.junittElements.add(temNode.getNodeLabel());
-                this.junittElements.add(temNode.getNodeError());
-                this.junittElements.add(temNode.getNodeProgressBar());
-
+    private List<Node> getInputComponentNodes(Node inNode) {
+        List<Node> nodeList = new ArrayList<Node>();
+        for (IConnection conn : inNode.getIncomingConnections()) {
+            if (conn.getSource().getComponent() instanceof TestContainerInputOutputComponent) {
+                nodeList.add((Node) conn.getSource());
+            } else {
+                nodeList.addAll(getInputComponentNodes((Node) conn.getSource()));
             }
         }
+        return nodeList;
+    }
+
+    private List<Node> getOutputComponentNodes(Node outNode) {
+        List<Node> nodeList = new ArrayList<Node>();
+        for (IConnection conn : outNode.getOutgoingConnections()) {
+            if (conn.getTarget().getComponent() instanceof TestContainerInputOutputComponent) {
+                nodeList.add((Node) conn.getTarget());
+            } else {
+                nodeList.addAll(getOutputComponentNodes((Node) conn.getTarget()));
+            }
+        }
+        return nodeList;
     }
 
     @Override

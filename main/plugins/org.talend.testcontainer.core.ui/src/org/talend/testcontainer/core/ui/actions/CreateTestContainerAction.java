@@ -346,6 +346,9 @@ public class CreateTestContainerAction extends CustomExternalActions {
         if (!canCal) {
             return canCal;
         }
+        if (getWorkProcess() == null) {
+            return false;
+        }
         if (!(getWorkProcess().getProperty().getItem() instanceof ProcessItem)) {
             return false;
         }

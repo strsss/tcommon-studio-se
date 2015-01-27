@@ -43,6 +43,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.designer.core.ui.editor.connections.Connection;
 import org.talend.designer.core.ui.editor.nodes.Node;
+import org.talend.designer.core.ui.editor.notes.Note;
 import org.talend.designer.core.ui.editor.process.Process;
 import org.talend.designer.core.ui.editor.subjobcontainer.SubjobContainer;
 import org.talend.testcontainer.core.testConProperties.TestContainerItem;
@@ -65,6 +66,8 @@ public class AbstractTestContainer extends Process {
     protected List<INode> testNodes;
 
     protected JunitContainer junitContainer = null;
+
+    protected boolean readOnly;
 
     /**
      * Getter for image.
@@ -426,7 +429,7 @@ public class AbstractTestContainer extends Process {
             }
         }
         if (process != null) {
-            loadConnections(process, nodesHashtable);
+            loadConnections(process, nodesHashtable, testNodes);
         }
     }
 
@@ -531,6 +534,37 @@ public class AbstractTestContainer extends Process {
 
     public JunitContainer getJunitContainer() {
         return this.junitContainer;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.designer.core.ui.editor.process.Process#setReadOnly(boolean)
+     */
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+
+        for (INode node : nodes) {
+            node.setReadOnly(readOnly || node.isReadOnly());
+            for (IConnection connec : (List<IConnection>) node.getOutgoingConnections()) {
+                connec.setReadOnly(readOnly);
+            }
+        }
+
+        for (Note note : notes) {
+            note.setReadOnly(readOnly);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.designer.core.ui.editor.process.Process#isReadOnly()
+     */
+    @Override
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
 }

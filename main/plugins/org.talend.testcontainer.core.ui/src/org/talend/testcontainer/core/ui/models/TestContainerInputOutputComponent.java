@@ -237,7 +237,7 @@ public class TestContainerInputOutputComponent implements IComponent {
         param.setCategory(EComponentCategory.BASIC);
         param.setContext(EConnectionType.FLOW_MAIN.getName());
         param.setNumRow(1);
-        param.setReadOnly(false);
+        param.setReadOnly(true);
         param.setShow(true);
         listParam.add(param);
 
@@ -257,7 +257,7 @@ public class TestContainerInputOutputComponent implements IComponent {
         newParam.setFieldType(EParameterFieldType.TECHNICAL);
         newParam.setShow(true);
         newParam.setShowIf(parentParam.getName() + " =='" + EmfComponent.REPOSITORY + "'"); //$NON-NLS-1$ //$NON-NLS-2$
-        newParam.setReadOnly(false);
+        newParam.setReadOnly(true);
         newParam.setNotShowIf(""); //$NON-NLS-1$
 
         newParam.setContext(context);
@@ -274,7 +274,7 @@ public class TestContainerInputOutputComponent implements IComponent {
         newParam.setValue(""); //$NON-NLS-1$
         newParam.setShow(false);
         newParam.setRequired(true);
-        newParam.setReadOnly(false);
+        newParam.setReadOnly(true);
         newParam.setShowIf(""); //$NON-NLS-1$
         newParam.setNotShowIf(""); //$NON-NLS-1$
         newParam.setContext(context);

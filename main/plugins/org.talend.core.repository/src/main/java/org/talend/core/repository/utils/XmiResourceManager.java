@@ -49,6 +49,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.emf.EmfHelper;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.ByteArray;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.DelimitedFileConnectionItem;
@@ -71,6 +72,7 @@ import org.talend.core.model.properties.helper.ByteArrayResource;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.utils.ResourceFilenameHelper.FileName;
+import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.repository.ProjectManager;
 
@@ -579,7 +581,17 @@ public class XmiResourceManager {
                     }
                 }
             }
-            if (property.getItem() instanceof ProcessItem || property.getItem() instanceof JobletProcessItem) {
+
+            boolean isTestContainer = false;
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITestContainerProviderService.class)) {
+                ITestContainerProviderService testContainerService = (ITestContainerProviderService) GlobalServiceRegister
+                        .getDefault().getService(ITestContainerProviderService.class);
+                if (testContainerService != null) {
+                    isTestContainer = testContainerService.isTestContainerItem(property.getItem());
+                }
+            }
+
+            if (property.getItem() instanceof ProcessItem || property.getItem() instanceof JobletProcessItem || isTestContainer) {
                 if (property.eResource() != null) {
                     Resource screenshotResource = getScreenshotResource(property.getItem());
                     if (screenshotResource != null) {

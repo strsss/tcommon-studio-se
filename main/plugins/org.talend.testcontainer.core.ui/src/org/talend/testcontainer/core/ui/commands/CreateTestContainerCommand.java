@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
@@ -224,7 +223,6 @@ public class CreateTestContainerCommand extends Command {
                 designerCoreUIService.executeCommand(getTestContainerProcess(), new Command() {
                 });
             }
-            editor.doSave(new NullProgressMonitor());
 
         }
     }
