@@ -170,6 +170,14 @@ public class RepositoryLabelProvider extends LabelProvider implements IColorProv
                 }
                 return label;
             }
+            if (repositoryObjectType == ERepositoryObjectType.JOB_DOC || repositoryObjectType == ERepositoryObjectType.JOBLET_DOC
+                    || repositoryObjectType == ERepositoryObjectType.valueOf(ERepositoryObjectType.class, "ROUTE_DOC")) {
+                // TDI-31655:documention node need to update property for its structure to get the correct text
+                object.getProperty();
+                if (object.isModified()) {
+                    label = "> "; //$NON-NLS-1$
+                }
+            }
             label = label + getText(object);
             if (!mainProject.getLabel().equals(projectLabel) && PluginChecker.isRefProjectLoaded()) {
                 IReferencedProjectService service = (IReferencedProjectService) GlobalServiceRegister.getDefault().getService(
