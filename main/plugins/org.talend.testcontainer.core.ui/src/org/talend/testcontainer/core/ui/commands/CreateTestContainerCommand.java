@@ -152,14 +152,11 @@ public class CreateTestContainerCommand extends Command {
 
             @Override
             protected void run() throws LoginException, PersistenceException {
-                // TODO Auto-generated method stub
                 // create junit
                 createElementsForJunit();
+                ((AbstractTestContainer) getTestContainerProcess()).loadJunitContainer();
                 // save and check junit process
                 saveAndCheckJunitProcess();
-                // check problem.
-                checkWorkProcess();
-                ((AbstractTestContainer) getTestContainerProcess()).loadJunitContainer();
             }
         });
     }
@@ -294,6 +291,7 @@ public class CreateTestContainerCommand extends Command {
                                 if (sourceTable != null) {
                                     IMetadataTable inputOutputTable = inputOutputNode.getMetadataTable(inputOutputUniqueName);
                                     MetadataToolHelper.copyTable(sourceTable, inputOutputTable);
+                                    inputOutputTable.setReadOnly(true);
                                 }
                             }
                             // create connection.

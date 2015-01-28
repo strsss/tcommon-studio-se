@@ -42,6 +42,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.designer.core.ui.editor.connections.Connection;
+import org.talend.designer.core.ui.editor.nodecontainer.NodeContainer;
 import org.talend.designer.core.ui.editor.nodes.Node;
 import org.talend.designer.core.ui.editor.notes.Note;
 import org.talend.designer.core.ui.editor.process.Process;
@@ -210,6 +211,13 @@ public class AbstractTestContainer extends Process {
     }
 
     public void loadJunitContainer() {
+        List<NodeContainer> nodeCons = getAllNodeContainers();
+        for (NodeContainer nodeCon : nodeCons) {
+            if (nodeCon instanceof JunitContainer) {
+                ((JunitContainer) nodeCon).refreshJunitNodes();
+                nodeCon.getSubjobContainer().updateSubjobContainer();
+            }
+        }
         // junitContainer = new JunitContainer(this);
         // for (INode node : this.getGraphicalNodes()) {
         // for (INode testNode : testNodes) {
@@ -339,8 +347,13 @@ public class AbstractTestContainer extends Process {
                 oriNode.setStart(true);
             }
             oriNode.setUniqueName(node.getUniqueName());
-            oriNode.setPosX(node.getPosX());
-            oriNode.setPosY(node.getPosY());
+            for (INode inode : this.getGraphicalNodes()) {
+                if (inode.getUniqueName().equals(node.getUniqueName())) {
+                    oriNode.setPosX(inode.getPosX());
+                    oriNode.setPosY(inode.getPosY());
+                    break;
+                }
+            }
             oriList.add(oriNode);
         }
     }

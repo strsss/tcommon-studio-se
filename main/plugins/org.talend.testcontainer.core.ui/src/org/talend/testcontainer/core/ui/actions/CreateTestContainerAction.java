@@ -550,8 +550,6 @@ public class CreateTestContainerAction extends CustomExternalActions {
                                                 refactorCmd.setNoteParts(noteParts);
                                                 refactorCmd.setInputOutputNodesParameters(inputNodeParts, outputNodeParts);
                                                 refactorCmd.setInputOutputNodesMap(inputNodePartsMap, outputNodePartsMap);
-
-                                                // getCommandStack().execute(refactorCmd); // work in current process
                                                 refactorCmd.execute();
                                                 loadedProcess.getUpdateManager().updateAll();
                                             }

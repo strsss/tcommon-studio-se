@@ -551,7 +551,7 @@ public class TestContainerInputOutputComponent implements IComponent {
      */
     @Override
     public boolean isDataAutoPropagated() {
-        return true;
+        return false;
     }
 
     /*
@@ -590,7 +590,7 @@ public class TestContainerInputOutputComponent implements IComponent {
      */
     @Override
     public boolean isSchemaAutoPropagated() {
-        return true;
+        return false;
     }
 
     /*
@@ -850,6 +850,11 @@ public class TestContainerInputOutputComponent implements IComponent {
 
     @Override
     public boolean isLog4JEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isAllowedPropagated() {
         return false;
     }
 

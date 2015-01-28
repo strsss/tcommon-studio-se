@@ -113,32 +113,25 @@ public class JunitContainerPart extends NodeContainerPart {
     @Override
     public void propertyChange(PropertyChangeEvent changeEvent) {
         String prop = changeEvent.getPropertyName();
-        boolean needUpdateSubjob = false;
         if (JunitContainer.UPDATE_JUNIT_CONTENT.equals(prop)) {
             refresh();
             List<AbstractGraphicalEditPart> childrens = getChildren();
             for (AbstractGraphicalEditPart part : childrens) {
                 part.refresh();
             }
-            needUpdateSubjob = true;
-        } else { // can only be UPDATE_SUBJOB_DATA, need to modify if some others are added
-            if (getFigure() instanceof JunitContainerFigure) {
-                ((JunitContainerFigure) getFigure()).updateData();
-                refreshVisuals();
-            }
-        }
-
-        if (changeEvent.getPropertyName().equals(EParameterName.ACTIVATE.getName())) {
+            refreshVisuals();
+        } else if (prop.equals(EParameterName.ACTIVATE.getName())) {
             ((JunitContainerFigure) figure).repaint();
             refreshVisuals();
-        }
-        if (changeEvent.getPropertyName().equals(Node.PERFORMANCE_DATA)) {
+        } else if (prop.equals(Node.PERFORMANCE_DATA)) {
             refreshVisuals();
-        }
-
-        if (changeEvent.getPropertyName().equals(Node.UPDATE_STATUS)) {
+        } else if (prop.equals(Node.UPDATE_STATUS)) {
             Node node = ((NodeContainer) getModel()).getNode();
             ((JunitContainerFigure) getFigure()).updateStatus(node.getStatus());
+        } else {
+            if (getFigure() instanceof JunitContainerFigure) {
+                ((JunitContainerFigure) getFigure()).updateData();
+            }
         }
     }
 

@@ -117,6 +117,11 @@ public class JunitContainer extends NodeContainer {
         for (Node temNode : testNodes) {
             temNode.setReadOnly(true);
         }
+        updateJunitContainer();
+    }
+
+    public void updateJunitContainer() {
+        fireStructureChange(UPDATE_JUNIT_CONTENT, this);
     }
 
     private List<Node> getInputComponentNodes(Node inNode) {
