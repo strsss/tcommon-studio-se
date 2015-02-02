@@ -83,6 +83,7 @@ public class Curve2DBezier extends Curve2D {
     }
 
     // computeSegments
+    @Override
     void computeSegments() {
         Point2DList pl = (Point2DList) plist;
 
@@ -99,8 +100,9 @@ public class Curve2DBezier extends Curve2D {
         }
 
         tmp = new double[size + 1];
-        for (int i = 0; i <= size; i++)
-            tmp[i] = (double) time * i / size;
+        for (int i = 0; i <= size; i++) {
+            tmp[i] = time * i / size;
+        }
 
         double bt;
 
@@ -113,9 +115,9 @@ public class Curve2DBezier extends Curve2D {
             x = 0;
             y = 0;
             for (int i = 0; i <= n; i++) {
-                bt = (double) (Math.comb(n, i) * Math.pow(1 - tmp[t], n - i) * Math.pow(tmp[t], i));
-                x += ((Point2D) pl.get(i)).getX() * bt;
-                y += ((Point2D) pl.get(i)).getY() * bt;
+                bt = Math.comb(n, i) * Math.pow(1 - tmp[t], n - i) * Math.pow(tmp[t], i);
+                x += pl.get(i).getX() * bt;
+                y += pl.get(i).getY() * bt;
             }
 
             if (y >= yMinVisiblePoints && y <= yMaxVisiblePoints || firstInvisiblePoint || pointsTmp.length > 4) {
@@ -145,13 +147,17 @@ public class Curve2DBezier extends Curve2D {
             // for (int i = pointsTmp.length - 4; i < pointsTmp.length; i++) {
             // System.out.println(pointsTmp[i]);
             // }
-            //            
-            //            
+            //
+            //
             // System.out.println("this.points=");
             // for (int i = points.length - 4; i < points.length; i++) {
             // System.out.println(points[i]);
             // }
         }
+    }
+
+    public int[] getPoints() {
+        return this.points;
     }
 
     // double BezierTerm(int i, int t) {
@@ -175,7 +181,9 @@ public class Curve2DBezier extends Curve2D {
             this.yMaxVisiblePoints = yMaxVisiblePoints;
             computeSegments();
         }
-        gc.drawPolyline(points);
+        if (gc != null) {
+            gc.drawPolyline(points);
+        }
         // System.out.println("lastPoint=" + points[points.length - 2] + "," + points[points.length - 1]);
     }
 
