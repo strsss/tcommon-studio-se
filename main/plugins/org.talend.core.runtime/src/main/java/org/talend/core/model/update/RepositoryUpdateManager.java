@@ -101,6 +101,8 @@ public abstract class RepositoryUpdateManager {
 
     private Map<String, String> schemaRenamedMap = new HashMap<String, String>();
 
+    private Map<String, String> columnRenamedMap = new HashMap<String, String>();
+
     /**
      * for context group
      */
@@ -214,6 +216,14 @@ public abstract class RepositoryUpdateManager {
 
     public void setSchemaRenamedMap(Map<String, String> schemaRenamedMap) {
         this.schemaRenamedMap = schemaRenamedMap;
+    }
+
+    public Map<String, String> getColumnRenamedMap() {
+        return this.columnRenamedMap;
+    }
+
+    public void setColumnRenamedMap(Map<String, String> columnRenamedMap) {
+        this.columnRenamedMap = columnRenamedMap;
     }
 
     public abstract Set<? extends IUpdateItemType> getTypes();
@@ -332,6 +342,7 @@ public abstract class RepositoryUpdateManager {
                 openNoModificationDialog();
             }
         }
+        getColumnRenamedMap().clear();
         return false;
     }
 
@@ -1120,6 +1131,10 @@ public abstract class RepositoryUpdateManager {
                     if (getSchemaRenamedMap() != null && !getSchemaRenamedMap().isEmpty()) {
                         manager.setSchemaRenamedMap(getSchemaRenamedMap());
                     }
+
+                    if (getColumnRenamedMap() != null && !getColumnRenamedMap().isEmpty()) {
+                        manager.setColumnRenamedMap(getColumnRenamedMap());
+                    }
                     if (getDeletedOrReselectTablesMap() != null && !getDeletedOrReselectTablesMap().isEmpty()) {
                         manager.setDeletedOrReselectTablesMap(getDeletedOrReselectTablesMap());
                     }
@@ -1296,7 +1311,7 @@ public abstract class RepositoryUpdateManager {
     }
 
     /**
-     * DOC PLV Comment method "updateFileConnection".
+     * DOC PLV Comment method "updateFileConnection".For now only used in File xml connecton
      * 
      * @param connectionItem
      * @param oldMetadataTable
@@ -1333,6 +1348,10 @@ public abstract class RepositoryUpdateManager {
             }
 
         };
+
+        if (!ConnectionColumnUpdateManager.getInstance().getColumnRenameMap().isEmpty()) {
+            repositoryUpdateManager.setColumnRenamedMap(ConnectionColumnUpdateManager.getInstance().getColumnRenameMap());
+        }
         return repositoryUpdateManager.doWork(show, onlySimpleShow);
     }
 
@@ -1881,6 +1900,11 @@ public abstract class RepositoryUpdateManager {
 
         // set renamed schema
         repositoryUpdateManager.setSchemaRenamedMap(schemaRenamedMap);
+
+        // set rename column
+        if (!ConnectionColumnUpdateManager.getInstance().getColumnRenameMap().isEmpty()) {
+            repositoryUpdateManager.setColumnRenamedMap(ConnectionColumnUpdateManager.getInstance().getColumnRenameMap());
+        }
 
         return repositoryUpdateManager.doWork(show, onlySimpleShow);
     }

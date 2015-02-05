@@ -40,6 +40,7 @@ import org.talend.commons.utils.data.bean.IBeanPropertyAccessors;
 import org.talend.commons.utils.data.list.ListenableListEvent;
 import org.talend.commons.utils.data.list.UniqueStringGenerator;
 import org.talend.core.model.metadata.builder.connection.SchemaTarget;
+import org.talend.core.model.update.ConnectionColumnUpdateManager;
 import org.talend.core.ui.targetschema.editor.XmlExtractorFieldModel;
 import org.talend.repository.metadata.i18n.Messages;
 
@@ -176,10 +177,12 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
         column.setTitle(Messages.getString("ExtractionFieldsWithXPathEditorView.columnTitle.xPath")); //$NON-NLS-1$
         column.setBeanPropertyAccessors(new IBeanPropertyAccessors<SchemaTarget, String>() {
 
+            @Override
             public String get(SchemaTarget bean) {
                 return bean.getRelativeXPathQuery();
             }
 
+            @Override
             public void set(SchemaTarget bean, String value) {
                 bean.setRelativeXPathQuery(value);
             }
@@ -223,11 +226,16 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
         column.setTitle(Messages.getString("ExtractionFieldsWithXPathEditorView.columnTitle.columnName")); //$NON-NLS-1$
         column.setBeanPropertyAccessors(new IBeanPropertyAccessors<SchemaTarget, String>() {
 
+            @Override
             public String get(SchemaTarget bean) {
                 return bean.getTagName();
             }
 
+            @Override
             public void set(SchemaTarget bean, String value) {
+                if (!value.equals(bean.getTagName())) {
+                    ConnectionColumnUpdateManager.getInstance().addNewName(value, bean.getTagName());
+                }
                 bean.setTagName(value);
             }
 
@@ -295,8 +303,9 @@ public class ExtractionFieldsWithXPathEditorView extends AbstractDataTableEditor
             if (path == null) {
                 path = "";
             }
-            if (name == null)
+            if (name == null) {
                 name = "";
+            }
             if (names.contains(name)) {
                 conflictNames.add(name);
             } else {

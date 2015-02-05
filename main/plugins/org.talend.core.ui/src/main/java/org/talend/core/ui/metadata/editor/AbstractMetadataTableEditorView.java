@@ -54,6 +54,7 @@ import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.core.model.update.ConnectionColumnUpdateManager;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.metadata.celleditor.JavaTypeComboValueAdapter;
 import org.talend.core.ui.proposal.JavaSimpleDateFormatProposalProvider;
@@ -712,6 +713,9 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
 
             @Override
             public void newValidValueTyped(int itemIndex, Object previousValue, Object newValue, CELL_EDITOR_STATE state) {
+                if (!newValue.equals(previousValue)) {
+                    ConnectionColumnUpdateManager.getInstance().addNewName((String) newValue, (String) previousValue);
+                }
             }
 
             @Override
