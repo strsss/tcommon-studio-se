@@ -156,10 +156,6 @@ public class Curve2DBezier extends Curve2D {
         }
     }
 
-    public int[] getPoints() {
-        return this.points;
-    }
-
     // double BezierTerm(int i, int t) {
     // return (double) (Math.comb(n, i) * Math.pow(1 - tmp[t], n - i) * Math.pow(tmp[t], i));
     // }
@@ -181,9 +177,7 @@ public class Curve2DBezier extends Curve2D {
             this.yMaxVisiblePoints = yMaxVisiblePoints;
             computeSegments();
         }
-        if (gc != null) {
-            gc.drawPolyline(points);
-        }
+        gc.drawPolyline(points);
         // System.out.println("lastPoint=" + points[points.length - 2] + "," + points[points.length - 1]);
     }
 
