@@ -507,7 +507,7 @@ public final class ParameterValueUtil {
                 replacedStrings.put(s, s);
             }
         }
-        if (split.length == 1) {
+        if (split.length == 1 && split[0].length() == value.length()) {
             returnValue.append(replacedStrings.get(split[0]));
         }
         // obtain consts & concat the consts with the variables
