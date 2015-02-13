@@ -54,6 +54,7 @@ import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.properties.Item;
 import org.talend.core.prefs.ITalendCorePrefConstants;
 import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.context.model.ContextTabChildModel;
@@ -642,18 +643,21 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
         }
         if (contextManager != null) {
             List<IContext> contexts = contextManager.getListContext();
-            boolean needRefresh = false;
             helper.initHelper(contextManager);
+            boolean needRefresh = false;
             for (IContext context : contexts) {
                 for (IContextParameter param : context.getContextParameterList()) {
                     if (!param.isBuiltIn()) {
-                        ContextItem item = helper.getContextItemById(param.getSource());
-                        if (item == null) { // source not found
-                            needRefresh = true;
-                            param.setSource(IContextParameter.BUILT_IN);
-                            propagateType(contextManager, param);
+                        // TDI-31787:the context parameter's source can be either from context or joblet
+                        Item sourceItem = ContextUtils.getRepositoryContextItemById(param.getSource());
+                        if (sourceItem instanceof ContextItem) {
+                            ContextItem item = helper.getContextItemById(param.getSource());
+                            if (item == null) { // source not found
+                                needRefresh = true;
+                                param.setSource(IContextParameter.BUILT_IN);
+                                propagateType(contextManager, param);
+                            }
                         }
-
                     }
                 }
             }
