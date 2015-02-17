@@ -488,12 +488,15 @@ public class TreeUtil {
 
     }
 
-    public static List<FOXTreeNode> getFoxTreeNodesForXmlMap(String filePath, String absoluteXPathQuery) throws Exception {
+    public static List<FOXTreeNode> getFoxTreeNodesForXmlMap(String filePath, String absoluteXPathQuery, boolean includeAbsSubs)
+            throws Exception {
+
         List<FOXTreeNode> list = new ArrayList<FOXTreeNode>();
         if (filePath == null) {
             return list;
         }
         XSDPopulationUtil2 popUtil = new XSDPopulationUtil2();
+        popUtil.setIncludeAbsSubs(includeAbsSubs);
         if (filePath.endsWith(".zip")) {
             // unzip the file than add all treenode from unzip file
             Project project = ProjectManager.getInstance().getCurrentProject();
@@ -578,7 +581,7 @@ public class TreeUtil {
             }
         } else if (XmlUtil.isXSDFile(filePath)) {
             XSDSchema xsModel = getXSDSchema(filePath);
-            List<ATreeNode> allTreeNodes = new XSDPopulationUtil2().getAllRootNodes(xsModel);
+            List<ATreeNode> allTreeNodes = popUtil.getAllRootNodes(xsModel);
             ATreeNode selectedTreeNode = null;
             if (allTreeNodes != null && !allTreeNodes.isEmpty()) {
                 if (allTreeNodes.size() > 1) {
@@ -616,12 +619,17 @@ public class TreeUtil {
                 }
 
                 // list = getFoxTreeNodesByRootNode(xsModel, selectedTreeNode);
-                list = getFoxTreeNodesByRootNode(xsModel, selectedTreeNode, false, true, true);
+                list = getFoxTreeNodesByRootNode(popUtil, xsModel, selectedTreeNode, false, true, true);
             }
         } else {
             getFoxTreeNodesForXmlMap(filePath, list);
         }
         return list;
+
+    }
+
+    public static List<FOXTreeNode> getFoxTreeNodesForXmlMap(String filePath, String absoluteXPathQuery) throws Exception {
+        return getFoxTreeNodesForXmlMap(filePath, absoluteXPathQuery, false);
     }
 
     private static void getFoxTreeNodesForXmlMap(String filePath, List<FOXTreeNode> list) throws OdaException,

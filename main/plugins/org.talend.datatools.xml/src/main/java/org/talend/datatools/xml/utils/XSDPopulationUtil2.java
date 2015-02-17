@@ -70,6 +70,8 @@ public class XSDPopulationUtil2 {
 
     private boolean supportSubstitution = false;
 
+    private boolean includeAbsSubs = false;
+
     private Map<XSDElementDeclaration, ATreeNode> particleToTreeNode = new HashMap<XSDElementDeclaration, ATreeNode>();
 
     ResourceSet resourceSet = new ResourceSetImpl();
@@ -306,11 +308,11 @@ public class XSDPopulationUtil2 {
             boolean resolvedAsComplex = false;
             if (typeDef instanceof XSDComplexTypeDefinition) {
                 XSDTypeDefinition xsdTypeDefinition = typeDef;
-                    String path = currentPath + elementName + "/";
-                    if (xsdTypeDefinition != null && xsdTypeDefinition.getName() != null) {
-                        partNode.setDataType(xsdTypeDefinition.getQName());
-                    }
-                    addComplexTypeDetails(xsdSchema, partNode, xsdTypeDefinition, prefix, namespace, path);
+                String path = currentPath + elementName + "/";
+                if (xsdTypeDefinition != null && xsdTypeDefinition.getName() != null) {
+                    partNode.setDataType(xsdTypeDefinition.getQName());
+                }
+                addComplexTypeDetails(xsdSchema, partNode, xsdTypeDefinition, prefix, namespace, path);
                 resolvedAsComplex = true;
             } else if (typeDef.getTargetNamespace() != null) {
                 resolvedAsComplex = true;
@@ -632,7 +634,7 @@ public class XSDPopulationUtil2 {
                 parentNode.setValue(oldValue + SUBS);
                 Object[] originalChildren = parentNode.getChildren();
                 parentNode.removeAllChildren();
-                if (!elementDeclaration.isAbstract()) {
+                if (!elementDeclaration.isAbstract() || includeAbsSubs) {
                     ATreeNode cloneNode = new ATreeNode();
                     BeanUtils.copyProperties(cloneNode, parentNode);
                     cloneNode.setSubstitution(false);
@@ -746,5 +748,14 @@ public class XSDPopulationUtil2 {
 
     public void setEnableGeneratePrefix(boolean enableGeneratePrefix) {
         this.enableGeneratePrefix = enableGeneratePrefix;
+    }
+
+    /**
+     * Sets the includeAbsSubs.
+     * 
+     * @param includeAbsSubs the includeAbsSubs to set
+     */
+    public void setIncludeAbsSubs(boolean includeAbsSubs) {
+        this.includeAbsSubs = includeAbsSubs;
     }
 }
