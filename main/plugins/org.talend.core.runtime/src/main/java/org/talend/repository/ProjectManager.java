@@ -208,7 +208,7 @@ public final class ProjectManager {
                         .getReferencedProjects(this.getCurrentProject());
                 if (rProjects != null) {
                     for (org.talend.core.model.properties.Project p : rProjects) {
-                        Project project = new Project(p);
+                        Project project = new Project(p, false);
                         allReferencedprojects.add(project);
                         resolveSubRefProject(p, allReferencedprojects);
                     }
