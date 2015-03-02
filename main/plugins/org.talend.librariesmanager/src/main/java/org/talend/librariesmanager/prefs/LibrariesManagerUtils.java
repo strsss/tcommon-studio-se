@@ -14,16 +14,20 @@ package org.talend.librariesmanager.prefs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
+import org.talend.core.model.process.INode;
+import org.talend.designer.core.IDesignerCoreService;
 import org.talend.librariesmanager.model.ModulesNeededProvider;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  */
 public class LibrariesManagerUtils {
 
@@ -39,6 +43,11 @@ public class LibrariesManagerUtils {
         return Platform.getConfigurationLocation().getURL().getFile() + "lib/java";
     }
 
+    /**
+     *
+     * @deprecated should use getNotInstalledModules(INode) instead.
+     */
+    @Deprecated
     public static List<ModuleNeeded> getNotInstalledModules(List<ModuleNeeded> modules) {
         List<ModuleNeeded> updatedModules = new ArrayList<ModuleNeeded>();
         // get module from provider incase it is rested
@@ -55,6 +64,35 @@ public class LibrariesManagerUtils {
                         break;
                     }
                 }
+            }
+        }
+        return updatedModules;
+    }
+
+    public static List<ModuleNeeded> getNotInstalledModules(INode node) {
+        List<ModuleNeeded> updatedModules = new ArrayList<ModuleNeeded>();
+
+        List<ModuleNeeded> nodeModulesList = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
+            IDesignerCoreService service = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(
+                    IDesignerCoreService.class);
+            Set<ModuleNeeded> neededLibraries = service.getNeededModules(node, false);
+            nodeModulesList = new ArrayList<ModuleNeeded>(neededLibraries);
+        } else {
+            nodeModulesList = node.getModulesNeeded();
+        }
+
+        List<ModuleNeeded> modulesNeeded = ModulesNeededProvider.getModulesNeeded();
+        for (ModuleNeeded module : modulesNeeded) {
+            for (ModuleNeeded current : nodeModulesList) {
+                if (current.getContext().equals(module.getContext()) && current.getModuleName().equals(module.getModuleName())) {
+                    if (module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED
+                            && current.isRequired(node.getElementParameters())) {
+                        updatedModules.add(current);
+                        break;
+                    }
+                }
+
             }
         }
         return updatedModules;

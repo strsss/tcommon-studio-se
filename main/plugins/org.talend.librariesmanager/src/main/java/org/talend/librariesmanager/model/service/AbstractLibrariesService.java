@@ -63,9 +63,9 @@ import org.talend.repository.model.IRepositoryService;
 
 /**
  * DOC smallet class global comment. Detailled comment <br/>
- * 
+ *
  * $Id$
- * 
+ *
  */
 public abstract class AbstractLibrariesService implements ILibrariesService {
 
@@ -230,11 +230,11 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
 
     /**
      * DOC ycbai Comment method "synJavaLibs".
-     * 
+     *
      * <p>
      * Synchronize the lib of the same name with this lib in .Java\lib.
      * </p>
-     * 
+     *
      * @param lib
      * @throws IOException
      */
@@ -272,22 +272,14 @@ public abstract class AbstractLibrariesService implements ILibrariesService {
     @Override
     public List<Problem> getProblems(INode node, IElement element) {
         List<Problem> toReturn = new ArrayList<Problem>();
-        List<ModuleNeeded> list = node.getComponent().getModulesNeeded();
-        List<ModuleNeeded> modulesNeeded = ModulesNeededProvider.getModulesNeeded();
-        for (ModuleNeeded module : modulesNeeded) {
-            for (ModuleNeeded current : list) {
-                if (current.getContext().equals(module.getContext()) && current.getModuleName().equals(module.getModuleName())) {
-                    if (module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED
-                            && current.isRequired(node.getElementParameters())) {
-                        Problem problem = new Problem(element, "Module " + current.getModuleName() + " required", //$NON-NLS-1$ //$NON-NLS-2$
-                                ProblemStatus.ERROR);
-                        problem.setKey("Module_" + current.getModuleName());//$NON-NLS-1$
-                        toReturn.add(problem);
-                    }
-                }
-
-            }
+        List<ModuleNeeded> list = LibrariesManagerUtils.getNotInstalledModules(node);
+        for (ModuleNeeded current : list) {
+            Problem problem = new Problem(element, "Module " + current.getModuleName() + " required", //$NON-NLS-1$ //$NON-NLS-2$
+                    ProblemStatus.ERROR);
+            problem.setKey("Module_" + current.getModuleName());//$NON-NLS-1$
+            toReturn.add(problem);
         }
+
         return toReturn;
     }
 

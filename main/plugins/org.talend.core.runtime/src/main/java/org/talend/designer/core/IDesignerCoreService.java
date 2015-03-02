@@ -51,9 +51,9 @@ import org.talend.designer.runprocess.ProcessorException;
 /**
  * Provides Designer core services for other components <br/>
  * .
- * 
- * $Id: IDesignerCore.java 1 2006-12-19 上午10:16:43 bqian
- * 
+ *
+ * $Id: IDesignerCore.java 1 2006 -12 -19 上午10:16:43 bqian
+ *
  */
 public interface IDesignerCoreService extends IService {
 
@@ -101,7 +101,7 @@ public interface IDesignerCoreService extends IService {
 
     /**
      * tang Comment method "getProcessFromJobletProcessItem".
-     * 
+     *
      * @param item
      * @return
      */
@@ -118,9 +118,9 @@ public interface IDesignerCoreService extends IService {
     public Map<String, Date> getLastGeneratedJobsDateMap();
 
     /**
-     * 
+     *
      * DOC YeXiaowei Comment method "getDisplayForProcessParameterFromName".
-     * 
+     *
      * @param name
      * @return
      */
@@ -154,6 +154,8 @@ public interface IDesignerCoreService extends IService {
 
     public Set<ModuleNeeded> getNeededLibrariesForProcess(IProcess process, boolean withChildrens);
 
+    public Set<ModuleNeeded> getNeededModules(INode node, boolean withChildrens);
+
     public void switchToCurContextsView();
 
     public void switchToCurComponentSettingsView();
@@ -162,7 +164,7 @@ public interface IDesignerCoreService extends IService {
 
     /**
      * When database connection is renamed, refresh the connection label in the component view of job.
-     * 
+     *
      * @param item
      */
     public void refreshComponentView(Item item);
