@@ -14,6 +14,7 @@ package org.talend.core.model.general;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.process.IElement;
 import org.talend.core.model.properties.ExchangeUser;
@@ -213,6 +214,10 @@ public class Project {
 
     public void setEmfProject(org.talend.core.model.properties.Project project) {
         this.project = project;
+        if (this.project != null && !this.project.getTechnicalLabel().equals(project.getTechnicalLabel())) {
+            ExceptionHandler.log("org.talend.core.model.general.Project emf project change from "
+                    + this.project.getTechnicalLabel() + " to " + project.getTechnicalLabel());
+        }
     }
 
     public String getMasterJobId() {
