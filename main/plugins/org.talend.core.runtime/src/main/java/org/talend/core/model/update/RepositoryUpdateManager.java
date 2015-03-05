@@ -35,6 +35,8 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ICoreService;
+import org.talend.core.IRepositoryContextUpdateService;
+import org.talend.core.IService;
 import org.talend.core.hadoop.IHadoopClusterService;
 import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.JobContext;
@@ -993,6 +995,29 @@ public abstract class RepositoryUpdateManager {
                                 }
                                 factory.save(item);
                             }
+                        }
+                    }
+                }
+            }
+            List<IRepositoryViewObject> noSqlConnList = factory.getAll(
+                    ERepositoryObjectType.valueOf(ERepositoryObjectType.class, "METADATA_NOSQL_CONNECTIONS"), true); //$NON-NLS-1$
+            for (IRepositoryViewObject obj : noSqlConnList) {
+                Item item = obj.getProperty().getItem();
+                if (item instanceof ConnectionItem) {
+                    Connection conn = ((ConnectionItem) item).getConnection();
+                    if (conn.isContextMode()) {
+                        ContextItem contextItem = ContextUtils.getContextItemById2(conn.getContextId());
+                        if (contextItem == null) {
+                            continue;
+                        }
+                        if (citem == contextItem) {
+                            if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryContextUpdateService.class)) {
+                                IService service = GlobalServiceRegister.getDefault().getService(
+                                        IRepositoryContextUpdateService.class);
+                                IRepositoryContextUpdateService repositoryContextUpdateService = (IRepositoryContextUpdateService) service;
+                                repositoryContextUpdateService.updateRelatedContextVariableName(conn, oldValue, newValue);
+                            }
+                            factory.save(item);
                         }
                     }
                 }

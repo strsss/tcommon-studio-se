@@ -37,6 +37,7 @@ public class ExtendedNodeConnectionContextUtils {
         Databasepath,
         UserName,
         Password,
+        ServerUrl,
     }
 
     static List<IContextParameter> getContextVariables(final String prefixName, Connection conn, Set<IConnParamName> paramSet) {
