@@ -35,6 +35,9 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
     // for repository schema rename
     private Map<String, String> schemaRenamedMap = new HashMap<String, String>();
 
+    // for repository file connection column rename
+    private Map<String, String> columnRenamedMap = new HashMap<String, String>();
+
     /* for table deleted and reselect on database wizard table */
     private Map<String, EUpdateResult> deletedOrReselectTablesMap = new HashMap<String, EUpdateResult>();
 
@@ -74,6 +77,27 @@ public abstract class AbstractUpdateManager implements IUpdateManager {
         }
         for (String old : schemaRenamedMap.keySet()) {
             this.schemaRenamedMap.put(old, schemaRenamedMap.get(old));
+        }
+
+    }
+
+    /**
+     * 
+     * ldong Comment method "getColumnRenamedMap".
+     * 
+     * used for file connection column rename update.
+     */
+    public Map<String, String> getColumnRenamedMap() {
+        return this.columnRenamedMap;
+    }
+
+    public void setColumnRenamedMap(Map<String, String> columnRenamedMap) {
+        this.columnRenamedMap.clear();
+        if (columnRenamedMap == null) {
+            return;
+        }
+        for (String old : columnRenamedMap.keySet()) {
+            this.columnRenamedMap.put(old, columnRenamedMap.get(old));
         }
 
     }

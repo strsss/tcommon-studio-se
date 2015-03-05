@@ -19,13 +19,11 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.talend.testutils
 Export-Package: metadata.managment.i18n,
- org.talend.core.model.metadata,
  org.talend.core.model.metadata.builder.database,
  org.talend.core.model.metadata.builder.database.dburl,
  org.talend.core.model.metadata.builder.database.extractots,
  org.talend.core.model.metadata.builder.database.manager,
  org.talend.core.model.metadata.builder.database.manager.dbs,
- org.talend.core.model.metadata.builder.util,
  org.talend.metadata.managment,
  org.talend.metadata.managment.connection.manager,
  org.talend.metadata.managment.hive,

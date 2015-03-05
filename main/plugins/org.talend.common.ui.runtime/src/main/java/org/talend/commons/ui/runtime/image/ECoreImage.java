@@ -29,6 +29,8 @@ public enum ECoreImage implements IImage {
 
     STANDARD_ICON("/icons1/palette.gif"), //$NON-NLS-1$
 
+    PALETTE_FILTER("/icons1/studio_6.0-palette-filter.png"), //$NON-NLS-1$
+
     STANDARD_DISICON("/icons1/standard_dis.png"), //$NON-NLS-1$
 
     FAVORITE_DISICON("/icons1/favorite_dis.png"), //$NON-NLS-1$

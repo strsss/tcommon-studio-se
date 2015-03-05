@@ -33,6 +33,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.operation.ModalContext;
 import org.eclipse.osgi.util.NLS;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
+import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.prefs.IDEWorkbenchPlugin;
 import org.talend.core.ui.i18n.Messages;
@@ -317,6 +318,7 @@ public class ArchiveFileExportOperationFullPath implements IRunnableWithProgress
         try {
             initialize();
         } catch (IOException e) {
+            MessageBoxExceptionHandler.process(e);
             throw new InvocationTargetException(e, NLS.bind("", e.getMessage())); //$NON-NLS-1$
         }
 

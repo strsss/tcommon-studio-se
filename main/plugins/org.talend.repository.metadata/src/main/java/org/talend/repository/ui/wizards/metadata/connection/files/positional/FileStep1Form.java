@@ -301,6 +301,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         // Synchronise the graphicRule width the scrolledCompositeFileViewer
         scrolledCompositeFileViewer.getHorizontalBar().addListener(SWT.Selection, new Listener() {
 
+            @Override
             public void handleEvent(Event e) {
                 int hSelection = scrolledCompositeFileViewer.getHorizontalBar().getSelection();
                 graphicRule.setBounds(5 - hSelection, 5, filePositionalViewer.getText().getSize().x, graphicRule.getSize().y);
@@ -308,9 +309,11 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         });
         scrolledCompositeFileViewer.addControlListener(new ControlListener() {
 
+            @Override
             public void controlMoved(ControlEvent e) {
             }
 
+            @Override
             public void controlResized(ControlEvent e) {
                 int compositeXsize = filePositionalViewer.getText().getSize().x;
                 int compositeYsize = graphicRule.getSize().y;
@@ -327,6 +330,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         // Event serverCombo
         serverCombo.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 getConnection().setServer(serverCombo.getText());
                 checkFieldsValue();
@@ -336,6 +340,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         // fileField : Event modifyText
         fileField.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 if (!isContextMode()) {
                     getConnection().setFilePath(PathUtils.getPortablePath(fileField.getText()));
@@ -347,6 +352,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         // Event encodingCombo
         encodingCombo.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 getConnection().setEncoding(encodingCombo.getText());
                 checkFilePathAndManageIt(false);
@@ -357,6 +363,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         fileFormatCombo.addModifyListener(new ModifyListener() {
 
             // Event Modify
+            @Override
             public void modifyText(final ModifyEvent e) {
                 getConnection().setFormat(FileFormat.getByName(fileFormatCombo.getText()));
                 // if necessary, adapt the rowSeparator to the file format
@@ -374,6 +381,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         // when positionalViewer is modified : synchronise the field SeparatorText
         filePositionalViewer.getFieldSeparatorValue().addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(ModifyEvent e) {
                 if (!isContextMode()) {
                     String value = filePositionalViewer.getFieldSeparatorValue().getText();
@@ -404,6 +412,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         // Separator Text : check the value and synchronise the positionalViewer
         fieldSeparatorText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 if (!isContextMode()) {
                     // update the connection
@@ -470,6 +479,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         // Position Text : check the value and synchronise positionalViewer
         fieldPositionText.addModifyListener(new ModifyListener() {
 
+            @Override
             public void modifyText(final ModifyEvent e) {
                 if (!isContextMode()) {
                     if (fieldPositionText.getEditable()) {
@@ -536,7 +546,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
             encoding = TalendQuoteUtils.removeQuotes(encoding);
         }
         if (fileStr == null || fileStr == "") { //$NON-NLS-1$
-            filePositionalViewer.setText("\n" + Messages.getString("FileStep1.fileViewerTip1")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            filePositionalViewer.setText("\n" + Messages.getString("FileStep1.fileViewerTip1")); //$NON-NLS-1$ //$NON-NLS-2$ 
 
         } else {
             filePositionalViewer.setText("\n" + Messages.getString("FileStep1.fileViewerProgress")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -790,6 +800,7 @@ public class FileStep1Form extends AbstractPositionalFileStepForm {
         fieldPositionText.setEditable(!isContextMode());
 
         filePositionalViewer.setEnabled(!isContextMode());
+        encodingCombo.setReadOnly(isContextMode());
         fileFormatCombo.setReadOnly(isContextMode());
     }
 }

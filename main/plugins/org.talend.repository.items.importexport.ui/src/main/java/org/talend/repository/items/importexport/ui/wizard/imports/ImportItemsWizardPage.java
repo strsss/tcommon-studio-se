@@ -697,7 +697,8 @@ public class ImportItemsWizardPage extends WizardPage {
         MessageDialog.openError(getContainer().getShell(), Messages.getString("ImportItemsWizardPage_errorTitle"), message); //$NON-NLS-1$ 
     }
 
-    private void populateItems(final boolean overwrite) {
+    private void populateItems(final boolean overwrite, boolean keepSelection) {
+
         setPageComplete(true);
         this.selectedItemRecords.clear();
         // importItemUtil.clearAllData();
@@ -761,6 +762,7 @@ public class ImportItemsWizardPage extends WizardPage {
                     }
                 }
             }
+
         }
 
         updateErrorListViewer();
@@ -771,12 +773,39 @@ public class ImportItemsWizardPage extends WizardPage {
         viewer.setInput(nodesBuilder.getProjectNodes());
         viewer.refresh(true);
         viewer.expandAll();
-        filteredCheckboxTree.resetCheckedElements();
+        if (keepSelection) {
+            Object[] checkedLeafNodes = filteredCheckboxTree.getCheckedLeafNodes();
+            Set<ItemImportNode> newCheckedElement = new HashSet<ItemImportNode>();
+            for (Object obj : checkedLeafNodes) {
+                if (obj instanceof ItemImportNode) {
+                    ItemImportNode importItem = (ItemImportNode) obj;
+                    ImportItem record = importItem.getItemRecord();
+                    for (ItemImportNode node : nodesBuilder.getAllImportItemNode()) {
+                        ImportItem itemRecord = node.getItemRecord();
+                        if (record.getPath() != null && record.getPath().equals(itemRecord.getPath())) {
+                            newCheckedElement.add(node);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            viewer.setCheckedElements(newCheckedElement.toArray());
+            filteredCheckboxTree.resetCheckedElements();
+            filteredCheckboxTree.calculateCheckedLeafNodes();
+        } else {
+            filteredCheckboxTree.resetCheckedElements();
+        }
 
         checkValidItemRecords();
         if (this.isPageComplete()) {// if not valid already. no need check.
             checkSelectedItemErrors();
         }
+
+    }
+
+    private void populateItems(final boolean overwrite) {
+        populateItems(overwrite, false);
     }
 
     private void checkSelectedItemErrors() {

@@ -106,7 +106,7 @@ public class OsgiLoaderActivator implements BundleActivator {
         if (libFolderSysProp != null) {
             return new File(libFolderSysProp);
         } else {
-            Location installLocation = getInstallLocation(theContext);
+            Location installLocation = getConfigurationLocation(theContext);
             File installFolder = URIUtil.toFile(URIUtil.toURI(installLocation.getURL()));
             return new File(installFolder, System.getProperty("org.talend.lib.subfolder", LIB_JAVA_SUB_FOLDER)); //$NON-NLS-1$
         }
@@ -114,20 +114,19 @@ public class OsgiLoaderActivator implements BundleActivator {
     }
 
     /**
-     * return the eclipse install location
+     * return the eclipse configuration location
      * 
      * @param bundleContext
      */
-    private Location getInstallLocation(BundleContext bundleContext) {
+    private Location getConfigurationLocation(BundleContext bundleContext) {
         Filter filter = null;
         try {
-            filter = bundleContext.createFilter(Location.INSTALL_FILTER);
+            filter = bundleContext.createFilter(Location.CONFIGURATION_FILTER);
         } catch (InvalidSyntaxException e) {
             // ignore this. It should never happen as we have tested the above format.
         }
-        ServiceTracker<Location, Location> installLocation = new ServiceTracker<Location, Location>(bundleContext, filter, null);
-        installLocation.open();
-        return installLocation.getService();
+        ServiceTracker configurationLocation = new ServiceTracker(bundleContext, filter, null);
+        configurationLocation.open();
+        return (Location) configurationLocation.getService();
     }
-
 }

@@ -135,7 +135,9 @@ public enum EImage implements IImage {
 
     SEPARATOR_ICON("/icons/separator.gif"), //$NON-NLS-1$
 
-    HIGHTLIGHT_ICON("/icons/hightLight.png");//$NON-NLS-1$
+    HIGHTLIGHT_ICON("/icons/hightLight.png"), //$NON-NLS-1$
+
+    CHESS_GRAY("/icons/gray.gif"); //$NON-NLS-1$
 
     private String path;
 

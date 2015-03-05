@@ -54,7 +54,9 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
+import org.talend.core.model.metadata.IMetadataTable;
 import org.talend.core.model.metadata.MetadataToolHelper;
+import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
@@ -95,7 +97,6 @@ import org.talend.repository.metadata.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.model.RepositoryNodeUtilities;
-
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
 
@@ -144,6 +145,8 @@ public class XmlFileWizard extends CheckLastVersionRepositoryWizard implements I
     private String originalStatus;
 
     private String oldAbstractQueryPath = "";
+
+    private List<IMetadataTable> oldMetadataTable = new ArrayList<IMetadataTable>();
 
     protected static final String DEFAULT_LABEL = "Column";
 
@@ -294,6 +297,10 @@ public class XmlFileWizard extends CheckLastVersionRepositoryWizard implements I
             this.originalDescription = this.connectionItem.getProperty().getDescription();
             this.originalPurpose = this.connectionItem.getProperty().getPurpose();
             this.originalStatus = this.connectionItem.getProperty().getStatusCode();
+            MetadataTable[] tables = ConnectionHelper.getTables(connectionItem.getConnection()).toArray(new MetadataTable[0]);
+            for (MetadataTable table : tables) {
+                this.oldMetadataTable.add(ConvertionHelper.convert(table));
+            }
         }
     }
 
@@ -506,7 +513,7 @@ public class XmlFileWizard extends CheckLastVersionRepositoryWizard implements I
                                             Messages.getString("XmlFileWizard.newColumnsDectect.desc")); //$NON-NLS-1$
                                 }
                                 // update
-                                RepositoryUpdateManager.updateFileConnection(connectionItem);
+                                RepositoryUpdateManager.updateFileConnection(connectionItem, oldMetadataTable);
                                 refreshInFinish(propertiesWizardPage.isNameModifiedByUser());
                                 final RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("", this) {
 

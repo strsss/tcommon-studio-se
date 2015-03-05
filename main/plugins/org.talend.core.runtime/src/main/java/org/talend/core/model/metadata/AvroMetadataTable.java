@@ -24,6 +24,7 @@ import org.apache.avro.SchemaBuilder.BaseFieldTypeBuilder;
 import org.apache.avro.SchemaBuilder.FieldAssembler;
 import org.apache.avro.SchemaBuilder.FieldTypeBuilder;
 import org.apache.avro.compiler.specific.SpecificCompiler;
+import org.apache.avro.compiler.specific.SpecificCompiler.FieldVisibility;
 import org.apache.avro.generic.GenericData.StringType;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.process.IProcess2;
@@ -33,6 +34,8 @@ import org.talend.core.model.process.IProcess2;
  * $Id: MetadataTable.java 46622 2010-08-11 10:04:57Z wliu $
  */
 public class AvroMetadataTable extends MetadataTable {
+
+    private final static String AVRO_TEMPLATE_DIR = "/org/talend/core/model/metadata/avro/specific/"; //$NON-NLS-1$
 
     private Schema schema = null;
 
@@ -140,6 +143,9 @@ public class AvroMetadataTable extends MetadataTable {
         try {
             // Generate the java class from the schema
             SpecificCompiler compiler = new SpecificCompiler(schema);
+            compiler.setTemplateDir(AVRO_TEMPLATE_DIR);
+            compiler.setFieldVisibility(FieldVisibility.PUBLIC);
+
             // Allow String java class
             compiler.setStringType(StringType.String);
             // No source, since we just want to parse the input schema
@@ -158,7 +164,7 @@ public class AvroMetadataTable extends MetadataTable {
      */
     private Schema generateAvroSchema(String connectionName) {
         // Initialize the file with global parameters
-        FieldAssembler<Schema> fieldAssembler = SchemaBuilder.record(connectionName + "Struct")
+        FieldAssembler<Schema> fieldAssembler = SchemaBuilder.record(connectionName + "Struct") //$NON-NLS-1$
                 .prop(connectionName, connectionName).namespace(technicalProjectName + "." + jobName) //$NON-NLS-1$
                 .fields();
 
@@ -211,6 +217,7 @@ public class AvroMetadataTable extends MetadataTable {
                 fieldTypeSchema.stringBuilder().prop("java-class", "java.lang.Object").endString().noDefault(); //$NON-NLS-1$  //$NON-NLS-2$
             }
         }
+
         return fieldAssembler.endRecord();
     }
 

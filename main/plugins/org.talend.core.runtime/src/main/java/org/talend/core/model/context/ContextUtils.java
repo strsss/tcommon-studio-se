@@ -52,7 +52,7 @@ import org.talend.repository.model.IProxyRepositoryFactory;
  * DOC ggu class global comment. Detailled comment
  */
 public class ContextUtils {
-    
+
     private static final Set<String> JAVA_KEYWORDS = new HashSet<String>(Arrays.asList("abstract", "continue", "for", "new", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             "switch", "assert", "default", "goto", "package", "synchronized", "boolean", "do", "if", "private", "this", "break", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
             "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
@@ -144,9 +144,10 @@ public class ContextUtils {
         ContextType defaultContextType = null;
         for (ContextType type : contextTypeList) {
             // Modified by Marvin Wang on Jun. 21, 2012 for bug TDI-21009. To avoid case sensitive.
-            if (contextName != null && type.getName().toLowerCase().equals(contextName.toLowerCase())) {
+            if (contextName != null && type.getName() != null && type.getName().toLowerCase().equals(contextName.toLowerCase())) {
                 contextType = type;
-            } else if (defaultContextName != null && type.getName().toLowerCase().equals(defaultContextName.toLowerCase())) {
+            } else if (defaultContextName != null && type.getName() != null
+                    && type.getName().toLowerCase().equals(defaultContextName.toLowerCase())) {
                 defaultContextType = type;
             }
         }

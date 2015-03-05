@@ -1219,6 +1219,16 @@ public class RepositoryToComponentProperty {
             return connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HBASE_VERSION);
         }
 
+        if (value.equals("HBASE_MASTER_PRINCIPAL")) {
+            return TalendQuoteUtils.addQuotes(connection.getParameters().get(
+                    ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_MASTERPRINCIPAL));
+        }
+
+        if (value.equals("HBASE_REGIONSERVER_PRINCIPAL")) {
+            return TalendQuoteUtils.addQuotes(connection.getParameters().get(
+                    ConnParameterKeys.CONN_PARA_KEY_HBASE_AUTHENTICATION_REGIONSERVERPRINCIPAL));
+        }
+
         if (value.equals("HIVE_SERVER")) {
             return connection.getParameters().get(ConnParameterKeys.HIVE_SERVER_VERSION);
         }
@@ -1387,7 +1397,7 @@ public class RepositoryToComponentProperty {
         }
 
         if (value.equals("USE_KEYTAB")) {
-            String USE_KEYTAB = connection.getParameters().get(ConnParameterKeys.HIVE_AUTHENTICATION_USEKEYTAB);
+            String USE_KEYTAB = connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_USEKEYTAB);
             if (USE_KEYTAB != null && USE_KEYTAB.equals("true")) {
                 return Boolean.TRUE;
             } else {
@@ -1395,12 +1405,12 @@ public class RepositoryToComponentProperty {
             }
         }
 
-        if (value.equals("PRINCIPAL")) {
-            return TalendQuoteUtils.addQuotes(connection.getParameters().get(ConnParameterKeys.HIVE_AUTHENTICATION_PRINCIPLA));
+        if (value.equals("PRINCIPAL") || value.equals("KEYTAB_PRINCIPAL")) {
+            return TalendQuoteUtils.addQuotes(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB_PRINCIPAL));
         }
 
         if (value.equals("KEYTAB_PATH")) {
-            return TalendQuoteUtils.addQuotes(connection.getParameters().get(ConnParameterKeys.HIVE_AUTHENTICATION_KEYTAB));
+            return TalendQuoteUtils.addQuotes(connection.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_KEYTAB));
         }
 
         if (value.equals("IMPALA_PRINCIPAL")) {
@@ -1942,6 +1952,100 @@ public class RepositoryToComponentProperty {
         }
     }
 
+    /**
+     * qiang.zhang Comment method "getTableXMLMappingValue".
+     * 
+     * @param connection
+     * @param tableInfo
+     * @param metaTable
+     */
+    public static void getTableXMLMappingValue(Connection connection, List<Map<String, Object>> tableInfo,
+            IMetadataTable metaTable, Map<String, String> colRenameMap) {
+        if (connection instanceof XmlFileConnection) {
+            XmlFileConnection xmlConnection = (XmlFileConnection) connection;
+            if (xmlConnection.isInputModel()) {
+                EList objectList = xmlConnection.getSchema();
+                XmlXPathLoopDescriptor xmlDesc = (XmlXPathLoopDescriptor) objectList.get(0);
+                List<SchemaTarget> schemaTargets = xmlDesc.getSchemaTargets();
+                tableInfo.clear();
+                List<IMetadataColumn> listColumns = metaTable.getListColumns();
+
+                String tagName;
+                for (int j = 0; j < schemaTargets.size(); j++) {
+                    SchemaTarget schemaTarget = schemaTargets.get(j);
+                    boolean foundColumn = false;
+                    for (IMetadataColumn metadataColumn : listColumns) {
+                        if (metadataColumn.getLabel().equals(schemaTarget.getTagName())) {
+                            foundColumn = true;
+                            tagName = "" + schemaTarget.getTagName().trim().replaceAll(" ", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+                            tagName = MetadataToolHelper.validateColumnName(tagName, j);
+                            Map<String, Object> map = new HashMap<String, Object>();
+                            map.put("SCHEMA_COLUMN", tagName); //$NON-NLS-1$
+                            map.put("QUERY", TalendQuoteUtils.addQuotes(schemaTarget.getRelativeXPathQuery())); //$NON-NLS-1$
+                            tableInfo.add(map);
+                        }
+                    }
+                    // if can not found noramlly,so maybe the column name changed,use rename map we always found the new
+                    // column name here
+                    if (!foundColumn && colRenameMap != null && !colRenameMap.isEmpty()) {
+                        Set<String> newNameSet = colRenameMap.keySet();
+                        for (IMetadataColumn metadataColumn : listColumns) {
+                            if (newNameSet.contains(metadataColumn.getLabel())) {
+                                String oldColLabel = colRenameMap.get((metadataColumn.getLabel()));
+                                if (schemaTarget.getTagName().equals(oldColLabel)) {
+                                    foundColumn = true;
+                                    schemaTarget.setTagName(metadataColumn.getLabel());
+                                    Map<String, Object> map = new HashMap<String, Object>();
+                                    map.put("SCHEMA_COLUMN", metadataColumn.getLabel()); //$NON-NLS-1$
+                                    map.put("QUERY", TalendQuoteUtils.addQuotes(schemaTarget.getRelativeXPathQuery())); //$NON-NLS-1$
+                                    tableInfo.add(map);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (connection instanceof MDMConnection) {
+            MDMConnection xmlConnection = (MDMConnection) connection;
+            EList objectList = xmlConnection.getSchemas();
+            for (Concept concept : (List<Concept>) objectList) {
+                if (concept.getLabel() == null || concept.getLabel().equals(metaTable.getLabel())) {
+                    List<ConceptTarget> conceptTargets = concept.getConceptTargets();
+                    tableInfo.clear();
+                    List<IMetadataColumn> listColumns = metaTable.getListColumns();
+                    for (IMetadataColumn metadataColumn : listColumns) {
+                        for (ConceptTarget schema : conceptTargets) {
+                            if (metadataColumn.getLabel().equals(schema.getTargetName())) {
+                                Map<String, Object> map = new HashMap<String, Object>();
+                                map.put("SCHEMA_COLUMN", schema.getTargetName()); //$NON-NLS-1$
+                                map.put("QUERY", TalendQuoteUtils.addQuotes(schema.getRelativeLoopExpression())); //$NON-NLS-1$
+                                tableInfo.add(map);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (connection instanceof EDIFACTConnection) {
+            EDIFACTConnection edifactConnection = (EDIFACTConnection) connection;
+            List<IMetadataColumn> objectList = metaTable.getListColumns();
+            Map<String, Object> map = new HashMap<String, Object>();
+            for (IMetadataColumn column : objectList) {
+                if (column instanceof EDIFACTColumn) {
+                    EDIFACTColumn edicolumn = (EDIFACTColumn) column;
+                    String ediColumnName = edicolumn.getEDIColumnName();
+                    String ediXpath = edicolumn.getEDIXpath();
+                    map.put("COLUMN_NAME", ediColumnName); //$NON-NLS-1$
+                    map.put("XPATH", ediXpath); //$NON-NLS-1$
+                    tableInfo.add(map);
+                }
+            }
+        }
+    }
+
     public static void getTableXMLMappingValue(Connection connection, List<Map<String, Object>> tableInfo, INode node) {
         List<IMetadataTable> metaTables = node.getMetadataList();
 
@@ -2217,7 +2321,8 @@ public class RepositoryToComponentProperty {
      * @param metadataTable
      * @return
      */
-    public static List<Map<String, Object>> getXMLMappingValue(Connection connection, List<IMetadataTable> metadataTables) {
+    public static List<Map<String, Object>> getXMLMappingValue(Connection connection, List<IMetadataTable> metadataTables,
+            Map<String, String> colRenameMap) {
         if (metadataTables == null || metadataTables.isEmpty()) {
             return new ArrayList<Map<String, Object>>();
         }
@@ -2232,13 +2337,28 @@ public class RepositoryToComponentProperty {
                     List<SchemaTarget> schemaTargets = xmlDesc.getSchemaTargets();
                     List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
                     for (IMetadataColumn col : metadataTable.getListColumns()) {
+                        boolean foundColumn = false;
                         Map<String, Object> map = new HashMap<String, Object>();
                         map.put("QUERY", null); //$NON-NLS-1$
                         for (int i = 0; i < schemaTargets.size(); i++) {
                             SchemaTarget sch = schemaTargets.get(i);
                             if (col.getLabel().equals(sch.getTagName())) {
                                 // map.put("SCHEMA_COLUMN", sch.getTagName());
+                                foundColumn = true;
                                 map.put("QUERY", TalendQuoteUtils.addQuotes(sch.getRelativeXPathQuery())); //$NON-NLS-1$
+                            }
+                        }
+                        if (!foundColumn && colRenameMap != null && !colRenameMap.isEmpty()) {
+                            Set<String> newNameSet = colRenameMap.keySet();
+                            for (int i = 0; i < schemaTargets.size(); i++) {
+                                SchemaTarget sch = schemaTargets.get(i);
+                                if (newNameSet.contains(sch.getTagName())) {
+                                    String oldColLabel = colRenameMap.get(sch.getTagName());
+                                    if (col.getLabel().equals(oldColLabel)) {
+                                        foundColumn = true;
+                                        map.put("QUERY", TalendQuoteUtils.addQuotes(sch.getRelativeXPathQuery())); //$NON-NLS-1$
+                                    }
+                                }
                             }
                         }
                         // if the Xml File Connection have the Keyword Column, can not get QUERY value .

@@ -40,6 +40,8 @@ public class ImportNodesBuilder {
 
     private List<ImportItem> allImportItemRecords = new ArrayList<ImportItem>();
 
+    private List<ItemImportNode> allImportItemNode = new ArrayList<ItemImportNode>();
+
     private static IHadoopClusterService hadoopClusterService = null;
     static {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopClusterService.class)) {
@@ -59,7 +61,17 @@ public class ImportNodesBuilder {
         return this.allImportItemRecords.toArray(new ImportItem[0]);
     }
 
+    /**
+     * Getter for allImportItemNode.
+     * 
+     * @return the allImportItemNode
+     */
+    public List<ItemImportNode> getAllImportItemNode() {
+        return this.allImportItemNode;
+    }
+
     public void clear() {
+        this.allImportItemNode.clear();
         this.allImportItemRecords.clear();
         this.projectNodesMap.clear();
     }
@@ -107,6 +119,7 @@ public class ImportNodesBuilder {
             }
             ItemImportNode itemNode = new ItemImportNode(itemRecord);
             parentImportNode.addChild(itemNode);
+            allImportItemNode.add(itemNode);
         }
     }
 

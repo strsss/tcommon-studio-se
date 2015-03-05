@@ -33,10 +33,9 @@ public class ExternalNodesFactory {
     public static IExternalNode getInstance(final String extensionId) {
         List<IExternalNode> listComponents;
         try {
-            listComponents = ExtensionImplementationProvider.getInstance(ExtensionPointFactory.EXTERNAL_COMPONENT,
-                    extensionId);
+            listComponents = ExtensionImplementationProvider.getInstance(ExtensionPointFactory.EXTERNAL_COMPONENT, extensionId);
         } catch (IllegalPluginConfigurationException e) {
-            throw new RuntimeException("plugin:" + extensionId + " not found"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new RuntimeException("plugin:" + extensionId + " not found", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
         return listComponents.get(0);
     }

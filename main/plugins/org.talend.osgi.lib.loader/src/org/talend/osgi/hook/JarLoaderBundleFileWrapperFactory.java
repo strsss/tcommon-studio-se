@@ -13,8 +13,10 @@
 package org.talend.osgi.hook;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.osgi.internal.hookregistry.BundleFileWrapperFactoryHook;
@@ -23,6 +25,10 @@ import org.eclipse.osgi.storage.bundlefile.BundleEntry;
 import org.eclipse.osgi.storage.bundlefile.BundleFile;
 import org.eclipse.osgi.storage.bundlefile.BundleFileWrapper;
 import org.eclipse.osgi.storage.bundlefile.FileBundleEntry;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.namespace.HostNamespace;
+import org.osgi.framework.wiring.BundleWire;
+import org.osgi.framework.wiring.BundleWiring;
 import org.talend.osgi.hook.notification.JarMissingObservable;
 
 /**
@@ -30,6 +36,9 @@ import org.talend.osgi.hook.notification.JarMissingObservable;
  *
  */
 public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFactoryHook {
+
+    // file instance use to return the information that the jar was found in a fragment
+    private static final File FOUND_IN_FRAGMENT_FILE = new File(""); //$NON-NLS-1$
 
     final String listOfBundlePrefixes = System.getProperty("org.talend.bundle.prefixes.for.jar.loader", //$NON-NLS-1$
             "org.talend,com.oaklandsw"); //$NON-NLS-1$
@@ -66,16 +75,29 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
         public BundleEntry getEntry(String path) {
             // we are using te getEntry to trick equinox when a jar file is missing
             BundleEntry be = super.getEntry(path);
-            if (be == null && path.endsWith(".jar") && !getMissingJars().contains(path + "/")) { //$NON-NLS-1$ //jar file that does not exists.
+            if (be == null && path.endsWith(".jar")) { //$NON-NLS-1$ //jar file that does not exists.
                 // use the getFile to find the jar from the lib/java folder.
                 File file = getFile(path, false);
-                if (file != null) {
-                    be = new FileBundleEntry(file, path);
+                if (file == null) {
+                    // look into fragments first because since we return a fake entry (in the next lines) that will
+                    // prevent to look into
+                    // fragment in calling methods.
+                    URL resourcePathInFragment = findInFragments(generation.getRevision().getBundle(), path);
+                    if (resourcePathInFragment != null) {
+                        return null;
+                    }
+
+                    // fake the entry cause using the getFile returns a file that get tested for existance
+                    // this does not get tested. This is called the first time the jar is missing.
+                    // we also record the missing jar
+                    getMissingJars().add(path + '/');// we add slash because the wrapBundleFile, getEntry(""); line will
+                                                     // call this method with path equals to path + '/'
+                    be = new FileBundleEntry(new File(generation.getBundleFile().getBaseFile(), path), path);
                     MissingJarServices
                             .logDebugInfo("fake FileBundleEntry created for :" + generation.getRevision().getSymbolicName() + "/" + path); //$NON-NLS-1$//$NON-NLS-2$
 
-                } else {
-                    getMissingJars().add(path + "/");
+                } else {// else entry is a jar an was found when calling getFile
+                    be = new FileBundleEntry(file, path);
                 }
             } else {
                 // check for a fake entry, that is a missing jar already check and create a specific bundle entry so
@@ -137,7 +159,6 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
             }// else file found so return default value.
             return file;
         }
-
     }
 
     /*
@@ -149,6 +170,7 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
     @Override
     public BundleFileWrapper wrapBundleFile(BundleFile bundleFile, Generation generation, boolean base) {
         if (canHandleBundle(bundleFile.getBaseFile().getName())) {
+            // all this is done because NestedDirbundleFile has a private cp that can't be acced
             if (base) {// base bundle file so create a Talend wrapper in case one jar is missing
                 return new TalendBundleFileWrapper(bundleFile, generation);
             } else {// inner jar or inner folder or missing jar bundle entry
@@ -185,6 +207,19 @@ public class JarLoaderBundleFileWrapperFactory implements BundleFileWrapperFacto
             }// else keep looking
         }
         return false;
+    }
+
+    private static URL findInFragments(Bundle b, String filePath) {
+        BundleWiring myWiring = b.adapt(BundleWiring.class);
+        List<BundleWire> wires = myWiring.getProvidedWires(HostNamespace.HOST_NAMESPACE);
+        for (BundleWire wire : wires) {
+            Bundle fragment = wire.getRequirerWiring().getBundle();
+            URL fileURL = fragment.getEntry(filePath.toString());
+            if (fileURL != null) {
+                return fileURL;
+            }
+        }
+        return null;
     }
 
 }

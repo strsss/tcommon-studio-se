@@ -24,6 +24,7 @@ import org.talend.core.service.ICoreUIService;
 import org.talend.core.ui.actions.ActionsHelper;
 import org.talend.core.ui.component.ComponentPaletteUtilities;
 import org.talend.core.ui.component.ComponentsFactoryProvider;
+import org.talend.core.ui.services.IDesignerCoreUIService;
 import org.talend.core.ui.services.IRulesProviderService;
 
 /**
@@ -39,6 +40,14 @@ public class CoreUIService implements ICoreUIService {
     @Override
     public void updatePalette() {
         ComponentPaletteUtilities.updatePalette();
+    }
+
+    @Override
+    public void deleteJobletConfigurationsFromPalette(String jobletName) {
+        IDesignerCoreUIService designerCoreUIService = CoreUIPlugin.getDefault().getDesignerCoreUIService();
+        if (designerCoreUIService != null) {
+            designerCoreUIService.deleteJobletConfigurationsFromPalette(jobletName);
+        }
     }
 
     @Override

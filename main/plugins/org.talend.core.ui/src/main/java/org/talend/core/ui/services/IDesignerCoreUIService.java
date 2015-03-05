@@ -37,6 +37,8 @@ public interface IDesignerCoreUIService extends IService {
 
     PaletteRoot createPalette(IComponentsFactory compFac, PaletteRoot root, boolean isFavorite);
 
+    void deleteJobletConfigurationsFromPalette(String jobletName);
+
     PaletteRoot getAllNodeStructure(IComponentsFactory factory);
 
     PaletteRoot createEmptyPalette();

@@ -27,6 +27,8 @@ public interface ICoreUIService extends IService {
 
     void updatePalette();
 
+    void deleteJobletConfigurationsFromPalette(String jobletName);
+
     IPreferenceStore getPreferenceStore();
 
     MenuManager[] getRepositoryContextualsActionGroups();

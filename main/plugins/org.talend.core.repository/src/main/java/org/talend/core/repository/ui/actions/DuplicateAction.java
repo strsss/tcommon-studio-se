@@ -417,6 +417,10 @@ public class DuplicateAction extends AContextualAction {
                     item = PropertiesFactory.eINSTANCE.createValidationRulesConnectionItem();
                 } else if (repositoryType == ERepositoryObjectType.METADATA_HEADER_FOOTER) {
                     item = PropertiesFactory.eINSTANCE.createHeaderFooterConnectionItem();
+                } else if (repositoryType == ERepositoryObjectType.METADATA_FILE_BRMS) {
+                    item = PropertiesFactory.eINSTANCE.createBRMSConnectionItem();
+                } else if (repositoryType == ERepositoryObjectType.METADATA_FILE_FTP) {
+                    item = PropertiesFactory.eINSTANCE.createFTPConnectionItem();
                 }
                 if (item == null) {
                     for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {

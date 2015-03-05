@@ -97,9 +97,7 @@ public class RepositoryConstants {
     public static String getPattern(ERepositoryObjectType type) {
         if (type == ERepositoryObjectType.FOLDER) {
             return FOLDER_PATTERN;
-        } else if (type == ERepositoryObjectType.PROCESS || type == ERepositoryObjectType.JOBLET
-        // Added the m/r for TDI-25928.
-                || type == ERepositoryObjectType.PROCESS_MR) {
+        } else if (ERepositoryObjectType.getAllTypesOfProcess().contains(type) || type == ERepositoryObjectType.JOBLET) {
             return CODE_ITEM_PATTERN;
         } else if (type == ERepositoryObjectType.ROUTINES || type == ERepositoryObjectType.PIG_UDF
                 || "BEANS".equals(type.getType())) {

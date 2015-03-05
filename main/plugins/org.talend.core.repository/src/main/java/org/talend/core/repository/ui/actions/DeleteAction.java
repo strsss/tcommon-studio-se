@@ -240,10 +240,10 @@ public class DeleteAction extends AContextualAction {
                                 }
                             }
 
-                            boolean needReturn = deleteElements(factory, deleteActionCache, node);
                             if (node.getProperties(EProperties.CONTENT_TYPE) == ERepositoryObjectType.JOBLET) {
                                 needToUpdataPalette = true;
                             }
+                            boolean needReturn = deleteElements(factory, deleteActionCache, node);
                             if (needReturn) {
                                 // TDI-31623: Access the rest nodes in select nodes if current node's delete has pb
                                 if (accessNodes.containsAll(selectNodes)) {
@@ -1331,6 +1331,13 @@ public class DeleteAction extends AContextualAction {
 
                         factory.deleteObjectPhysical(objToDelete);
                         ExpressionPersistance.getInstance().jobDeleted(objToDelete.getLabel());
+                    }
+                    if (needToUpdataPalette) {
+                        ICoreUIService coreUIService = (ICoreUIService) GlobalServiceRegister.getDefault().getService(
+                                ICoreUIService.class);
+                        if (coreUIService != null) {
+                            coreUIService.deleteJobletConfigurationsFromPalette(objToDelete.getLabel());
+                        }
                     }
                 }
             } else {
