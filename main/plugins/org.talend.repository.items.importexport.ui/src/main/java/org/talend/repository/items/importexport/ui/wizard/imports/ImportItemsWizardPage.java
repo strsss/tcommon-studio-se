@@ -499,7 +499,7 @@ public class ImportItemsWizardPage extends WizardPage {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (StringUtils.isNotEmpty(directoryPathField.getText()) || StringUtils.isNotEmpty(archivePathField.getText())) {
-                    populateItems(overwriteButton.getSelection());
+                    populateItems(overwriteButton.getSelection(), true);
                 }
             }
 
